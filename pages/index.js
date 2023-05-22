@@ -25,8 +25,8 @@ export default function Home({ posts }) {
     <>
       <PageSEO title={siteMetadata.title} description={siteMetadata.description} />
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pt-6 pb-8 md:space-y-5" style={{ maxWidth: '600px' }}>
-          <div style={{ maxWidth: '500px' }}>
+        <div className="space-y-2 pt-16 pb-12 md:space-y-5" style={{ maxWidth: '600px' }}>
+          <div className="pb-2" style={{ maxWidth: '500px' }}>
             <p className="text-2xl leading-7 text-gray-500 dark:text-gray-400">
               <span className="font-bold">Hey, I'm Matt</span>. I'm a Postgraduate Researcher in the
               <span className="font-bold"> CDT in Distributed Algorithms</span> at the
@@ -40,9 +40,9 @@ export default function Home({ posts }) {
       </div>
 
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="mx-auto max-w-3xl px-4 sm:mt-8 sm:px-6 md:mt-16 xl:max-w-5xl xl:px-0">
+        <div className="mx-auto max-w-3xl px-4 sm:mt-16 sm:px-6 md:mt-32 xl:max-w-5xl xl:px-0">
           <h2 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            Featured Writings
+            Published Words
           </h2>
           <ul className="divide-y divide-gray-200 dark:divide-gray-700">
             {!writingsData.length && 'No writings found.'}
@@ -108,7 +108,7 @@ export default function Home({ posts }) {
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="mx-auto max-w-3xl px-4 sm:mt-8 sm:px-6 md:mt-16 xl:max-w-5xl xl:px-0">
           <h2 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            Featured Projects
+            Project Spotlight
           </h2>
           <div className="container py-12">
             <div className="-m-4 flex flex-wrap">
@@ -131,7 +131,7 @@ export default function Home({ posts }) {
           </div>
           <div className="flex justify-end text-base font-medium leading-6">
             <Link
-              href="/work"
+              href="/projects"
               className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
               aria-label="all projects"
             >
@@ -144,7 +144,7 @@ export default function Home({ posts }) {
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="mx-auto max-w-3xl px-4 sm:mt-8 sm:px-6 md:mt-16 xl:max-w-5xl xl:px-0">
           <h2 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            From the Blog
+            Mental Meanderings
           </h2>
           <ul className="divide-y divide-gray-200 dark:divide-gray-700">
             {!posts.length && 'No posts found.'}

@@ -25,12 +25,15 @@ export default function Blog({ posts, initialDisplayPosts, pagination, tags }) {
   const sortedTags = Object.keys(tags).sort((a, b) => tags[b] - tags[a])
   return (
     <>
-      <PageSEO title={`Blog - ${siteMetadata.author}`} description={siteMetadata.description} />
+      <PageSEO
+        title={`Mental Meanderings - ${siteMetadata.author}`}
+        description={siteMetadata.description}
+      />
       <ListLayout
         posts={posts}
         initialDisplayPosts={initialDisplayPosts}
         pagination={pagination}
-        title="All Posts"
+        title="Mental Meanderings"
       />
       <div className="flex flex-col items-start justify-start divide-y divide-gray-200 dark:divide-gray-700 md:mt-24 md:flex-row md:items-center md:justify-center md:space-x-6 md:divide-y-0">
         <div className="space-x-2 pt-6 pb-8 md:space-y-5">
