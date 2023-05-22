@@ -10,6 +10,16 @@ export default function WritingLayout({ title, displayPosts = [], pagination }) 
           <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
             {title}
           </h1>
+          <div className="rounded-lg bg-gray-100 p-4" style={{ maxWidth: '750px' }}>
+            <blockquote className="text-lg italic text-gray-800">
+              In the realm of Middle-ink, where words wield their power, lies a chronicle of
+              &nbsp;published writings, woven with elven eloquence and dwarven craftsmanship,
+              &nbsp;to delight the hearts of readers across the lands and beyond.
+            </blockquote>
+            <cite className="mt-2 block text-right text-gray-600">
+              - ChatGPT description of Published Words
+            </cite>
+          </div>
         </div>
         <ul>
           {!displayPosts.length && 'No writings found.'}

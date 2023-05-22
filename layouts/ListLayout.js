@@ -23,6 +23,18 @@ export default function ListLayout({ posts, title, initialDisplayPosts = [], pag
           <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
             {title}
           </h1>
+          <div className="rounded-lg bg-gray-100 p-4" style={{ maxWidth: '750px' }}>
+            <blockquote className="text-lg italic text-gray-800">
+              Embark on an enchanting journey through the realms of introspection and imagination.
+              &nbsp;Delve into captivating tales and profound musings that will transport you to
+              &nbsp;mystical landscapes of thought. Uncover hidden treasures of wisdom and wonder as
+              &nbsp;you explore the captivating world awaiting those who dare to venture into this
+              &nbsp;enchanting realm.
+            </blockquote>
+            <cite className="mt-2 block text-right text-gray-600">
+              - ChatGPT description of Mental Meanderings
+            </cite>
+          </div>
           <div className="relative max-w-lg">
             <input
               aria-label="Search articles"
