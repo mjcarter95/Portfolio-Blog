@@ -7,7 +7,7 @@ const siteMetadata = {
   theme: 'system', // system, dark or light
   siteUrl: 'https://mjcarter.co/',
   siteRepo: 'git@github.com:mjcarter95/Portfolio-Blog.git',
-  siteLogo: '/static/images/logo.png',
+  siteLogo: '/static/images/logo_black.png',
   image: '/static/images/avatar.png',
   socialBanner: '/static/images/twitter-card.png',
   github: 'https://github.com/mjcarter95',
