@@ -1,30 +1,18 @@
 ---
-title: Sample .md file
-date: '2016-03-08'
-tags: ['markdown', 'code', 'features']
+title: Oh what a beautiful morning
+date: '2023-05-22'
+tags: ['python', 'test']
 draft: false
-summary: Example of a markdown file with code blocks and syntax highlighting
+summary: Oh what a beautiful morning. Oh what a beautiful day. I've got a beautiful feeling. Some Python code is coming your way.
 ---
 
-A sample post with markdown.
+Oh what a beautiful morning.
 
-## Inline Highlighting
+`Oh what a beautiful day`.
 
-Sample of inline highlighting `sum = parseInt(num1) + parseInt(num2)`
+I've got a beautiful feeling.
 
-## Code Blocks
-
-Some Javascript code
-
-```javascript
-var num1, num2, sum
-num1 = prompt('Enter first number')
-num2 = prompt('Enter second number')
-sum = parseInt(num1) + parseInt(num2) // "+" means "add"
-alert('Sum = ' + sum) // "+" means combine into a string
-```
-
-Some Python code 🐍
+Some Python code is coming your way 🐍
 
 ```python
 def fib():
