@@ -37,10 +37,8 @@ export default function Home({ posts }) {
             {siteMetadata.description}
           </p>
         </div>
-      </div>
 
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="mx-auto max-w-3xl px-4 sm:mt-16 sm:px-6 md:mt-32 xl:max-w-5xl xl:px-0">
+        <div className="mx-auto max-w-3xl px-4 py-12 sm:mt-16 sm:px-6 md:mt-32 xl:max-w-5xl xl:px-0">
           <h2 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
             Published Words
           </h2>
@@ -103,10 +101,8 @@ export default function Home({ posts }) {
             </div>
           )}
         </div>
-      </div>
 
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="mx-auto max-w-3xl px-4 sm:mt-8 sm:px-6 md:mt-16 xl:max-w-5xl xl:px-0">
+        <div className="mx-auto max-w-3xl px-4 py-12 sm:mt-8 sm:px-6 md:mt-16 xl:max-w-5xl xl:px-0">
           <h2 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
             Project Spotlight
           </h2>
@@ -139,10 +135,8 @@ export default function Home({ posts }) {
             </Link>
           </div>
         </div>
-      </div>
 
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="mx-auto max-w-3xl px-4 sm:mt-8 sm:px-6 md:mt-16 xl:max-w-5xl xl:px-0">
+        <div className="mx-auto max-w-3xl px-4 py-12 sm:mt-8 sm:px-6 md:mt-16 xl:max-w-5xl xl:px-0">
           <h2 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
             Mental Meanderings
           </h2>
