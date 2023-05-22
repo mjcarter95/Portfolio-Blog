@@ -5,7 +5,7 @@ const siteMetadata = {
   description: 'Matthew Carter is a postgraduate researcher who is part of the CDT in Distributed Algorithms at the University of Liverpool. His research aims to leverage scalable machine learning algorithms to accelerate the decision making process.',
   language: 'en-uk',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://mjcarter.co/',
+  siteUrl: 'https://mjcarter.co',
   siteRepo: 'git@github.com:mjcarter95/Portfolio-Blog.git',
   siteLogo: '/static/images/logo_black.png',
   image: '/static/images/avatar.png',
