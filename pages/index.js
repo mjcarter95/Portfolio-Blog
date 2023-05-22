@@ -29,8 +29,8 @@ export default function Home({ posts }) {
           <div style={{ maxWidth: '500px' }}>
             <p className="text-2xl leading-7 text-gray-500 dark:text-gray-400">
               <span className="font-bold">Hey, I'm Matt</span>. I'm a Postgraduate Researcher in the
-              <span className="font-bold">CDT in Distributed Algorithms</span> at the
-              <span className="font-bold">University of Liverpool</span>.
+              <span className="font-bold"> CDT in Distributed Algorithms</span> at the
+              <span className="font-bold"> University of Liverpool</span>.
             </p>
           </div>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
