@@ -1,7 +1,7 @@
 import Image from './Image'
 import Link from './Link'
 
-const Card = ({ title, type, description, imgSrc, href }) => (
+const Card = ({ title, type, description, imgSrc, imgAlt, href }) => (
   <div className="md p-4 md:w-1/2" style={{ maxWidth: '544px' }}>
     <div
       className={`${
@@ -12,7 +12,7 @@ const Card = ({ title, type, description, imgSrc, href }) => (
         (href ? (
           <Link href={href} aria-label={`Link to ${title}`}>
             <Image
-              alt={title}
+              alt={imgAlt || title}
               src={imgSrc}
               className="object-cover object-center md:h-36 lg:h-48"
               width={544}
@@ -21,7 +21,7 @@ const Card = ({ title, type, description, imgSrc, href }) => (
           </Link>
         ) : (
           <Image
-            alt={title}
+            alt={imgAlt || title}
             src={imgSrc}
             className="object-cover object-center md:h-36 lg:h-48"
             width={544}
@@ -29,6 +29,11 @@ const Card = ({ title, type, description, imgSrc, href }) => (
           />
         ))}
       <div className="p-6">
+        <div className="pb-4">
+          <div className="bg-gray-100 p-2 rounded-lg inline-block">
+            <p className="text-sm text-gray-800 inline-block">{type}</p>
+          </div>
+        </div>
         <h2 className="mb-3 text-2xl font-bold leading-8 tracking-tight">
           {href ? (
             <Link href={href} aria-label={`Link to ${title}`}>
@@ -39,11 +44,6 @@ const Card = ({ title, type, description, imgSrc, href }) => (
           )}
         </h2>
         <p className="prose mb-3 max-w-none text-gray-500 dark:text-gray-400">{description}</p>
-        <div className="pb-4">
-          <div className="bg-gray-100 p-2 rounded-lg inline-block">
-            <p className="text-sm text-gray-800 inline-block">{type}</p>
-          </div>
-        </div>
         {href && (
           <Link
             href={href}
