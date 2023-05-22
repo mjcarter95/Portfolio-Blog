@@ -4,6 +4,8 @@ import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { getAllFilesFrontMatter } from '@/lib/mdx'
 import formatDate from '@/lib/utils/formatDate'
+import projectsData from '@/data/projectsData'
+import Card from '@/components/Card'
 
 import NewsletterForm from '@/components/NewsletterForm'
 
@@ -27,6 +29,19 @@ export default function Home({ posts }) {
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
             {siteMetadata.description}
           </p>
+        </div>
+        <div className="container py-12">
+          <div className="-m-4 flex flex-wrap">
+            {projectsData.map((d) => (
+              <Card
+                key={d.title}
+                title={d.title}
+                description={d.description}
+                imgSrc={d.imgSrc}
+                href={d.href}
+              />
+            ))}
+          </div>
         </div>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {!posts.length && 'No posts found.'}
