@@ -30,8 +30,8 @@ const Card = ({ title, type, description, imgSrc, imgAlt, href }) => (
         ))}
       <div className="p-6">
         <div className="pb-4">
-          <div className="bg-gray-100 p-2 rounded-lg inline-block">
-            <p className="text-sm text-gray-800 inline-block">{type}</p>
+          <div className="inline-block rounded-lg bg-gray-100 p-2">
+            <p className="inline-block text-sm text-gray-800">{type}</p>
           </div>
         </div>
         <h2 className="mb-3 text-2xl font-bold leading-8 tracking-tight">
