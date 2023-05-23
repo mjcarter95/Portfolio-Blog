@@ -3,6 +3,7 @@ title: Oh what a beautiful morning
 date: '2023-05-22'
 tags: ['python', 'test']
 draft: false
+authors: ['default']
 summary: Oh what a beautiful morning. Oh what a beautiful day. I've got a beautiful feeling. Some Python code is coming your way.
 ---
 

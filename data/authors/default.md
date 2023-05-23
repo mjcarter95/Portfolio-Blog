@@ -1,6 +1,6 @@
 ---
 name: Matthew Carter
-avatar: /static/images/headshot.jpeg
+avatar: /static/images/personal/avatar.jpeg
 occupation: Postgraduate Researcher
 company: University of Liverpool
 email: m (dot) j (dot) carter (at) liverpool (dot) ac (dot) uk

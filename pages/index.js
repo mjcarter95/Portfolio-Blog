@@ -42,9 +42,9 @@ export default function Home({ posts, instagramPosts }) {
         <div className="space-y-2 pt-16 pb-12 md:space-y-5" style={{ maxWidth: '600px' }}>
           <div className="pb-2" style={{ maxWidth: '500px' }}>
             <p className="text-2xl leading-7 text-gray-500 dark:text-gray-400">
-              <span className="font-bold">Hey, I'm Matt</span>. I'm a Postgraduate Researcher in the
-              <span className="font-bold"> CDT in Distributed Algorithms</span> at the
-              <span className="font-bold"> University of Liverpool</span>.
+              <span className="font-bold">Hey, I'm Matt</span> 👋 I'm a Postgraduate Researcher in
+              the <span className="font-bold"> CDT in Distributed Algorithms</span> at the
+              <span className="font-bold"> University of Liverpool</span> 👨‍🎓
             </p>
           </div>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
@@ -220,7 +220,7 @@ export default function Home({ posts, instagramPosts }) {
 
         <div className="mx-auto max-w-3xl px-4 py-12 sm:mt-8 sm:px-6 md:mt-16 xl:max-w-5xl xl:px-0">
           <h2 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            Photo Spotlight
+            Through the Lens
           </h2>
           <div className="container py-12">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
