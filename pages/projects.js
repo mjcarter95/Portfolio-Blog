@@ -16,10 +16,10 @@ export default function Projects() {
           <div className="rounded-lg bg-gray-100 p-4" style={{ maxWidth: '750px' }}>
             <blockquote className="text-lg italic text-gray-800">
               Unveil a hidden chest brimming with enigmatic treasures of the coding realm. Delve
-              &nbsp;into a trove of captivating projects that ignite imaginationand challenge
-              &nbsp;conventions. Each code snippet holds the potential to unlock boundless
-              &nbsp;possibilities and unravel the mysteries of technology. Enter this realm of
-              &nbsp;unknown wonders, where innovation awaits your exploration.
+              into a trove of captivating projects that ignite imaginationand challenge conventions.
+              Each code snippet holds the potential to unlock boundless possibilities and unravel
+              the mysteries of technology. Enter this realm of unknown wonders, where innovation
+              awaits your exploration.
             </blockquote>
             <cite className="mt-2 block text-right text-gray-600">
               - ChatGPT description of Code Chronicles

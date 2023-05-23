@@ -7,20 +7,34 @@ import formatDate from '@/lib/utils/formatDate'
 import projectsData from '@/data/projectsData'
 import writingsData from '@/data/writingsData'
 import Card from '@/components/Card'
-
+import axios from 'axios'
+import Image from 'next/image'
 import NewsletterForm from '@/components/NewsletterForm'
 
 const MAX_POST_DISPLAY = 5
 const MAX_PROJECT_DISPLAY = 4
 const MAX_WRITING_DISPLAY = 5
+const MAX_PHOTO_DISPLAY = 6
 
 export async function getStaticProps() {
   const posts = await getAllFilesFrontMatter('blog')
+  const ACCESS_TOKEN = process.env.INSTAGRAM_ACCESS_TOKEN
+  const apiUrl = `https://graph.instagram.com/me/media?fields=id,media_type,permalink,media_url,caption&limit=${MAX_PHOTO_DISPLAY}&access_token=${ACCESS_TOKEN}`
 
-  return { props: { posts } }
+  try {
+    const response = await axios.get(apiUrl)
+    const insta_posts = response.data.data
+
+    return { props: { posts, instagramPosts: insta_posts } }
+  } catch (error) {
+    console.error('Error fetching Instagram posts:', error)
+    const insta_posts = []
+
+    return { props: { posts, instagramPosts: insta_posts } }
+  }
 }
 
-export default function Home({ posts }) {
+export default function Home({ posts, instagramPosts }) {
   return (
     <>
       <PageSEO title={siteMetadata.title} description={siteMetadata.description} />
@@ -202,6 +216,33 @@ export default function Home({ posts }) {
               </Link>
             </div>
           )}
+        </div>
+
+        <div className="mx-auto max-w-3xl px-4 py-12 sm:mt-8 sm:px-6 md:mt-16 xl:max-w-5xl xl:px-0">
+          <h2 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+            Photo Spotlight
+          </h2>
+          <div className="container py-12">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+              {!instagramPosts.length && <p>No photos found.</p>}
+              {instagramPosts.map((post) => (
+                <div key={post.id} className="flex items-center justify-center">
+                  <a href={post.permalink} target="_blank" rel="noopener noreferrer">
+                    <img src={post.media_url} alt={post.caption} className="h-auto w-full" />
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex justify-end text-base font-medium leading-6">
+            <Link
+              href={siteMetadata.instagram}
+              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+              aria-label="all photos"
+            >
+              All Photos &rarr;
+            </Link>
+          </div>
         </div>
       </div>
     </>

@@ -66,6 +66,9 @@ module.exports = withBundleAnalyzer({
       },
     ]
   },
+  images: {
+    domains: ['scontent-man2-1.cdninstagram.com'], // Add the hostname(s) here
+  },
   webpack: (config, { dev, isServer }) => {
     config.module.rules.push({
       test: /\.svg$/,

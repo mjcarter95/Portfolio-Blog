@@ -2,7 +2,8 @@ const siteMetadata = {
   title: 'Matthew Carter: Turbocharging Data Science',
   author: 'Matthew Carter',
   headerTitle: 'Matthew Carter',
-  description: 'Matthew Carter is a postgraduate researcher who is part of the CDT in Distributed Algorithms at the University of Liverpool. His research aims to leverage scalable machine learning algorithms to accelerate the decision making process.',
+  description:
+    'Matthew Carter is a postgraduate researcher who is part of the CDT in Distributed Algorithms at the University of Liverpool. His research aims to leverage scalable machine learning algorithms to accelerate the decision making process.',
   language: 'en-uk',
   theme: 'system', // system, dark or light
   siteUrl: 'https://mjcarter.co',
@@ -13,6 +14,7 @@ const siteMetadata = {
   github: 'https://github.com/mjcarter95',
   twitter: 'https://twitter.com/mjcarter95',
   linkedin: 'https://www.linkedin.com/in/mjcarter95',
+  instagram: 'https://www.instagram.com/mjcarterphoto',
   locale: 'en-UK',
   analytics: {
     // If you want to use an analytics provider you have to add it to the
