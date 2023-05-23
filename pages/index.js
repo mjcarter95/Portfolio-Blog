@@ -152,6 +152,39 @@ export default function Home({ posts, instagramPosts }) {
 
         <div className="mx-auto max-w-3xl px-4 py-12 sm:mt-8 sm:px-6 md:mt-16 xl:max-w-5xl xl:px-0">
           <h2 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+            Through the Lens
+          </h2>
+          <div className="container py-12">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+              {!instagramPosts.length && <p>No photos found.</p>}
+              {instagramPosts.map((post) => (
+                <div key={post.id} className="flex items-center justify-center">
+                  <a href={post.permalink} target="_blank" rel="noopener noreferrer">
+                    <div className="relative overflow-hidden">
+                      <img src={post.media_url} alt={post.caption} className="h-auto w-full" />
+                      <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black opacity-0 transition duration-300 ease-in-out hover:opacity-50"></div>
+                      <div className="left-50 top-50 absolute text-center opacity-0 transition duration-300 ease-in-out hover:opacity-0">
+                        {post.caption}
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex justify-end text-base font-medium leading-6">
+            <Link
+              href={siteMetadata.instagram}
+              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+              aria-label="all photos"
+            >
+              All Photos &rarr;
+            </Link>
+          </div>
+        </div>
+
+        <div className="mx-auto max-w-3xl px-4 py-12 sm:mt-8 sm:px-6 md:mt-16 xl:max-w-5xl xl:px-0">
+          <h2 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
             Mental Meanderings
           </h2>
           <ul className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -216,33 +249,6 @@ export default function Home({ posts, instagramPosts }) {
               </Link>
             </div>
           )}
-        </div>
-
-        <div className="mx-auto max-w-3xl px-4 py-12 sm:mt-8 sm:px-6 md:mt-16 xl:max-w-5xl xl:px-0">
-          <h2 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            Through the Lens
-          </h2>
-          <div className="container py-12">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-              {!instagramPosts.length && <p>No photos found.</p>}
-              {instagramPosts.map((post) => (
-                <div key={post.id} className="flex items-center justify-center">
-                  <a href={post.permalink} target="_blank" rel="noopener noreferrer">
-                    <img src={post.media_url} alt={post.caption} className="h-auto w-full" />
-                  </a>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="flex justify-end text-base font-medium leading-6">
-            <Link
-              href={siteMetadata.instagram}
-              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-              aria-label="all photos"
-            >
-              All Photos &rarr;
-            </Link>
-          </div>
         </div>
       </div>
     </>
