@@ -10,7 +10,7 @@ const siteMetadata = {
   siteRepo: 'git@github.com:mjcarter95/Portfolio-Blog.git',
   siteLogo: '/static/images/logo_black.png',
   image: '/static/images/avatar.png',
-  socialBanner: '/static/images/twitter-card.png',
+  socialBanner: '/static/images/seo/wb_twitter_card.png',
   github: 'https://github.com/mjcarter95',
   twitter: 'https://twitter.com/mjcarter95',
   linkedin: 'https://www.linkedin.com/in/mjcarter95',
