@@ -1,6 +1,6 @@
 import siteMetadata from '@/data/siteMetadata'
 import headerNavLinks from '@/data/headerNavLinks'
-import BlackLogo from '@/data/logo_black.svg'
+import Image from './Image'
 import WhiteLogo from '@/data/logo_white.svg'
 import Link from './Link'
 import SectionContainer from './SectionContainer'
@@ -17,10 +17,10 @@ const LayoutWrapper = ({ children }) => {
             <Link href="/" aria-label={siteMetadata.headerTitle}>
               <div className="flex items-center justify-between">
                 <div className="mr-3 block dark:hidden">
-                  <BlackLogo />
+                  <Image src="/static/images/seo/logo_black.png" width={64} height={64} />
                 </div>
                 <div className="mr-3 hidden dark:block">
-                  <WhiteLogo />
+                  <Image src="/static/images/seo/logo_white.png" width={64} height={64} />
                 </div>
                 {/* <div className="h-6 text-2xl font-bold">{siteMetadata.author}</div> */}
               </div>
