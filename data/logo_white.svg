@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="52.8" height="52.8" viewBox="0 0 160 160">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 125px;
+        fill: #fff;
+        font-family: "Creattion Demo";
+      }
+    </style>
+  </defs>
+  <text id="C" class="cls-1" x="27.007" y="122.215">C</text>
+  <text id="J" class="cls-1" x="1.848" y="109.082">J</text>
+  <text id="M" class="cls-1" x="5.585" y="79.498">M</text>
+</svg>
