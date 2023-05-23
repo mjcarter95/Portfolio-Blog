@@ -1,6 +1,15 @@
 const projectsData = [
   // Featured
   {
+    title: 'Portfolio Website',
+    featured: true,
+    type: 'Next.js and Tailwind CSS',
+    date: '2023-05-23',
+    description: `The source code for this website, built using Node.js and Tailwind CSS. Based on the Tailwind Next.js Starter Blog by Timothy Lin.`,
+    imgSrc: '/static/images/projects/portfolio-blog.png',
+    href: 'https://github.com/mjcarter95/Portfolio-Blog',
+  },
+  {
     title: 'PySMC',
     featured: true,
     type: 'Python Package',
@@ -28,18 +37,16 @@ const projectsData = [
     href: 'https://github.com/mjcarter95/FilterPy',
   },
 
-
   // Python Packages
   // {
   //   title: 'FilterPy',
   //   featured: true,
   //   type: 'Python Package',
-    // date: '2023-05-15',
+  // date: '2023-05-15',
   //   description: `A collection of Bayesian filtering methods in Python using Numpy and Scipy.`,
   //   imgSrc: '/static/images/projects/filterpy.png',
   //   href: 'https://github.com/mjcarter95/FilterPy',
   // },
-
 ]
 
 export default projectsData
