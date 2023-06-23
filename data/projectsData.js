@@ -24,7 +24,7 @@ const projectsData = [
     type: 'Python Package',
     date: '2023-06-23',
     description: `A collection of Markov Chain Monte Carlo methods in Python using Numpy and Scipy.`,
-    imgSrc: '/static/images/projects/pysmc.png',
+    imgSrc: '/static/images/projects/pymcmc.png',
     href: 'https://github.com/mjcarter95/PyMCMC',
   },
   {
