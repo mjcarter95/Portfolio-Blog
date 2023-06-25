@@ -12,7 +12,7 @@ const siteMetadata = {
   image: '/static/images/avatar.png',
   socialBanner: '/static/images/seo/wb_twitter_card.png',
   github: 'https://github.com/mjcarter95',
-  twitter: 'https://twitter.com/mjcarter95',
+  twitter: 'https://twitter.com/mjcarter955',
   linkedin: 'https://www.linkedin.com/in/mjcarter95',
   instagram: 'https://www.instagram.com/mjcarterphoto',
   locale: 'en-UK',
