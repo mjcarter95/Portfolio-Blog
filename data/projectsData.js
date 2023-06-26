@@ -65,7 +65,15 @@ const projectsData = [
     imgSrc: '/static/images/projects/portfolio-blog.png',
     href: 'https://github.com/mjcarter95/Portfolio-Blog',
   },
- 
+  {
+    title: 'Stan Test Suite',
+    featured: false,
+    type: 'Stan',
+    date: '2023-06-26',
+    description: `A collection of Stan models and data sets for testing and benchmarking.`,
+    imgSrc: '',
+    href: 'https://github.com/mjcarter95/Stan-Test-Suite',
+  }
 ]
 
 export default projectsData
