@@ -15,6 +15,8 @@ const siteMetadata = {
   twitter: 'https://twitter.com/mjcarter955',
   linkedin: 'https://www.linkedin.com/in/mjcarter95',
   instagram: 'https://www.instagram.com/mjcarterphoto',
+  orcid: '',
+  scholar: '',
   locale: 'en-UK',
   analytics: {
     // If you want to use an analytics provider you have to add it to the
