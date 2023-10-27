@@ -43,7 +43,7 @@ export default function Home({ posts, instagramPosts }) {
           <div className="pb-2" style={{ maxWidth: '500px' }}>
             <p className="text-2xl leading-7 text-gray-500 dark:text-gray-400">
               <span className="font-bold">Hey, I'm Matt</span> 👋 I'm a Research Associate in
-              the <span className="font-bold">Signal Processing Group</span> at the
+              the <span className="font-bold"> Signal Processing Group</span> at the
               <span className="font-bold"> University of Liverpool</span> 👨‍🎓
             </p>
           </div>
