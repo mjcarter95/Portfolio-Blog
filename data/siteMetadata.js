@@ -3,7 +3,7 @@ const siteMetadata = {
   author: 'Matthew Carter',
   headerTitle: 'Matthew Carter',
   description:
-    'Matthew Carter is a postgraduate researcher who is part of the CDT in Distributed Algorithms at the University of Liverpool. His research aims to leverage scalable machine learning algorithms to accelerate the decision making process.',
+    'Matthew Carter is a research assistant who is part of the Signal Processing Group at the University of Liverpool. His research aims to leverage scalable machine learning algorithms to accelerate the decision making process.',
   language: 'en-uk',
   theme: 'system', // system, dark or light
   siteUrl: 'https://mjcarter.co',

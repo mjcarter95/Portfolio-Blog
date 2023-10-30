@@ -1,13 +1,13 @@
 const projectsData = [
   // Featured
  // {
-  //   title: 'CondorSMCStan',
+  //   title: 'CondorSMC',
   //   featured: true,
   //   type: 'Python Package',
   // date: '2023-05-15',
-  //   description: `An opportunistic SMC Sampler on HTCondor that interfaces to Stan.`,
-  //   imgSrc: '/static/images/projects/condorsmcstan.png',
-  //   href: 'https://github.com/mjcarter95/CondorSMCStan',
+  //   description: `An opportunistic SMC Sampler on HTCondor.`,
+  //   imgSrc: '/static/images/projects/condorsmc.png',
+  //   href: 'https://github.com/mjcarter95/CondorSMC',
   // },
   {
     title: 'CondorCMF',
