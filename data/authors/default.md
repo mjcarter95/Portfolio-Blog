@@ -4,7 +4,6 @@ avatar: /static/images/personal/avatar.jpeg
 occupation: Postgraduate Researcher
 company: University of Liverpool
 email: matthew (dot) carter (at) liverpool (dot) ac (dot) uk
-twitter: https://twitter.com/mjcarter95
 linkedin: https://www.linkedin.com/mjcarter95
 github: https://github.com/mjcarter95
 ---
