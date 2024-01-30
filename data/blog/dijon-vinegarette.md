@@ -9,7 +9,7 @@ summary: "Dijon Vinegarette: A bold and tangy vinegarette to elevate your salads
 
 Effortlessly elevate your salads with to the next level this bold and tangy dressing.
 
-Ingredients
+**Ingredients**
 
 * dijon mustard
 * lemon juice
@@ -20,5 +20,5 @@ Ingredients
 * salt
 * black pepper
 
-Preparation\
+**Preparation**\
 &nbsp;&nbsp;&nbsp;&nbsp;Add ingredients to a container. Place the lid on the container and shake to emulsify. Enjoy!
