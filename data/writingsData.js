@@ -21,6 +21,53 @@ const projectsData = [
         href: 'https://www.mdpi.com/2078-2489/14/3/170',
     },
 
+    // Posters
+    {
+        title: 'CondorSMC: Opportunistic Sequential Monte Carlo',
+        featured: false,
+        type: 'Conference Poster',
+        date: '2022-11-09',
+        description: `A poster on deploying SMC samplers in opportunistic computing environments presented at the Alan Turing Institute CDT conference.`,
+        // imgSrc: '/static/images/writings/covid19_plot.png',
+        // href: 'https://www.mdpi.com/2078-2489/14/3/170',
+    },
+    {
+        title: 'On Obtaining Near Real-Time Insight into the Evolution of the COVID-19 Pandemic',
+        featured: false,
+        type: 'Conference Poster',
+        date: '2020-12-09',
+        description: `A poster on deploying SMC samplers in opportunistic computing environments.`,
+        // imgSrc: '/static/images/writings/covid19_plot.png',
+        href: 'https://epubs.stfc.ac.uk/work/49293361',
+    },
+    {
+        title: 'Determination of the Usability of FPGA Technology to Accelerate Option Pricing Algorithms',
+        featured: false,
+        type: 'Conference Poster',
+        date: '2019-12-05',
+        description: `A poster on deploying deploying option pricing algorithms on FPGAs.`,
+        // imgSrc: '/static/images/writings/covid19_plot.png',
+        href: 'https://epubs.stfc.ac.uk/work/46385876',
+    },
+    {
+        title: 'Determination of the Usability of FPGA Technology to Accelerate Option Pricing Algorithms',
+        featured: false,
+        type: 'Conference Poster',
+        date: '2019-12-05',
+        description: `A poster on deploying deploying option pricing algorithms on FPGAs.`,
+        // imgSrc: '/static/images/writings/covid19_plot.png',
+        href: 'https://epubs.stfc.ac.uk/work/46385876',
+    },
+    {
+        title: 'Determination of the Usability of FPGA Technology to Accelerate Option Pricing Algorithms',
+        featured: false,
+        type: 'Master\'s Thesis',
+        date: '2019-09-20',
+        description: `This thesis explores how to use Field Programmable Gate Arrays (FPGAs) to accelerate options pricing algorithms. Analyses were performed on a Zynq-7020 FPGA and Alveo u200 FPGA.`,
+        // imgSrc: '/static/images/writings/covid19_plot.png',
+        // href: 'https://epubs.stfc.ac.uk/work/46385876',
+    },
+    
     // Blog Post
     {
         title: 'Utilising novel data streams in the fight against COVID-19',
