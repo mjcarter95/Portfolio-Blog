@@ -3,7 +3,7 @@ const siteMetadata = {
   author: 'Matthew Carter',
   headerTitle: 'Matthew Carter',
   description:
-    'Matthew Carter is a Research Associate who is part of the Signal Processing Group at the University of Liverpool. His research aims to leverage scalable machine learning algorithms to accelerate the decision making process.',
+    'Matthew Carter, Research Associate at the University of Liverpool, explores AI, statistical inference, and accelerated computing technologies to enhance decision-making processes.',
   language: 'en-uk',
   theme: 'system', // system, dark or light
   siteUrl: 'https://mjcarter.co',
