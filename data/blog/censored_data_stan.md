@@ -4,19 +4,18 @@ date: '2025-08-06'
 tags: ['bayesian inference', 'stan', 'survival analysis', 'censoring']
 draft: false
 authors: ['default']
-summary: "A hands-on tutorial that introduces how to model right-censored data using Bayesian inference in Stan. We walk through data simulation, model specification, fitting with CmdStanPy, and visualizing uncertainty over time-to-event distributions."
+summary: "A hands-on tutorial that introduces how to model right-censored data using Bayesian inference in Stan. We walk through data simulation, model specification, fitting with CmdStanPy, and visualising uncertainty over time-to-event distributions."
 ---
 
 # Modelling Censored Data in Stan with CmdStanPy
 
 ## Introduction: Right-Censoring in Real-World Data
 
-In many real-world scenarios, we cannot always observe the full outcome of a random variable. Instead, we only know that the true value exceeds a certain threshold — this is known as **right-censoring**.
+In many real-world scenarios, we cannot always observe the full outcome of a random variable. Instead, we only know that the true value exceeds a certain threshold, this is known as **right-censoring**.
 
 Let’s consider a concrete example:
 
 > **Scenario**: Suppose we're studying the time people spend waiting in a clinic's waiting room. We collect data on how long each patient waits. However, due to resource constraints, some observations are censored:
->
 > * Some patients leave early or are no longer tracked after a certain time.
 > * We might stop recording after a maximum allowed time.
 
