@@ -1,9 +1,10 @@
 ---
-title: From Priors to Predictions: An Intuitive Introduction to Bayesian Inference
+title: "From Priors to Predictions: An Intuitive Introduction to Bayesian Inference"
 date: '2025-08-06'
 tags: ['statistics', 'bayesian inference']
 draft: false
-authors: ['default']summary: "An accessible introduction to Bayesian inference, from Bayes' theorem and likelihoods to a hands-on example with linear regression, showing how we can estimate entire distributions over model parameters and quantify uncertainty instead of settling for a single best fit."
+authors: ['default']
+summary: "An accessible introduction to Bayesian inference, from Bayes' theorem and likelihoods to a hands-on example with linear regression, showing how we can estimate entire distributions over model parameters and quantify uncertainty instead of settling for a single best fit."
 ---
 
 # From Priors to Predictions: An Intuitive Introduction to Bayesian Inference
@@ -11,10 +12,10 @@ authors: ['default']summary: "An accessible introduction to Bayesian inference, 
 ## Overview
 Bayesian inference is a framework for statistical inference that provides a systematic way to update our beliefs about the parameters of a model in light of observed data. At its heart is Bayes' theorem, which relates four key components:
 
-- **Prior distribution** $p(x)$ — Encodes our beliefs about the parameters $x$ before seeing the data.  
-- **Likelihood** $p(y \mid x)$ — Measures how well a particular setting of the parameters explains the observed data $y$.  
-- **Marginal likelihood (evidence)** $p(y)$ — A normalising constant ensuring the posterior distribution is a valid probability distribution.  
-- **Posterior distribution** $p(x \mid y)$ — Our updated beliefs about the parameters after observing data.  
+- **Prior distribution** $p(x)$: Encodes our beliefs about the parameters $x$ before seeing the data.  
+- **Likelihood** $p(y \mid x)$: Measures how well a particular setting of the parameters explains the observed data $y$.  
+- **Marginal likelihood (evidence)** $p(y)$: A normalising constant ensuring the posterior distribution is a valid probability distribution.  
+- **Posterior distribution** $p(x \mid y)$: Our updated beliefs about the parameters after observing data.  
 
 Formally, Bayes' theorem states:
 
@@ -33,7 +34,7 @@ Here, $x \in \mathbb{R}^D$ represents the parameters of interest, and $y \in \ma
 ---
 
 ## Likelihood Intuition
-The likelihood function quantifies how plausible the observed data is under different possible parameter values (hypotheses). For continuous data, the likelihood is the value of the probability density function evaluated at the observed points. Though technically not a probability itself, it is often described informally as *“the probability of the data given the parameters.”*
+The likelihood function quantifies how plausible the observed data is under different possible parameter values (hypotheses). For continuous data, the likelihood is the value of the probability density function evaluated at the observed points. Though technically not a probability itself, it is often described informally as *"the probability of the data given the parameters."*
 
 To build intuition, suppose we believe a dataset was generated from a Gaussian distribution with known variance but unknown mean $\mu$. Each possible $\mu$ corresponds to a different hypothesis about the true data-generating process. The likelihood tells us which values of $\mu$ make the observed data most plausible. Hypotheses that align closely with the actual data yield higher likelihood values (or lower negative log-likelihoods).
 
@@ -46,7 +47,7 @@ $$
 y = \beta_0 + \beta_1 x + \epsilon
 $$
 
-by finding the single *best* slope $\beta_1$ and intercept $\beta_0$ that minimise the squared error. This approach produces a **point estimate** — one fixed line through the data.
+by finding the single *best* slope $\beta_1$ and intercept $\beta_0$ that minimise the squared error. This approach produces a **point estimate**, one fixed line through the data.
 
 In the **Bayesian** approach, we treat $\beta_0$ and $\beta_1$ as random variables with prior distributions. Observing the data updates these priors into posterior distributions, giving us not just one line, but a distribution over all plausible lines.  
 
@@ -61,7 +62,7 @@ rather than just reporting a single number. It also lets us **quantify uncertain
 ---
 
 ## Sampling from the Posterior
-For most interesting models — including Bayesian linear regression with unknown noise variance — the posterior distribution cannot be computed exactly. Instead, we use sampling algorithms such as **Markov Chain Monte Carlo (MCMC)** to draw representative samples from the posterior.
+For most interesting models, including Bayesian linear regression with unknown noise variance,  the posterior distribution cannot be computed exactly. Instead, we use sampling algorithms such as **Markov Chain Monte Carlo (MCMC)** to draw representative samples from the posterior.
 
 These samples can be used to:
 
