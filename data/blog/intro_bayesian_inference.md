@@ -38,6 +38,10 @@ The likelihood function quantifies how plausible the observed data is under diff
 
 To build intuition, suppose we believe a dataset was generated from a Gaussian distribution with known variance but unknown mean $\mu$. Each possible $\mu$ corresponds to a different hypothesis about the true data-generating process. The likelihood tells us which values of $\mu$ make the observed data most plausible. Hypotheses that align closely with the actual data yield higher likelihood values (or lower negative log-likelihoods).
 
+![Likelihood intuition](/static/images/blogs/intro_bayes_inference/likelihood_intuition.png)
+
+In this example, 80 samples are drawn from a Gaussian distribution with true mean $\mu = 10$ and variance $\sigma^2 = 1$. Two candidate models are compared: one far from the truth ($\mu = 5$) and one matching the generative process ($\mu = 10$). The model closer to the true parameters yields a much lower negative log-likelihood (NLL), reflecting a better fit to the observed data.
+
 ---
 
 ## Example: Linear Regression with Uncertainty
@@ -52,6 +56,11 @@ by finding the single *best* slope $\beta_1$ and intercept $\beta_0$ that minimi
 In the **Bayesian** approach, we treat $\beta_0$ and $\beta_1$ as random variables with prior distributions. Observing the data updates these priors into posterior distributions, giving us not just one line, but a distribution over all plausible lines.  
 
 The likelihood in this case measures how well a given line explains the data, and the posterior tells us which lines are more probable after accounting for both our prior beliefs and the evidence from the data.
+
+
+![Bayesian linear regression](/static/images/blogs/intro_bayes_inference/bayesian_linear_regression.png)
+
+Posterior samples from a Bayesian linear regression model with known noise variance. The grey lines represent plausible fits drawn from the posterior distribution, while the solid black line shows the true data-generating relationship. Unlike a single best-fit line from classical regression, the Bayesian approach captures the full range of models consistent with the data and prior beliefs, allowing uncertainty to be quantified.
 
 This richer picture allows us to make statements like:
 
