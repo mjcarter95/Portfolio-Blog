@@ -148,57 +148,6 @@ Vertical dashed lines highlight:
 * The censoring thresholds (red and orange).
 * This visual confirms that the model can recover the underlying distribution, even though it only saw partially observed data.
 
-```python
-def plot_stan_gamma_posterior(alphas, betas, true_alpha, true_beta, T_passive, T_aggressive, complete=None, output_path=None):
-    from scipy.stats import gamma
-    import matplotlib.pyplot as plt
-    import numpy as np
-
-    stan_means = alphas / betas
-    stan_mean = np.mean(stan_means)
-    stan_mean_std = np.std(stan_means)
-    true_mean = true_alpha / true_beta
-
-    x = np.linspace(0.001, 10, 500)
-    pdfs = np.array([gamma.pdf(x, a=a, scale=1 / b) for a, b in zip(alphas, betas)])
-    mean_pdf = np.mean(pdfs, axis=0)
-    lower_pdf = np.percentile(pdfs, 2.5, axis=0)
-    upper_pdf = np.percentile(pdfs, 97.5, axis=0)
-    true_pdf = gamma.pdf(x, a=true_alpha, scale=1 / true_beta)
-
-    plt.figure(figsize=(10, 6))
-
-    if complete is not None:
-        plt.hist(complete, bins=30, density=True, alpha=0.4, color='gray', label="Observed (complete wait times)")
-
-    plt.fill_between(x, lower_pdf, upper_pdf, color='blue', alpha=0.2, label="Stan PDF 95% CI")
-    plt.plot(x, mean_pdf, label="Stan Mean PDF", linestyle='--', color='blue', linewidth=2)
-    plt.plot(x, true_pdf, label="True Gamma PDF", color='green', linewidth=2)
-
-    plt.fill_betweenx(
-        y=[0, plt.gca().get_ylim()[1]],
-        x1=stan_mean - stan_mean_std,
-        x2=stan_mean + stan_mean_std,
-        color='blue', alpha=0.1,
-        label="Stan mean ± 1 SD"
-    )
-
-    plt.axvline(stan_mean, color='blue', linestyle='--', label=f"Stan mean ≈ {stan_mean:.2f} ± {stan_mean_std:.2f}")
-    plt.axvline(true_mean, color='green', linestyle='--', label=f"True mean = {true_mean:.2f}")
-    plt.axvline(T_passive, color='red', linestyle='--', label=f"T_passive = {T_passive}")
-    plt.axvline(T_aggressive, color='orange', linestyle='--', label=f"T_aggressive = {T_aggressive}")
-
-    plt.xlabel("x")
-    plt.ylabel("Density")
-    plt.title("Stan Gamma Posterior: PDF and Wait Time Uncertainty")
-    plt.legend()
-    plt.grid(True)
-    plt.tight_layout()
-    if output_path:
-        plt.savefig(output_path)
-    plt.show()
-```
-
 ---
 
 ## Conclusion
