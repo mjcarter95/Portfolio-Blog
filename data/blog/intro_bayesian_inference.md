@@ -57,7 +57,6 @@ In the **Bayesian** approach, we treat $\beta_0$ and $\beta_1$ as random variabl
 
 The likelihood in this case measures how well a given line explains the data, and the posterior tells us which lines are more probable after accounting for both our prior beliefs and the evidence from the data.
 
-
 ![Bayesian linear regression](/static/images/blogs/intro_bayes_inference/bayesian_linear_regression.png)
 
 Posterior samples from a Bayesian linear regression model with known noise variance. The grey lines represent plausible fits drawn from the posterior distribution, while the solid black line shows the true data-generating relationship. Unlike a single best-fit line from classical regression, the Bayesian approach captures the full range of models consistent with the data and prior beliefs, allowing uncertainty to be quantified.
