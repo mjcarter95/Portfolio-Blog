@@ -7,8 +7,6 @@ authors: ['default']
 summary: "An accessible introduction to Bayesian inference, from Bayes' theorem and likelihoods to a hands-on example with linear regression, showing how we can estimate entire distributions over model parameters and quantify uncertainty instead of settling for a single best fit."
 ---
 
-# From Priors to Predictions: An Intuitive Introduction to Bayesian Inference
-
 ## Overview
 Bayesian inference is a framework for statistical inference that provides a systematic way to update our beliefs about the parameters of a model in light of observed data. At its heart is Bayes' theorem, which relates four key components:
 

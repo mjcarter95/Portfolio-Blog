@@ -7,8 +7,6 @@ authors: ['default']
 summary: "A hands-on tutorial that introduces how to model right-censored data using Bayesian inference in Stan. We walk through data simulation, model specification, fitting with CmdStanPy, and visualising uncertainty over time-to-event distributions."
 ---
 
-# Modelling Censored Data in Stan with CmdStanPy
-
 ## Introduction: Right-Censoring in Real-World Data
 
 In many real-world scenarios, we cannot always observe the full outcome of a random variable. Instead, we only know that the true value exceeds a certain threshold, this is known as **right-censoring**.
@@ -152,9 +150,9 @@ The green line shows the true Gamma distribution used to simulate the data.
 Vertical dashed lines highlight:
 
 * The estimated posterior mean ± 1 standard deviation (blue),
-* The true mean (green),
 * The censoring thresholds (red and orange).
-* This visual confirms that the model can recover the underlying distribution, even though it only saw partially observed data.
+
+This visual confirms that the model can recover the underlying distribution, even though it only saw partially observed data.
 
 ---
 
