@@ -3,8 +3,7 @@ title: From Priors to Predictions: An Intuitive Introduction to Bayesian Inferen
 date: '2025-08-06'
 tags: ['statistics', 'bayesian inference']
 draft: false
-authors: ['default']
-summary: "An accessible introduction to Bayesian inference, from Bayes' theorem and likelihoods to a hands-on example with linear regression, showing how we can estimate entire distributions over model parameters and quantify uncertainty instead of settling for a single "best" fit."
+authors: ['default']summary: "An accessible introduction to Bayesian inference, from Bayes' theorem and likelihoods to a hands-on example with linear regression, showing how we can estimate entire distributions over model parameters and quantify uncertainty instead of settling for a single best fit."
 ---
 
 # From Priors to Predictions: An Intuitive Introduction to Bayesian Inference
