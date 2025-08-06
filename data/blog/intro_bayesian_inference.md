@@ -1,10 +1,10 @@
 ---
-title: "Modelling Censored Data in Stan with CmdStanPy"
+title: "From Priors to Predictions: An Intuitive Introduction to Bayesian Inference"
 date: '2025-08-06'
-tags: ['bayesian inference', 'stan', 'survival analysis', 'censoring']
+tags: ['statistics', 'bayesian inference']
 draft: false
 authors: ['default']
-summary: "A hands-on tutorial that introduces how to model right-censored data using Bayesian inference in Stan. We walk through data simulation, model specification, fitting with CmdStanPy, and visualizing uncertainty over time-to-event distributions."
+summary: "An accessible introduction to Bayesian inference, from Bayes' theorem and likelihoods to a hands-on example with linear regression, showing how we can estimate entire distributions over model parameters and quantify uncertainty instead of settling for a single best fit."
 ---
 
 # From Priors to Predictions: An Intuitive Introduction to Bayesian Inference
