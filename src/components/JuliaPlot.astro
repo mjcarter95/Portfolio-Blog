@@ -1,0 +1,20 @@
+---
+const {
+  src,              // required: e.g. "/plots/intro-bayesian-inference/likelihood.html"
+  title = "",
+  height = 520,
+  ratio = "16/9",
+  lazy = true,
+} = Astro.props;
+---
+
+<figure class="my-6">
+  <iframe
+    src={src}
+    title={title || "Interactive plot"}
+    loading={lazy ? "lazy" : "eager"}
+    style={`width:100%; height:${height}px; border:0; aspect-ratio:${ratio};`}
+    allow="fullscreen"
+  />
+  {title && <figcaption class="mt-2 text-sm text-gray-500">{title}</figcaption>}
+</figure>

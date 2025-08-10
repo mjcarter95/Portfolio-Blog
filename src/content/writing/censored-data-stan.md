@@ -21,7 +21,7 @@ This means for some individuals we observe their exact wait time, and for others
 
 Our goal is to infer the **underlying distribution** of wait times using **both the observed and right-censored data**.
 
-![Bayesian linear regression](/images/blogs/censored_data_stan/censored_data.png))
+![Bayesian linear regression](/images/blogs/censored_data_stan/censored_data.png)
 
 The transparent histogram shows the full (uncensored) Gamma-distributed wait times, while the solid grey histogram shows the observed data after censoring. The two vertical lines represent the aggressive and passive censoring thresholds. Notice how much of the right tail of the true distribution is lost due to censoring. This illustrates the challenge: we must reconstruct the full distribution from partial data.
 
@@ -135,7 +135,7 @@ fit = model.sample(
 
 ---
 
-## 📊 Visualising Posterior Estimates
+## Visualising Posterior Estimates
 
 We extract samples of `alpha` and `beta`, compute the posterior mean $\mu = \frac{\alpha}{\beta}$, and overlay posterior predictive densities.
 

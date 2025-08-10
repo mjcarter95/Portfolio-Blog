@@ -1,7 +1,7 @@
 ---
 type: "Conference Poster"
 title: "On Obtaining Near Real-Time Insight into the Evolution of the COVID-19 Pandemic"
-authors: ["Matthew Carter", "Robert Moore", "Simon Maskell"]
+authors: ["Matthew Carter", "Robert Moore", "John Heap", "Phillip Clemson", "Simon Maskell"]
 venue: "Computing Insight UK"
 date: 2020-12-01
 doi: ""
