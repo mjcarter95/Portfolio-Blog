@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "julia --project=. julia/build_blog.jl && astro build",
+    "build": "astro build",
     "preview": "astro preview",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "plots": "julia --project=julia julia/build_blog.jl"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.3",

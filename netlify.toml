@@ -1,6 +1,5 @@
 [build]
   command = """
-  bash scripts/setup_julia.sh
   npm ci
   npm run build
   """
