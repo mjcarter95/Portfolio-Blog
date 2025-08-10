@@ -7,28 +7,27 @@ tags: ['bayesian inference', 'uncertainty']
 
 import JuliaPlot from "@/components/JuliaPlot.astro";
 
-
 ## Overview
 Bayesian inference is a framework for statistical inference that provides a systematic way to update our beliefs about the parameters of a model in light of observed data. At its heart is Bayes' theorem, which relates four key components:
 
-- **Prior distribution** $p(x)$: Encodes our beliefs about the parameters $x$ before seeing the data.  
-- **Likelihood** $p(y \mid x)$: Measures how well a particular setting of the parameters explains the observed data $y$.  
-- **Marginal likelihood (evidence)** $p(y)$: A normalising constant ensuring the posterior distribution is a valid probability distribution.  
-- **Posterior distribution** $p(x \mid y)$: Our updated beliefs about the parameters after observing data.  
+- **Prior distribution** $p(\mathbf{x})$: Encodes our beliefs about the parameters $\mathbf{x}$ before seeing the data.  
+- **Likelihood** $p(\mathbf{y} \mid \mathbf{x})$: Measures how well a particular setting of the parameters explains the observed data $\mathbf{y}$.  
+- **Marginal likelihood (evidence)** $p(\mathbf{y})$: A normalising constant ensuring the posterior distribution is a valid probability distribution.  
+- **Posterior distribution** $p(\mathbf{x} \mid \mathbf{y})$: Our updated beliefs about the parameters after observing data.  
 
 Formally, Bayes' theorem states:
 
 $$
-p(x \mid y) = \frac{p(y \mid x) \, p(x)}{p(y)},
+p(\mathbf{x} \mid \mathbf{y}) = \frac{p(\mathbf{y} \mid \mathbf{x}) \, p(\mathbf{x})}{p(\mathbf{y})},
 $$
 
 where the marginal likelihood is given by
 
 $$
-p(y) = \int p(y \mid x) \, p(x) \, dx.
+p(\mathbf{y}) = \int p(\mathbf{y} \mid \mathbf{x}) \, p(\mathbf{x}) \, d\mathbf{x}.
 $$
 
-Here, $x \in \mathbb{R}^D$ represents the parameters of interest, and $y \in \mathbb{R}^{D_N}$ the observed data. In many realistic problems, computing $p(y)$ exactly is intractable, making closed-form solutions for the posterior unavailable. In such cases, we turn to approximate methods, such as **Markov Chain Monte Carlo (MCMC)**, to generate samples from the posterior.
+Here, $\mathbf{x} \in \mathbb{R}^D$ represents the parameters of interest, and $\mathbf{y} \in \mathbb{R}^{D_N}$ the observed data. In many realistic problems, computing $p(\mathbf{y})$ exactly is intractable, making closed-form solutions for the posterior unavailable. In such cases, we turn to approximate methods, such as **Markov Chain Monte Carlo (MCMC)**, to generate samples from the posterior.
 
 ---
 
@@ -37,7 +36,7 @@ The likelihood function quantifies how plausible the observed data is under diff
 
 To build intuition, suppose we believe a dataset was generated from a Gaussian distribution with known variance but unknown mean $\mu$. Each possible $\mu$ corresponds to a different hypothesis about the true data-generating process. The likelihood tells us which values of $\mu$ make the observed data most plausible. Hypotheses that align closely with the actual data yield higher likelihood values (or lower negative log-likelihoods).
 
-In the interactive plot below, 80 samples are drawn from a Gaussian distribution with true mean μ = 10 and variance σ² = 1. The slider controls our hypothesis for the mean. As you move the slider away from the true mean, the red curve shifts, and the negative log-likelihood (NLL) value updates in real time. Notice how the NLL increases the further our hypothesis moves from μ = 10, indicating a progressively poorer fit to the observed data.
+In the interactive plot below, 2,000 samples are drawn from a Gaussian distribution with true mean $\mu = 10$ and variance $\sigma^2 = 1$. The slider controls our hypothesis for the mean. As you move the slider away from the true mean, the red curve shifts, and the negative log-likelihood (NLL) value updates in real time. Notice how the NLL increases the further our hypothesis moves from $\mu = 10$, indicating a progressively poorer fit to the observed data.
 
 <JuliaPlot
   src="/plots/intro-bayesian-inference/likelihood.html"
@@ -47,38 +46,100 @@ In the interactive plot below, 80 samples are drawn from a Gaussian distribution
 
 ---
 
-## Example: Linear Regression with Uncertainty
-In classical (frequentist) linear regression, we fit a line
-
+## Modelling Wait Times
+Suppose we record wait times $t_1, \dots, t_n > 0$ in a clinic. A natural model is the **Gamma** distribution with shape $k > 0$ and scale $\theta > 0$:
 $$
-y = \beta_0 + \beta_1 x + \epsilon
+f(t \mid k, \theta) = \frac{t^{k-1} e^{-t/\theta}}{\Gamma(k) \, \theta^{k}}, \quad t > 0.
 $$
 
-by finding the single *best* slope $\beta_1$ and intercept $\beta_0$ that minimise the squared error. This approach produces a **point estimate**, one fixed line through the data.
+For i.i.d. observations, the **log-likelihood** is
+$$
+\ell(k, \theta \mid \mathbf{t}) = (k-1) \sum_i \ln t_i - \frac{1}{\theta} \sum_i t_i - n k \ln \theta - n \ln \Gamma(k).
+$$
 
-In the **Bayesian** approach, we treat $\beta_0$ and $\beta_1$ as random variables with prior distributions. Observing the data updates these priors into posterior distributions, giving us not just one line, but a distribution over all plausible lines.  
+### A Detour: Writing Likelihoods in Python
+In Python, we can compute the likelihood by evaluating the probability density function (PDF) of a distribution at the observed data points. The `scipy.stats` module makes this straightforward.
 
-The likelihood in this case measures how well a given line explains the data, and the posterior tells us which lines are more probable after accounting for both our prior beliefs and the evidence from the data.
+```python
+import numpy as np
+from scipy.stats import gamma
 
-![Bayesian linear regression](/images/blogs/intro_bayes_inference/bayesian_linear_regression.png)
+def gamma_likelihood(k, theta, data):
+    """
+    Compute the likelihood of observed data under a Gamma(k, theta) model.
 
-Posterior samples from a Bayesian linear regression model with known noise variance. The grey lines represent plausible fits drawn from the posterior distribution, while the solid black line shows the true data-generating relationship. Unlike a single best-fit line from classical regression, the Bayesian approach captures the full range of models consistent with the data and prior beliefs, allowing uncertainty to be quantified.
+    Parameters
+    ----------
+    k : float
+        Shape parameter (k > 0).
+    theta : float
+        Scale parameter (theta > 0).
+    data : array-like
+        Observed values (must be positive).
 
-This richer picture allows us to make statements like:
+    Returns
+    -------
+    float
+        The likelihood value (product of PDF values).
+    """
+    return np.prod(gamma.pdf(data, a=k, scale=theta))
+```
 
-> There's a 95% probability that the slope lies between 0.8 and 1.2.
+We can then calculate the likelihood of a given dataset by calling the function with chosen parameter values and the observed data:
 
-rather than just reporting a single number. It also lets us **quantify uncertainty** in predictions for new data points.
+```python
+data = np.array([1.2, 3.4, 2.8, 4.5])
+ll = gamma_likelihood(k=2.0, theta=3.0, data=data)
+print("Likelihood:", ll)
+```
+
+This direct computation is useful for building intuition about how the likelihood changes as we vary $k$ and $\theta$. However, in practice, it is often more numerically stable to work with the log-likelihood rather than the raw likelihood, because products of many small numbers can underflow to zero in floating-point arithmetic.
+
+### Example:
+
+The following interactive plot shows the probability density function of a Gamma distribution with shape $k = 2.0$ and scale $\theta = 3.0$. The mean wait time, $\mu = 6.0$, is calculated as $\mu = k \theta$. You can compare how the observed wait times align with this model by overlaying their histogram.
+
+<JuliaPlot
+  src="/plots/intro-bayesian-inference/gamma.html"
+  title="Gamma distribution PDF"
+  height={520}
+/>
 
 ---
 
 ## Sampling from the Posterior
-For most interesting models, including Bayesian linear regression with unknown noise variance,  the posterior distribution cannot be computed exactly. Instead, we use sampling algorithms such as **Markov Chain Monte Carlo (MCMC)** to draw representative samples from the posterior.
+For most interesting models, including those describing the spread of a disease through a community, the posterior distribution cannot be computed exactly. For example, if we model the number of new daily COVID-19 cases as following a Poisson distribution with an unknown infection rate $\lambda$ and place a prior on $\lambda$, the resulting posterior often has no closed-form expression. In such cases, we use sampling algorithms such as Markov Chain Monte Carlo (MCMC) to draw representative samples from the posterior.
 
 These samples can be used to:
+* Estimate summaries of the parameters (means, credible intervals).
+* Visualise the distribution of plausible models.
+* Make probabilistic predictions for future data (e.g., how many cases we might see next week).
 
-- Estimate summaries of the parameters (means, credible intervals).  
-- Visualise the distribution of plausible models.  
-- Make probabilistic predictions for new data.  
+In the Bayesian framework, inference is therefore about learning a distribution over parameters, not just finding a single optimal set of values. This mindset shift is powerful because it explicitly acknowledges and quantifies uncertainty. Instead of producing a single forecast, we produce a range of possible futures, weighted by their plausibility given the evidence. This richer picture allows decision-makers, whether public health officials or engineers, to balance risks, plan contingencies, and update strategies as new data arrives.
 
-In the Bayesian framework, inference is therefore about **learning a distribution over parameters**, not just finding a single optimal set of values. This mindset shift is what makes Bayesian methods so powerful for reasoning under uncertainty.
+### Example: Inferring the Distribution of Wait Times at a Clinic
+Below we draw synthetic wait times from a known Gamma distribution and fit the parameters $k$ and $\theta$ using Bayesian inference implemented in the probabilistic programming language Stan. Stan allows us to specify the model in a concise mathematical form and then automatically perform posterior sampling using state-of-the-art Markov Chain Monte Carlo (MCMC) algorithms.
+
+We visualise:
+- a **histogram** of the data (as a density),
+- the **fitted Gamma pdf** overlay,
+- a vertical line at the **fitted mean** $\hat{\mu} = \hat{k} \hat{\theta}$.
+
+{/*
+<JuliaPlot
+  src="/plots/modelling-wait-times/fit.html"
+  height={480}
+/> 
+*/} 
+
+---
+
+## Conclusion
+Bayesian inference offers a powerful, intuitive approach to reasoning under uncertainty, uniting prior beliefs with new evidence to produce richer, more informative results than traditional point estimates. Specifically:
+* Bayesian inference provides a principled framework for updating beliefs in light of new data.
+* The likelihood function measures how well different parameter values explain observed data.
+* Interactive visualisation (Gaussian example) helps build intuition about how the likelihood changes as hypotheses shift from the truth.
+* The Gamma model is a natural choice for modelling strictly positive wait times, and maximum likelihood estimation can recover parameters from synthetic data.
+* Posterior sampling (e.g., via MCMC) allows us to quantify uncertainty by generating a distribution over plausible parameter values.
+* Real-world scenarios, such as modelling COVID-19 spread, illustrate the advantage of Bayesian methods in forecasting and decision-making.
+* Bayesian results enable risk-aware planning by providing a range of possible futures rather than a single prediction.

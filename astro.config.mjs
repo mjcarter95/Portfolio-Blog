@@ -6,6 +6,7 @@ import rehypeKatex from 'rehype-katex';
 
 export default defineConfig({
   site: 'https://mjcarter.co',
+  server: { host: true },
   integrations: [
     tailwind(),
     mdx({
