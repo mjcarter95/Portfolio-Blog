@@ -1,0 +1,29 @@
+# Node dependencies
+node_modules/
+
+# Build output
+dist/
+.astro/
+
+# Local environment variables
+.env
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Optional: if you use Astro image optimisations cache
+.cache/

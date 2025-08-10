@@ -1,0 +1,109 @@
+---
+const links = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About' },
+  { href: '/publications', label: 'Publications' },
+  { href: '/code', label: 'Code' },
+  { href: '/writing', label: 'Writing' },
+  { href: '/photography', label: 'Photography' },
+  { href: '/contact', label: 'Contact' },
+];
+const path = Astro.url.pathname;
+const isActive = (href) => href === '/' ? path === '/' : (path === href || path.startsWith(href + '/'));
+---
+
+<header id="main-header" class="fixed top-0 left-0 right-0 z-[9999]">
+  <a href="/" class="flex items-center gap-3">
+    <img id="header-logo" src="/images/seo/logo_white.png" alt="Logo" class="h-12 w-auto" />
+  </a>
+
+  <nav class="hidden md:flex items-center gap-6 text-sm">
+    {links.map(l => (
+      <a
+        href={l.href}
+        aria-current={isActive(l.href) ? 'page' : undefined}
+        class="nav-link font-bold relative pb-2"
+      >
+        {l.label}
+      </a>
+    ))}
+  </nav>
+
+  <details class="md:hidden">
+    <summary class="cursor-pointer select-none">Menu</summary>
+    <div class="mt-2 flex flex-col gap-2">
+      {links.map(l => <a href={l.href} class="py-1">{l.label}</a>)}
+    </div>
+  </details>
+</header>
+
+<style>
+  /* Default (over hero) */
+  #main-header {
+    padding: 2rem 1.5rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background .25s, padding .25s, color .25s, border-color .25s;
+  }
+
+/* underline base (hidden) */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  height: 2px; width: 100%;
+  background-color: transparent;   /* not currentColor */
+  opacity: 0;
+  transition: opacity .2s, background-color .2s;
+}
+
+/* ACTIVE page underline */
+.nav-link[aria-current="page"]::after {
+  opacity: 1;
+  background-color: #4C9141; /* May green (pick your hex) */
+}
+
+/* HOVER underline color */
+#main-header .nav-link:hover::after {
+  opacity: 1;
+  background-color: #4C9141;
+}
+.nav-link[aria-current="page"] { color: #4C9141; }
+
+
+  /* Hover */
+  #main-header .nav-link:hover { opacity: .8; color: #996633;}
+  #main-header[data-scrolled="true"] .nav-link:hover { color: #996633; opacity: 1; }
+
+  /* Sticky state */
+  #main-header[data-scrolled="true"] {
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    color: #111827;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    
+  }
+
+  /* Spacer (in BaseLayout) */
+  #header-spacer { height: 0; transition: height .25s; }
+</style>
+
+<script>
+  const header = document.getElementById('main-header');
+  const logo   = document.getElementById('header-logo');
+  const spacer = document.getElementById('header-spacer');
+
+  function updateHeader() {
+    const scrolled = window.scrollY > 60;
+    header.setAttribute('data-scrolled', scrolled ? 'true' : 'false');
+    logo.src = scrolled ? '/images/seo/logo_black.png' : '/images/seo/logo_white.png';
+    if (spacer) spacer.style.height = scrolled ? `${header.getBoundingClientRect().height}px` : '0px';
+  }
+
+  document.addEventListener('scroll', updateHeader, { passive: true });
+  window.addEventListener('resize', updateHeader);
+  updateHeader();
+</script>
