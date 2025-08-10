@@ -1,24 +1,76 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import { slugifyTag } from "@/utils/tags";
 
 export async function getStaticPaths() {
   const posts = await getCollection("writing");
   return posts.map((p) => ({
-    params: { slug: p.slug },   // <-- string, not array
-    props: { post: p },
+    params: { slug: p.slug },
+    props: { post: p, allPosts: posts },
   }));
 }
 
-const { post } = Astro.props;
+const { post, allPosts } = Astro.props;
 const { Content } = await post.render();
+
+// Prev/next
+const sorted = allPosts
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const i = sorted.findIndex((p) => p.slug === post.slug);
+const prev = sorted[i - 1] || null;
+const next = sorted[i + 1] || null;
 ---
+
 <BaseLayout title={`${post.data.title} — Writing`}>
-  <article class="max-w-3xl mx-auto px-6 py-12 prose">
-    <h1>{post.data.title}</h1>
-    <p class="opacity-70 text-sm">
-      {post.data.date.toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "2-digit" })}
-    </p>
-    <Content />
-  </article>
+  <section class="max-w-3xl mx-auto px-6 py-12">
+    <!-- Hero -->
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold leading-tight text-gray-900 mb-3">
+        {post.data.title}
+      </h1>
+      <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500">
+        <span>
+          {post.data.date.toLocaleDateString("en-GB", {
+            year: "numeric",
+            month: "long",
+            day: "2-digit",
+          })}
+        </span>
+
+        {post.data.tags?.length > 0 && (
+          <div class="flex gap-2 flex-wrap">
+            {post.data.tags.map((tag) => (
+              <a
+                href={`/tags/${slugifyTag(tag)}/`}
+                class="px-2 py-0.5 bg-gray-100 rounded hover:bg-[#996633] hover:text-white transition"
+              >
+                {tag}
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </header>
+
+    <!-- Content -->
+    <article class="prose prose-lg prose-gray max-w-none">
+      <Content />
+    </article>
+
+    <!-- Prev/Next -->
+    <nav class="mt-12 pt-6 border-t flex justify-between text-sm">
+      {prev ? (
+        <a href={`/writing/${prev.slug}/`} class="hover:underline">
+          ← {prev.data.title}
+        </a>
+      ) : <span></span>}
+      {next && (
+        <a href={`/writing/${next.slug}/`} class="hover:underline">
+          {next.data.title} →
+        </a>
+      )}
+    </nav>
+  </section>
 </BaseLayout>

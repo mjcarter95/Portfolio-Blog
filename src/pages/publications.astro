@@ -1,24 +1,170 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { getCollection } from 'astro:content';
-const pubs = await getCollection('publications');
-const sorted = pubs.sort((a, b) => b.data.year - a.data.year);
+import { getCollection } from "astro:content";
+
+const pubs = await getCollection("publications");
+
+// Sort newest → oldest (expects `date: z.date()` in your schema)
+const sorted = pubs
+  .filter((p) => !!p.data.date)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Helper to pick the best link (URL → PDF → #)
+const bestLink = (p) => p.data.url || p.data.pdf || "#";
+
+// Bold “Matthew Carter” in author string
+const formatAuthors = (authors: string[]) =>
+  authors
+    .map((a) => (a === "Matthew Carter" ? `<strong>${a}</strong>` : a))
+    .join(", ");
 ---
-<BaseLayout title="Publications — Your Name">
+
+<BaseLayout title="Publications — Matthew Carter">
   <section class="max-w-4xl mx-auto px-6 py-12">
-    <h1 class="text-2xl font-semibold mb-6">Publications</h1>
-    <ul class="space-y-6">
-      {sorted.map(({ data }) => (
-        <li class="leading-relaxed">
-          <div class="font-medium">{data.title}</div>
-          <div class="text-sm opacity-80">{data.authors.join(', ')}{data.venue ? ` · ${data.venue}` : ''} · {data.year}</div>
-          <div class="mt-1 text-sm">
-            {data.doi && <a class="underline mr-3" href={`https://doi.org/${data.doi}`}>DOI</a>}
-            {data.url && <a class="underline mr-3" href={data.url}>Link</a>}
-            {data.pdf && <a class="underline" href={data.pdf}>PDF</a>}
-          </div>
-        </li>
-      ))}
+    <!-- Title with text-width underline -->
+    <h1 class="text-3xl font-bold border-b-4 border-black pb-2 mb-6 inline-block">
+      Publications
+    </h1>
+
+    <!-- Full-width search -->
+    <input
+      id="pub-search"
+      type="search"
+      placeholder="Search title, authors, venue, type…"
+      class="w-full rounded-md border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#996633] mb-8"
+    />
+
+    <!-- List -->
+    <ul id="pub-list" class="space-y-8">
+      {sorted.map((p) => {
+        const { title, authors = [], venue = "", type = "", date, doi = "", url = "", pdf = "" } = p.data;
+        const link = bestLink(p);
+        const displayDate = date.toLocaleDateString("en-GB", { year: "numeric", month: "long" });
+
+        // text to search against
+        const haystack = [
+          title,
+          authors.join(" "),
+          venue,
+          type,
+          displayDate,
+          doi,
+        ]
+          .join(" ")
+          .toLowerCase();
+
+        return (
+          <li
+            class="leading-relaxed pb-6 border-b border-gray-200 last:border-0"
+            data-search={haystack}
+          >
+            <div class="font-semibold text-lg">
+              <a href={link} target={link !== "#" ? "_blank" : undefined} rel="noopener" class="hover:text-[#996633]">
+                {title}
+              </a>
+            </div>
+
+            <div class="text-sm text-gray-600 mt-1">
+              <span class="italic">{type}</span>
+              {venue && <span> · {venue}</span>}
+              <span> · {displayDate}</span>
+            </div>
+
+            <div class="text-sm text-gray-700 mt-1">
+              <span set:html={formatAuthors(authors)}></span>
+            </div>
+
+          {/* Links row */}
+          {(doi || url || pdf) && (
+            <div class="mt-2 flex items-center gap-4 text-gray-700">
+              {doi && (
+                <a
+                  href={`https://doi.org/${doi}`}
+                  target="_blank"
+                  rel="noopener"
+                  title="DOI"
+                  aria-label="DOI"
+                  class="inline-flex items-center leading-none decoration-transparent hover:text-[#996633]"
+                >
+                  <!-- link (chain) -->
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                      fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round"
+                      class="h-5 w-5">
+                    <path d="M10 13a5 5 0 0 0 7.07 0l1.83-1.83a5 5 0 0 0-7.07-7.07L10 5" />
+                    <path d="M14 11a5 5 0 0 0-7.07 0L5.1 12.83a5 5 0 0 0 7.07 7.07L14 19" />
+                  </svg>
+                </a>
+              )}
+
+              {url && (
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener"
+                  title="External link"
+                  aria-label="External link"
+                  class="inline-flex items-center leading-none decoration-transparent hover:text-[#996633]"
+                >
+                  <!-- external-link (arrow exiting box) -->
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                      fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round"
+                      class="h-5 w-5">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <path d="M15 3h6v6"/>
+                    <path d="M10 14L21 3"/>
+                  </svg>
+                </a>
+              )}
+
+              {pdf && (
+                <a
+                  href={pdf}
+                  target="_blank"
+                  rel="noopener"
+                  title="PDF"
+                  aria-label="PDF"
+                  class="relative inline-flex items-center leading-none decoration-transparent hover:text-[#996633]"
+                >
+                  <!-- document -->
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                      fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round"
+                      class="h-5 w-5">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <path d="M14 2v6h6"/>
+                  </svg>
+                </a>
+              )}
+            </div>
+          )}
+
+          </li>
+        );
+      })}
     </ul>
+
+    <p id="no-results" class="hidden text-gray-500 mt-6">No publications match your search.</p>
   </section>
+
+  <script>
+    const input = document.getElementById('pub-search');
+    const list = document.getElementById('pub-list');
+    const empty = document.getElementById('no-results');
+
+    function filter() {
+      const q = (input.value || '').toLowerCase().trim();
+      let visible = 0;
+      for (const item of list.children) {
+        const hay = item.getAttribute('data-search') || '';
+        const show = hay.includes(q);
+        item.style.display = show ? '' : 'none';
+        if (show) visible++;
+      }
+      empty.classList.toggle('hidden', visible !== 0);
+    }
+
+    input.addEventListener('input', filter);
+  </script>
 </BaseLayout>

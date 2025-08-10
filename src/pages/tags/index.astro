@@ -1,0 +1,45 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import { slugifyTag } from "@/utils/tags";
+
+const posts = (await getCollection("writing")).filter((p) => !p.data.draft);
+
+const counts = new Map<string, { label: string; count: number }>();
+for (const p of posts) {
+  for (const t of p.data.tags ?? []) {
+    const s = slugifyTag(t);
+    const entry = counts.get(s);
+    if (entry) entry.count++;
+    else counts.set(s, { label: t, count: 1 });
+  }
+}
+
+const tagList = [...counts.entries()]
+  .map(([slug, v]) => ({ slug, ...v }))
+  .sort((a, b) => a.label.localeCompare(b.label));
+---
+
+<BaseLayout title="Tags — Matthew Carter">
+  <section class="max-w-4xl mx-auto px-6 py-12">
+    <h1 class="text-3xl font-bold mb-8">Browse by tag</h1>
+    {tagList.length === 0 ? (
+      <p class="text-gray-600">No tags yet.</p>
+    ) : (
+      <div class="flex flex-wrap gap-3">
+        {tagList.map((t) => (
+          <a
+            href={`/tags/${t.slug}/`}
+            class="px-3 py-1 rounded-full bg-gray-100 hover:bg-[#996633] hover:text-white transition text-sm"
+          >
+            {t.label} <span class="opacity-70">({t.count})</span>
+          </a>
+        ))}
+      </div>
+    )}
+
+    <div class="mt-10">
+      <a href="/writing" class="underline">Browse all writing →</a>
+    </div>
+  </section>
+</BaseLayout>

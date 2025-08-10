@@ -1,0 +1,67 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import { slugifyTag } from "@/utils/tags";
+
+export async function getStaticPaths() {
+  const posts = (await getCollection("writing")).filter((p) => !p.data.draft);
+  const map = new Map<string, string>(); // slug -> human label
+  for (const p of posts) {
+    for (const t of p.data.tags ?? []) {
+      const s = slugifyTag(t);
+      if (!map.has(s)) map.set(s, t);
+    }
+  }
+  return [...map.entries()].map(([slug, label]) => ({
+    params: { tag: slug },
+    props: { slug, label },
+  }));
+}
+
+const { slug, label } = Astro.props;
+
+const tagged = (await getCollection("writing"))
+  .filter(
+    (p) =>
+      !p.data.draft &&
+      (p.data.tags ?? []).some((t) => slugifyTag(t) === slug)
+  )
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout title={`#${label} — Writing`}>
+  <section class="max-w-4xl mx-auto px-6 py-12">
+    <div class="flex items-center justify-between mb-2">
+      <h1 class="text-3xl font-bold">#{label}</h1>
+      <a href="/writing" class="text-sm underline hover:text-[#996633]">Back to writing</a>
+    </div>
+
+    <p class="text-sm text-gray-500 mb-8">
+      {tagged.length} post{tagged.length === 1 ? "" : "s"}
+    </p>
+
+    <div class="space-y-8">
+      {tagged.map(({ slug, data }) => (
+        <article class="pb-6 border-b border-gray-200 last:border-0">
+          <h2 class="text-xl font-semibold mb-1">
+            <a href={`/writing/${slug}/`} class="hover:text-[#996633] transition">
+              {data.title}
+            </a>
+          </h2>
+          <p class="text-sm text-gray-500 mb-2">
+            {data.date.toLocaleDateString("en-GB", {
+              year: "numeric",
+              month: "long",
+              day: "2-digit",
+            })}
+          </p>
+          {data.summary && <p class="text-gray-700">{data.summary}</p>}
+        </article>
+      ))}
+    </div>
+
+    <div class="mt-10">
+      <a href="/tags" class="underline">Browse all tags →</a>
+    </div>
+  </section>
+</BaseLayout>
