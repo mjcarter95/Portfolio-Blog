@@ -1,0 +1,28 @@
+---
+const {
+  title = "Matthew Carter — Research Associate",
+  description = "Matthew Carter is a research associate at the University of Liverpool who combines Artificial Intelligence, Bayesian inference, and high-performance computing to help practitioners and researchers make fast, data-informed decisions in the face of uncertainty.",
+  image = "/images/seo/og_card.png",
+  url = new URL(Astro.url.pathname, Astro.site).href,
+} = Astro.props;
+---
+
+<!-- Basic HTML Meta -->
+<title>{title}</title>
+<meta name="description" content={description} />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={image} />
+<meta property="og:url" content={url} />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+
+<!-- Favicons (optional) -->
+<link rel="icon" href="/images/seo/favicon.ico" />

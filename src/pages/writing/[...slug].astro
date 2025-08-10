@@ -6,7 +6,7 @@ import { slugifyTag } from "@/utils/tags";
 export async function getStaticPaths() {
   const posts = await getCollection("writing");
   return posts.map((p) => ({
-    params: { slug: p.slug }, // string slug
+    params: { slug: p.slug },
     props: { post: p, allPosts: posts },
   }));
 }
@@ -21,12 +21,24 @@ const sorted = allPosts
 const i = sorted.findIndex((p) => p.slug === post.slug);
 const prev = sorted[i - 1] || null;
 const next = sorted[i + 1] || null;
+
+// SEO
+const seoTitle = `${post.data.title} — Writing`;
+const seoDescription =
+  post.data.summary ??
+  post.data.description ??
+  "Article by Matthew Carter on AI, Bayesian inference, and high-performance computing.";
+const seoImage = post.data.cover ?? "/images/seo/default-og.jpg";
+const canonical =
+  typeof Astro.site === "string"
+    ? new URL(`/writing/${post.slug}/`, Astro.site).toString()
+    : undefined;
 ---
 
-<BaseLayout title={`${post.data.title} — Writing`}>
+<BaseLayout title={seoTitle} description={seoDescription} image={seoImage} canonical={canonical}>
   <section class="max-w-3xl mx-auto px-6 py-12">
     <!-- Header -->
-    <header class="mb-8">
+    <header class="mb-6">
       <h1 class="text-4xl font-bold leading-tight text-gray-900 mb-2">
         {post.data.title}
       </h1>
@@ -55,9 +67,15 @@ const next = sorted[i + 1] || null;
           </ul>
         )}
       </div>
+
+      <div class="mt-4">
+        <a href="/writing" class="text-sm font-medium underline underline-offset-4 hover:text-[#996633]">
+          ← Back to Writing
+        </a>
+      </div>
     </header>
 
-    <!-- Cover image (optional via frontmatter: cover, coverAlt) -->
+    <!-- Cover image (optional) -->
     {post.data.cover && (
       <figure class="mb-8">
         <img
@@ -68,25 +86,37 @@ const next = sorted[i + 1] || null;
           decoding="async"
         />
         {post.data.coverCaption && (
-          <figcaption class="mt-2 text-sm text-gray-500">{post.data.coverCaption}</figcaption>
+          <figcaption class="mt-2 text-sm text-gray-500">
+            {post.data.coverCaption}
+          </figcaption>
         )}
       </figure>
     )}
 
     <!-- Content -->
-    <article class="prose prose-lg prose-neutral dark:prose-invert max-w-none">
+    <article class="prose prose-lg prose-neutral max-w-none">
       <Content />
     </article>
 
     <!-- Prev / Next -->
     <nav class="mt-12 pt-6 border-t border-gray-200 flex justify-between text-sm">
       {prev ? (
-        <a href={`/writing/${prev.slug}/`} class="hover:underline" aria-label={`Previous: ${prev.data.title}`}>
+        <a
+          href={`/writing/${prev.slug}/`}
+          class="hover:underline"
+          aria-label={`Previous: ${prev.data.title}`}
+        >
           ← {prev.data.title}
         </a>
-      ) : <span></span>}
+      ) : (
+        <span></span>
+      )}
       {next && (
-        <a href={`/writing/${next.slug}/`} class="hover:underline" aria-label={`Next: ${next.data.title}`}>
+        <a
+          href={`/writing/${next.slug}/`}
+          class="hover:underline"
+          aria-label={`Next: ${next.data.title}`}
+        >
           {next.data.title} →
         </a>
       )}

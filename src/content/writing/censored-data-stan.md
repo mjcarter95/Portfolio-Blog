@@ -9,9 +9,9 @@ tags: ['bayesian inference', 'stan', 'survival analysis', 'censoring']
 
 In many real-world scenarios, we cannot always observe the full outcome of a random variable. Instead, we only know that the true value exceeds a certain threshold, this is known as **right-censoring**.
 
-Let’s consider the following example:
+Let's consider the following example:
 
-> Suppose we're studying the time people spend waiting in a clinic's waiting room. We collect data on how long each patient waits. However, due to resource constraints, some observations are censored:
+> Suppose we're studying the time people spend waiting in a clinic's waiting room. We collect data on how long each patient waits. However, due to resource constraints, some observations are censored.
 
 In this scenario:
 * Some patients leave early or are no longer tracked after a certain time.
