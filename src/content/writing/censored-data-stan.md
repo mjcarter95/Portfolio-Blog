@@ -9,17 +9,19 @@ tags: ['bayesian inference', 'stan', 'survival analysis', 'censoring']
 
 In many real-world scenarios, we cannot always observe the full outcome of a random variable. Instead, we only know that the true value exceeds a certain threshold, this is known as **right-censoring**.
 
-Let’s consider a concrete example:
+Let’s consider the following example:
 
-> **Scenario**: Suppose we're studying the time people spend waiting in a clinic's waiting room. We collect data on how long each patient waits. However, due to resource constraints, some observations are censored:
-> * Some patients leave early or are no longer tracked after a certain time.
-> * We might stop recording after a maximum allowed time.
+> Suppose we're studying the time people spend waiting in a clinic's waiting room. We collect data on how long each patient waits. However, due to resource constraints, some observations are censored:
+
+In this scenario:
+* Some patients leave early or are no longer tracked after a certain time.
+* We might stop recording after a maximum allowed time.
 
 This means for some individuals we observe their exact wait time, and for others, we only know they waited **at least** some threshold time.
 
 Our goal is to infer the **underlying distribution** of wait times using **both the observed and right-censored data**.
 
-![Bayesian linear regression](/static/images/blogs/censored_data_stan/censored_data.png))
+![Bayesian linear regression](/images/blogs/censored_data_stan/censored_data.png))
 
 The transparent histogram shows the full (uncensored) Gamma-distributed wait times, while the solid grey histogram shows the observed data after censoring. The two vertical lines represent the aggressive and passive censoring thresholds. Notice how much of the right tail of the true distribution is lost due to censoring. This illustrates the challenge: we must reconstruct the full distribution from partial data.
 
@@ -97,8 +99,6 @@ model {
 }
 ```
 
-Save this as `censored_gamma.stan`.
-
 ---
 
 ## Running the Model with CmdStanPy
@@ -141,7 +141,7 @@ We extract samples of `alpha` and `beta`, compute the posterior mean $\mu = \fra
 
 ### Posterior PDF Plot
 
-![Posterior plot](/static/images/blogs/censored_data_stan/inferred_posterior.png))
+![Posterior plot](/images/blogs/censored_data_stan/inferred_posterior.png))
 
 The grey histogram shows the observed (non-censored) wait times. The blue dashed line shows the posterior mean PDF, with the light blue shaded area representing the 95% credible interval over PDFs sampled from the posterior.
 The green line shows the true Gamma distribution used to simulate the data.
