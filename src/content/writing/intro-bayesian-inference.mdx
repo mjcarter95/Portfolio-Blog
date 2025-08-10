@@ -37,13 +37,13 @@ The likelihood function quantifies how plausible the observed data is under diff
 
 To build intuition, suppose we believe a dataset was generated from a Gaussian distribution with known variance but unknown mean $\mu$. Each possible $\mu$ corresponds to a different hypothesis about the true data-generating process. The likelihood tells us which values of $\mu$ make the observed data most plausible. Hypotheses that align closely with the actual data yield higher likelihood values (or lower negative log-likelihoods).
 
+In the interactive plot below, 80 samples are drawn from a Gaussian distribution with true mean μ = 10 and variance σ² = 1. The slider controls our hypothesis for the mean. As you move the slider away from the true mean, the red curve shifts, and the negative log-likelihood (NLL) value updates in real time. Notice how the NLL increases the further our hypothesis moves from μ = 10, indicating a progressively poorer fit to the observed data.
+
 <JuliaPlot
   src="/plots/intro-bayesian-inference/likelihood.html"
   title="Gaussian likelihood explorer"
   height={520}
 />
-
-In this example, 80 samples are drawn from a Gaussian distribution with true mean $\mu = 10$ and variance $\sigma^2 = 1$. Two candidate models are compared: one far from the truth ($\mu = 5$) and one matching the generative process ($\mu = 10$). The model closer to the true parameters yields a much lower negative log-likelihood (NLL), reflecting a better fit to the observed data.
 
 ---
 

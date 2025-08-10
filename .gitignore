@@ -1,29 +1,22 @@
-# Node dependencies
+# Node/JS
 node_modules/
-
-# Build output
 dist/
-.astro/
 
-# Local environment variables
-.env
-.env.*.local
+# Julia
+.julia/
+Manifest.toml
+julia/Manifest.toml
+*.jl.cov
+*.jl.mem
 
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
+# Build outputs from Julia posts
+/public/plots/
 
-# OS files
+# Optional: ignore all HTML in public except static assets you wrote
+# /public/**/*.html
+
+# OS/editor files
 .DS_Store
 Thumbs.db
 
-# Editor files
-*.swp
-*.swo
-.idea/
-.vscode/
-
-# Optional: if you use Astro image optimisations cache
-.cache/
+.astro

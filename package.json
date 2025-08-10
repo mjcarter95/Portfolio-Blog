@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "julia --project=. julia/build_blog.jl && astro build",
     "preview": "astro preview",
     "format": "prettier --write ."
   },

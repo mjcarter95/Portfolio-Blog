@@ -1,7 +1,7 @@
 [build]
   command = """
   bash scripts/setup_julia.sh
-  julia --project=. -e 'using Pkg; Pkg.instantiate(); include("julia/build_blog.jl")'
+  npm ci
   npm run build
   """
   publish = "dist"
