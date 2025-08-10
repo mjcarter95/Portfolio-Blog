@@ -3,7 +3,7 @@ type: "Conference Paper"
 title: "Extracting Self-Reported COVID-19 Symptom Tweets and Twitter Movement Mobility Origin/Destination Matrices to Inform Disease Models"
 authors: ["Conor Rosato", "Robert Moore", "Matthew Carter", "John Heap", "John Harris", "Jose Stropoli", "Simon Maskell"]
 venue: "Information MDPI"
-year: "2023-01"
+date: 2023-01-01
 doi: "10.3390/info14030170"
 url: "https://www.mdpi.com/2078-2489/14/3/170"
 pdf: ""

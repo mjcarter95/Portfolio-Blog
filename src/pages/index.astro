@@ -3,53 +3,22 @@ import Hero from "@/components/Hero.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Section from "@/components/Section.astro";
 
-// Load all publication markdown files
+// Helper: "YYYY-MM-DD" -> "Month Year"
+const formatDisplayDate = (raw) =>
+  raw ? new Date(String(raw).trim()).toLocaleString("en-US", { month: "long", year: "numeric" }) : "";
+
+// Publications (expects frontmatter.date)
 const allPublications = await Astro.glob('../content/publications/*.md');
-
-// Parse into a JS Date, handling YYYY, YYYY-MM, YYYY-MM-DD
-function parsePubDate(pub) {
-  let raw = pub.frontmatter.date ?? pub.frontmatter.year;
-  if (!raw) return new Date(0); // fallback earliest
-
-  const str = String(raw).trim();
-  if (/^\d{4}$/.test(str)) return new Date(`${str}-01-01`);
-  if (/^\d{4}-\d{2}$/.test(str)) return new Date(`${str}-01`);
-  return new Date(str);
-}
-
-// Sort newest → oldest
 const sortedPublications = allPublications
-  .sort((a, b) => parsePubDate(b) - parsePubDate(a))
+  .sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date))
   .slice(0, 3);
 
-// Writing entries (adjust the path to wherever your md files live)
+// Writing (expects frontmatter.date)
 const allWriting = await Astro.glob('../content/writing/*.md');
-
-// Reuse the same date parser used for publications
-const parseItemDate = (entry) => {
-  const raw = entry.frontmatter.date ?? entry.frontmatter.year;
-  if (!raw) return new Date(0);
-  const s = String(raw).trim();
-  if (/^\d{4}$/.test(s)) return new Date(`${s}-01-01`);
-  if (/^\d{4}-\d{2}$/.test(s)) return new Date(`${s}-01`);
-  return new Date(s);
-};
-
 const recentWriting = allWriting
-  .sort((a, b) => parseItemDate(b) - parseItemDate(a))
+  .sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date))
   .slice(0, 3);
-
-  const formatDisplayDate = (raw) => {
-  if (!raw) return "";
-  const s = String(raw).trim();
-  const d =
-    /^\d{4}$/.test(s) ? new Date(`${s}-01-01`) :
-    /^\d{4}-\d{2}$/.test(s) ? new Date(`${s}-01`) :
-    new Date(s);
-  return d.toLocaleString("en-US", { month: "long", year: "numeric" });
-};
 ---
-
 
 <BaseLayout title="Home — Matthew Carter">
   <Hero>
@@ -64,6 +33,7 @@ const recentWriting = allWriting
     </p>
   </Hero>
 
+  <!-- Specialisations -->
   <Section tone="light" id="specialisations">
     <div class="text-center max-w-2xl mx-auto">
       <h2 class="text-3xl font-semibold tracking-tight">Specialisations</h2>
@@ -80,9 +50,7 @@ const recentWriting = allWriting
           </svg>
         </div>
         <h3 class="mt-6 text-xl font-semibold">Data-Driven Decision Systems</h3>
-        <p class="mt-3 text-gray-600">
-          Build intelligent, scalable pipelines that transform raw data into actionable insights.
-        </p>
+        <p class="mt-3 text-gray-600">Build intelligent, scalable pipelines that transform raw data into actionable insights.</p>
       </div>
 
       <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition text-center">
@@ -92,9 +60,7 @@ const recentWriting = allWriting
           </svg>
         </div>
         <h3 class="mt-6 text-xl font-semibold">Capturing Uncertainty</h3>
-        <p class="mt-3 text-gray-600">
-          Quantify and communicate confidence using Bayesian models and probabilistic inference.
-        </p>
+        <p class="mt-3 text-gray-600">Quantify and communicate confidence using Bayesian models and probabilistic inference.</p>
       </div>
 
       <div class="bg-gray-50 p-8 rounded-2xl shadow-sm hover:shadow-lg transition text-center">
@@ -104,108 +70,69 @@ const recentWriting = allWriting
           </svg>
         </div>
         <h3 class="mt-6 text-xl font-semibold">Fast Decisions</h3>
-        <p class="mt-3 text-gray-600">
-          Leverage race-tuned algorithms on GPUs, TPUs, and distributed clusters for near real-time results.
-        </p>
+        <p class="mt-3 text-gray-600">Leverage race-tuned algorithms on GPUs, TPUs, and distributed clusters for near real-time results.</p>
       </div>
     </div>
   </Section>
 
+  <!-- About -->
   <Section tone="alt" id="about">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-      <!-- Text (left) -->
       <div class="md:col-span-8">
         <h2 class="text-2xl md:text-3xl font-semibold tracking-tight">About</h2>
-        <p class="mt-6 text-gray-700 leading-relaxed">
-          Matthew Carter is a researcher passionate about enabling practitioners and researchers to make 
-          fast, data-informed decisions in the face of uncertainty. 
-          His research interests span <span class="font-medium">artificial intelligence</span>, 
-          <span class="font-medium">Bayesian inference</span>, and 
-          <span class="font-medium">high-performance computing</span>, with a focus on combining these fields to create powerful, efficient decision-making systems.
-        </p>
-        <p class="mt-4 text-gray-700 leading-relaxed">
-          Matthew completed his undergraduate degree in Business Economics and Financial Management at 
-          the University of Hull in 2018. He then earned his MSc in Big Data and High-Performance Computing 
-          from the University of Liverpool in 2019. In 2025, he achieved his PhD in Electrical Engineering 
-          and Electronics at the University of Liverpool, where his thesis focused on developing advanced 
-          numerical Bayesian inference techniques that capitalised on high-performance and distributed 
-          computing environments.
-        </p>
-        <p class="mt-4 text-gray-700 leading-relaxed">
-          In his spare time, Matthew enjoys playing instruments including the clarinet and guitar, 
-          taking photographs, and writing poetry. You can see some of his creative work on 
-          <a href="https://www.instagram.com/mjc.dng/" target="_blank" rel="noopener" class="font-semibold decoration-2 hover:text-[#996633]">Instagram</a>. He is also an avid gamer, regularly playing Vermintide and Counter-Strike.
-        </p>
+          <p class="mt-6 text-gray-700 leading-relaxed">
+            I am a researcher in the 
+            <a href="https://www.liverpool.ac.uk/electrical-engineering-and-electronics/research/signal-processing/" target="_blank" rel="noopener" class="font-semibold decoration-2 hover:text-[#996633]">Signal Processing Group</a> 
+            at the 
+            <a href="https://www.liverpool.ac.uk/" target="_blank" rel="noopener" class="font-semibold decoration-2 hover:text-[#996633]">University of Liverpool</a>, 
+            passionate about enabling practitioners and researchers to make fast, data-informed decisions in the face of uncertainty.
+            My research interests span <span class="font-medium">artificial intelligence</span>, <span class="font-medium">Bayesian inference</span>, and
+            <span class="font-medium">high-performance computing and distributed</span>, with a focus on combining these fields to create powerful, efficient decision-making systems.
+          </p>
 
+          <p class="mt-4 text-gray-700 leading-relaxed">
+            I completed my undergraduate degree in Business Economics and Financial Management at the University of Hull in 2018. I then earned my MSc in Big Data and High-Performance Computing from the University of Liverpool in 2019. In 2025, I achieved my PhD in Electrical Engineering and Electronics at the University of Liverpool, where my thesis focused on developing advanced numerical Bayesian inference techniques that capitalised on high-performance and distributed computing environments.
+          </p>
+
+          <p class="mt-4 text-gray-700 leading-relaxed">
+            In my spare time, I enjoy playing instruments including the clarinet, saxophone, and guitar. 
+            One of my favourite pieces to play is <em>Si Tu Vois Ma Mère</em> by Sidney Bechet; I love it for the emotive, almost voice-like quality of the clarinet that speaks without words. 
+            When I'm not playing, I enjoy taking photographs and writing poetry. You can see some of my creative work on
+            <a href="https://www.instagram.com/mjc.dng/" target="_blank" rel="noopener" class="font-semibold decoration-2 hover:text-[#996633]">Instagram</a>. 
+            I am also an avid gamer, regularly playing Vermintide and Counter-Strike.
+          </p>
         <div class="mt-8">
-          <a href="/about" class="inline-block font-semibold decoration-2 hover:text-[#996633]">
-            Read full bio →
-          </a>
+          <a href="/about" class="inline-block font-semibold decoration-2 hover:text-[#996633]">Read full bio →</a>
         </div>
       </div>
 
-      <!-- Portrait (right) -->
       <div class="md:col-span-4">
-        <img
-          src="/images/me.jpg"
-          alt="Portrait of Matthew Carter"
-          class="w-full max-w-md h-auto md:ml-auto shadow-lg object-contain bg-gray-200"
-        />
+        <img src="/images/me.jpg" alt="Portrait of Matthew Carter" class="w-full max-w-md h-auto md:ml-auto shadow-lg object-contain bg-gray-200" />
       </div>
     </div>
   </Section>
 
+  <!-- Recent Publications -->
   <Section tone="light" id="recent-publications">
-    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-10">
-      Recent Publications
-    </h2>
+    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-10">Recent Publications</h2>
 
     <div class="space-y-10">
       {sortedPublications.map((pub) => {
-        const { title, authors = [], venue = "", type = "", url = "", pdf = "" } = pub.frontmatter;
+        const { title, authors = [], venue = "", type = "", url = "", pdf = "", date } = pub.frontmatter;
         const linkTarget = url || pdf || "#";
-
-        const raw = pub.frontmatter.date ?? pub.frontmatter.year;
-        const parseDate = (d) => {
-          if (!d) return null;
-          let s = typeof d === "number" ? String(d) : String(d).trim();
-          if (/^\d{4}$/.test(s)) return { date: new Date(`${s}-01-01`), mode: "year" };
-          if (/^\d{4}-\d{2}$/.test(s)) return { date: new Date(`${s}-01`), mode: "month-year" };
-          return { date: new Date(s), mode: "month-year" };
-        };
-
-        let displayDate = "";
-        if (raw != null) {
-          const parsed = parseDate(raw);
-          if (parsed) {
-            displayDate =
-              parsed.mode === "year"
-                ? String(raw).slice(0, 4)
-                : parsed.date.toLocaleString("en-US", { month: "long", year: "numeric" });
-          }
-        }
-
-        const formattedAuthors = authors
-          .map((a) => (a === "Matthew Carter" ? `<strong>${a}</strong>` : a))
-          .join(", ");
+        const displayDate = formatDisplayDate(date);
+        const formattedAuthors = authors.map(a => a === "Matthew Carter" ? `<strong>${a}</strong>` : a).join(", ");
 
         return (
           <div class="border-b border-gray-200 pb-6">
             <h3 class="text-lg md:text-xl font-semibold text-gray-900 leading-snug">
-              <a href={linkTarget} target="_blank" rel="noopener" class="hover:text-[#996633]">
-                {title}
-              </a>
+              <a href={linkTarget} target="_blank" rel="noopener" class="hover:text-[#996633]">{title}</a>
             </h3>
             <p class="mt-1 text-sm text-gray-600">
-              <span set:html={formattedAuthors}></span>&middot;{" "}
-              <span>{venue}</span> &middot;{" "}
-              <span>{type}</span> &middot;{" "}
-              {displayDate}
+              <span set:html={formattedAuthors}></span> &middot; <span class="italic">{venue}</span> &middot; <span>{type}</span> &middot; {displayDate}
             </p>
             {pub.frontmatter.description && (
-              <p class="mt-3 text-gray-700 text-sm leading-relaxed">
-                {pub.frontmatter.description}
-              </p>
+              <p class="mt-3 text-gray-700 text-sm leading-relaxed">{pub.frontmatter.description}</p>
             )}
           </div>
         );
@@ -213,51 +140,28 @@ const recentWriting = allWriting
     </div>
 
     <div class="mt-10">
-      <a href="/publications" class="inline-block font-semibold decoration-2 hover:text-[#996633]">
-        View all publications →
-      </a>
+      <a href="/publications" class="inline-block font-semibold decoration-2 hover:text-[#996633]">View all publications →</a>
     </div>
   </Section>
 
-  <!-- Highlighted Photos -->
+  <!-- Photography Spotlight -->
   <Section tone="alt" id="highlighted-photos">
-    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-10">
-      Photography Spotlight
-    </h2>
+    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-10">Photography Spotlight</h2>
 
     <div class="grid md:grid-cols-3 gap-8">
       <a href="https://www.instagram.com/p/C6A52dWM6Ni/?img_index=1" target="_blank" rel="noopener" class="group">
-        <img
-          src="/images/spotlight/image1.jpg"
-          alt="Photo 1"
-          class="w-full h-auto shadow-lg object-cover aspect-square transition-transform duration-300 group-hover:scale-105"
-        />
+        <img src="/images/spotlight/image1.jpg" alt="Photo 1" class="w-full h-auto shadow-lg object-cover aspect-square transition-transform duration-300 group-hover:scale-105" />
       </a>
       <a href="https://www.instagram.com/p/Cy2zpBMMK99/?img_index=2" target="_blank" rel="noopener" class="group">
-        <img
-          src="/images/spotlight/image2.jpg"
-          alt="Photo 2"
-          class="w-full h-auto shadow-lg object-cover aspect-square transition-transform duration-300 group-hover:scale-105"
-        />
+        <img src="/images/spotlight/image2.jpg" alt="Photo 2" class="w-full h-auto shadow-lg object-cover aspect-square transition-transform duration-300 group-hover:scale-105" />
       </a>
       <a href="https://www.instagram.com/p/CvRD-mIL96f/" target="_blank" rel="noopener" class="group">
-        <img
-          src="/images/spotlight/image3.jpg"
-          alt="Photo 3"
-          class="w-full h-auto shadow-lg object-cover aspect-square transition-transform duration-300 group-hover:scale-105"
-        />
+        <img src="/images/spotlight/image3.jpg" alt="Photo 3" class="w-full h-auto shadow-lg object-cover aspect-square transition-transform duration-300 group-hover:scale-105" />
       </a>
     </div>
 
     <div class="mt-8">
-      <a
-        href="https://www.instagram.com/mjc.dng/"
-        target="_blank"
-        rel="noopener"
-        class="inline-block font-semibold decoration-2 hover:text-[#996633]"
-      >
-        View more on Instagram →
-      </a>
+      <a href="https://www.instagram.com/mjc.dng/" target="_blank" rel="noopener" class="inline-block font-semibold decoration-2 hover:text-[#996633]">View more on Instagram →</a>
     </div>
   </Section>
 
@@ -276,25 +180,43 @@ const recentWriting = allWriting
             title,
             date,
             year,
-            url = post.url,              // fall back to the page URL
+            tags = [],
+            url,
             description = "",
             summary = "",
           } = post.frontmatter;
 
           const displayDate = formatDisplayDate(date ?? year);
           const excerpt = summary || description;
+          const slug = post.slug ?? post.file.split('/').pop().replace(/\.md$/, '');
+          const postLink = `/writing/${slug}/`;
 
           return (
             <div class="border-b border-gray-200 pb-6">
               <h3 class="text-lg md:text-xl font-semibold text-gray-900 leading-snug">
-                <a href={url} class="hover:text-[#996633]">
+                <a href={postLink} class="hover:text-[#996633]">
                   {title}
                 </a>
               </h3>
 
-              <p class="mt-1 text-sm text-gray-600">
-                {displayDate}
-              </p>
+              <div class="mt-1 text-sm text-gray-600 flex flex-wrap items-center gap-2">
+                <span>{displayDate}</span>
+                {tags.length > 0 && (
+                  <>
+                    <span>·</span>
+                    <div class="flex flex-wrap gap-2">
+                      {tags.map((tag) => (
+                        <a
+                          href={`/tags/${tag.toLowerCase()}`}
+                          class="text-xs bg-gray-200 hover:bg-[#996633] hover:text-white px-2 py-0.5 rounded-full transition"
+                        >
+                          {tag}
+                        </a>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
 
               {excerpt && (
                 <p class="mt-3 text-gray-700 text-sm leading-relaxed">

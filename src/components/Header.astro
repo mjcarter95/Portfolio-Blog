@@ -1,4 +1,6 @@
 ---
+const { variant = "overlay", ...rest } = Astro.props; // overlay | solid
+
 const links = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
@@ -12,18 +14,14 @@ const path = Astro.url.pathname;
 const isActive = (href) => href === '/' ? path === '/' : (path === href || path.startsWith(href + '/'));
 ---
 
-<header id="main-header" class="fixed top-0 left-0 right-0 z-[9999]">
+<header id="main-header" data-variant={variant} class="fixed top-0 left-0 right-0 z-[9999]" {...rest}>
   <a href="/" class="flex items-center gap-3">
     <img id="header-logo" src="/images/seo/logo_white.png" alt="Logo" class="h-12 w-auto" />
   </a>
 
   <nav class="hidden md:flex items-center gap-6 text-sm">
     {links.map(l => (
-      <a
-        href={l.href}
-        aria-current={isActive(l.href) ? 'page' : undefined}
-        class="nav-link font-bold relative pb-2"
-      >
+      <a href={l.href} aria-current={isActive(l.href) ? 'page' : undefined} class="nav-link font-bold relative pb-2">
         {l.label}
       </a>
     ))}
@@ -38,72 +36,54 @@ const isActive = (href) => href === '/' ? path === '/' : (path === href || path.
 </header>
 
 <style>
-  /* Default (over hero) */
-  #main-header {
+  /* Use CSS var instead of hard-coded white so we can switch themes */
+  #main-header{
+    --nav-fg: #fff;
     padding: 2rem 1.5rem;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    color: var(--nav-fg);
+    display:flex; align-items:center; justify-content:space-between;
     transition: background .25s, padding .25s, color .25s, border-color .25s;
   }
 
-/* underline base (hidden) */
-.nav-link::after {
-  content: "";
-  position: absolute;
-  left: 0; bottom: 0;
-  height: 2px; width: 100%;
-  background-color: transparent;   /* not currentColor */
-  opacity: 0;
-  transition: opacity .2s, background-color .2s;
-}
+  /* underline */
+  .nav-link::after{
+    content:""; position:absolute; left:0; bottom:0; height:2px; width:100%;
+    background-color: transparent; opacity:0; transition: opacity .2s, background-color .2s;
+  }
+  .nav-link[aria-current="page"]::after{ opacity:1; background-color:#4C9141; }
+  #main-header .nav-link:hover::after{ opacity:1; background-color:#4C9141; }
+  .nav-link[aria-current="page"]{ color:#4C9141; }
 
-/* ACTIVE page underline */
-.nav-link[aria-current="page"]::after {
-  opacity: 1;
-  background-color: #4C9141; /* May green (pick your hex) */
-}
+  /* text hover */
+  #main-header .nav-link:hover{ opacity:.8; }
 
-/* HOVER underline color */
-#main-header .nav-link:hover::after {
-  opacity: 1;
-  background-color: #4C9141;
-}
-.nav-link[aria-current="page"] { color: #4C9141; }
-
-
-  /* Hover */
-  #main-header .nav-link:hover { opacity: .8; color: #996633;}
-  #main-header[data-scrolled="true"] .nav-link:hover { color: #996633; opacity: 1; }
-
-  /* Sticky state */
-  #main-header[data-scrolled="true"] {
-    background: #fff;
-    border-bottom: 1px solid #e5e7eb;
-    color: #111827;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    
+  /* Solid (non-home) OR scrolled state => white bg, black text */
+  #main-header[data-variant="solid"],
+  #main-header[data-scrolled="true"]{
+    --nav-fg: #111827;
+    background:#fff; border-bottom:1px solid #e5e7eb;
+    padding-top:1rem; padding-bottom:1rem;
   }
 
-  /* Spacer (in BaseLayout) */
-  #header-spacer { height: 0; transition: height .25s; }
+  /* Spacer gets height via JS */
+  #header-spacer{ height:0; transition: height .25s; }
 </style>
 
 <script>
   const header = document.getElementById('main-header');
   const logo   = document.getElementById('header-logo');
   const spacer = document.getElementById('header-spacer');
+  const isSolid = header.getAttribute('data-variant') === 'solid';
 
-  function updateHeader() {
+  function updateHeader(){
     const scrolled = window.scrollY > 60;
-    header.setAttribute('data-scrolled', scrolled ? 'true' : 'false');
-    logo.src = scrolled ? '/images/seo/logo_black.png' : '/images/seo/logo_white.png';
-    if (spacer) spacer.style.height = scrolled ? `${header.getBoundingClientRect().height}px` : '0px';
+    const solidNow = isSolid || scrolled;
+    header.setAttribute('data-scrolled', solidNow ? 'true' : 'false');
+    logo.src = solidNow ? '/images/seo/logo_black.png' : '/images/seo/logo_white.png';
+    if (spacer) spacer.style.height = solidNow ? `${header.getBoundingClientRect().height}px` : '0px';
   }
 
-  document.addEventListener('scroll', updateHeader, { passive: true });
+  document.addEventListener('scroll', updateHeader, { passive:true });
   window.addEventListener('resize', updateHeader);
   updateHeader();
 </script>

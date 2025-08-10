@@ -3,7 +3,7 @@ type: "Blog Post"
 title: "Utilising novel data streams in the fight against COVID-19"
 authors: ["Matthew Carter"]
 venue: "Towards Data Science"
-year: "2020-08"
+date: 2020-08-01
 doi: ""
 url: "https://medium.com/data-science/utilising-novel-data-streams-in-the-fight-against-covid-19-89b4419dd443"
 pdf: ""

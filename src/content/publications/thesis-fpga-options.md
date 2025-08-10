@@ -3,7 +3,7 @@ type: "Master's Thesis"
 title: "Determination of the Usability of FPGA Technology to Accelerate Option Pricing Algorithms"
 authors: ["Matthew Carter"]
 venue: "University of Liverpool"
-year: "2019-09"
+date: 2019-09-01
 doi: ""
 url: ""
 pdf: "/publications/masters_thesis.pdf"
