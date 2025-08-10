@@ -1,9 +1,227 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const skills = [
+  "Artificial Intelligence",
+  "Bayesian Inference",
+  "High-Performance Computing",
+  "Data Science",
+  "Machine Learning",
+  "Probabilistic Programming",
+  "Distributed Systems",
+  "Python",
+  "JAX",
+  "Stan",
+];
+
+const education = [
+  {
+    year: "2025",
+    title: "PhD in Electrical Engineering & Electronics",
+    institution: "University of Liverpool",
+    details:
+      "Thesis on advanced numerical Bayesian inference techniques that rival MCMC. Methods deployed in high-performance and opportunistic compute environments. Funded by the CDT in Distributed Algorithms and IBM Research UK.",
+  },
+  {
+    year: "2019",
+    title: "MSc in Big Data & High-Performance Computing",
+    institution: "University of Liverpool",
+    details:
+      "Thesis investigated using FPGAs to accelerate financial options pricing algorithms, completed with Xilinx as the industrial sponsor. Received a studentship from the STFC Hartree Centre and was awarded the Ann Maybrey Prize in recognition of academic performance.",
+  },
+  {
+    year: "2018",
+    title: "BA in Business Economics & Financial Management",
+    institution: "University of Hull",
+    details:
+      "Thesis investigated the application of the Taylor Rule to current economic policy. Awarded the Avenues Prize in recognition of academic performance.",
+  },
+];
+
+const experience = [
+  {
+    year: "Sep 2023 to Present",
+    role: "Research Associate",
+    institution: "University of Liverpool",
+    details:
+      "Lead and contributed to projects with academic, industrial, and governmental partners, including logistics modelling, automated analysis of large volumes of academic literature, Bayesian modelling, and uncertainty quantification with neural networks.",
+  },
+  {
+    year: "Feb 2022 to Aug 2022",
+    role: "Research Intern in Machine Learning and Artificial Intelligence",
+    institution: "IBM Research UK (hosted at University of Liverpool)",
+    details:
+      "Implemented numerical Bayesian inference techniques in PyTorch, optimised to capitalise on GPU architectures.",
+  },
+  {
+    year: "Oct 2019 to Aug 2023",
+    role: "Postgraduate Researcher",
+    institution: "University of Liverpool",
+    details:
+      "Undertook PhD research in advanced Bayesian inference methods. Collaborated with industrial partners, delivered lectures, and served as a demonstrator for several taught modules.",
+  },
+];
+
+const projects = [
+  {
+    title: "Opportunistic Sequential Monte Carlo",
+    year: "2024–2025",
+    type: "Lead",
+    details:
+      "Designed a novel SMC variant for opportunistic computing environments; integrated into open-source PySMC library.",
+  },
+  {
+    title: "Bayesian Modelling in Structural Health Monitoring",
+    year: "2023",
+    type: "Supervised",
+    details:
+      "Supervised MSc project on probabilistic damage detection in civil structures.",
+  },
+];
+
+const funding = [
+  {
+    funder: "EPSRC",
+    title: "Bayesian Inference for Opportunistic Compute",
+    value: "£150,000",
+    year: "2024–2025",
+  },
+  {
+    funder: "UKRI",
+    title: "High-Performance Monte Carlo Methods",
+    value: "£100,000",
+    year: "2022–2023",
+  },
+];
+
+const hobbies = [
+  {
+    icon: "🎼",
+    name: "Music — clarinet, saxophone, guitar",
+    note: "Favourite piece: Si Tu Vois Ma Mère",
+  },
+  { icon: "📸", name: "Photography" },
+  { icon: "✍", name: "Writing" },
+  { icon: "🌍", name: "Learning languages" },
+  { icon: "🎮", name: "Gaming (Vermintide, Counter-Strike)" },
+  { icon: "🎾", name: "Tennis" },
+];
 ---
-<BaseLayout title="About — Your Name">
-  <section class="max-w-3xl mx-auto px-6 py-12 prose">
-    <h1>About</h1>
-    <p>Write your academic bio here. Include affiliations, research interests, and a short narrative.</p>
+
+<BaseLayout title="About Me — Matthew Carter">
+  <section class="max-w-4xl mx-auto px-6 py-12">
+    <h1 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+      About Me
+    </h1>
+    <p class="text-lg text-gray-700 leading-relaxed mb-8">
+      I’m a researcher in the <span class="font-medium">Signal Processing Group</span> at the <span class="font-medium">University of Liverpool</span>, passionate about enabling practitioners and researchers to make fast, data-informed decisions in the face of uncertainty.
+    </p>
+  </section>
+
+  <!-- Skills -->
+  <section class="bg-gray-50 py-12">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-2xl font-semibold mb-4">🛠 Skills & Expertise</h2>
+      <div class="flex flex-wrap gap-2">
+        {skills.map((skill) => (
+          <span class="bg-white px-3 py-1 rounded-full text-sm shadow hover:bg-[#996633] hover:text-white transition">
+            {skill}
+          </span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section class="py-12">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-2xl font-semibold mb-8">🎓 Education</h2>
+      <ol class="relative border-l border-gray-200">
+        {education.map((item) => (
+          <li class="mb-10 ml-6">
+            <span class="absolute flex items-center justify-center w-6 h-6 bg-[#996633] rounded-full -left-3 ring-8 ring-white"></span>
+            <h3 class="text-lg font-semibold text-gray-900">{item.title}</h3>
+            <span class="block mb-1 text-sm font-normal text-gray-500">{item.institution} · {item.year}</span>
+            <p class="text-base text-gray-600">{item.details}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section class="bg-gray-50 py-12">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-2xl font-semibold mb-8">💼 Experience</h2>
+      <ol class="relative border-l border-gray-200">
+        {experience.map((job) => (
+          <li class="mb-10 ml-6">
+            <span class="absolute flex items-center justify-center w-6 h-6 bg-[#996633] rounded-full -left-3 ring-8 ring-white"></span>
+            <h3 class="text-lg font-semibold text-gray-900">{job.role}</h3>
+            <span class="block mb-1 text-sm font-normal text-gray-500">{job.institution} · {job.year}</span>
+            <p class="text-base text-gray-600">{job.details}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="py-12">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-2xl font-semibold mb-8">📂 Selected Projects</h2>
+      <ol class="relative border-l border-gray-200">
+        {projects.map((proj) => (
+          <li class="mb-10 ml-6">
+            <span class="absolute flex items-center justify-center w-6 h-6 bg-[#996633] rounded-full -left-3 ring-8 ring-white"></span>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h3 class="text-lg font-semibold text-gray-900">{proj.title}</h3>
+            </div>
+            <span class="block mb-1 text-sm font-normal text-gray-500">
+              {proj.year} &middot;
+              <span class={`text-xs px-2 py-1 rounded-full ${
+                proj.type === "Lead"
+                  ? "bg-blue-100 text-blue-800"
+                  : "bg-yellow-100 text-yellow-800"
+              }`}>{proj.type}</span>
+            </span>
+            <p class="text-base text-gray-600">{proj.details}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Funding -->
+  <section class="bg-gray-50 py-12">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-2xl font-semibold mb-8">💰 Funding</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        {funding.map((fund) => (
+          <div class="border rounded-lg p-6 bg-white shadow-sm hover:shadow-md transition">
+            <h3 class="font-semibold text-gray-900">{fund.funder}</h3>
+            <p class="text-sm text-gray-600">{fund.title}</p>
+            <p class="text-sm text-gray-500">{fund.value} · {fund.year}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Hobbies -->
+  <section class="py-12">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-2xl font-semibold mb-8">🎯 Hobbies</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-8 text-center">
+        {hobbies.map((hobby) => (
+          <div>
+            <div class="text-4xl mb-2">{hobby.icon}</div>
+            <p class="text-gray-700 text-sm">
+              {hobby.name}{hobby.note && <> <em>{hobby.note}</em></>}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
   </section>
 </BaseLayout>
