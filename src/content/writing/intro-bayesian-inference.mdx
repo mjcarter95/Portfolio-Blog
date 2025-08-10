@@ -118,12 +118,13 @@ These samples can be used to:
 In the Bayesian framework, inference is therefore about learning a distribution over parameters, not just finding a single optimal set of values. This mindset shift is powerful because it explicitly acknowledges and quantifies uncertainty. Instead of producing a single forecast, we produce a range of possible futures, weighted by their plausibility given the evidence. This richer picture allows decision-makers, whether public health officials or engineers, to balance risks, plan contingencies, and update strategies as new data arrives.
 
 ### Example: Inferring the Distribution of Wait Times at a Clinic
-Below we draw synthetic wait times from a known Gamma distribution and fit the parameters $k$ and $\theta$ using Bayesian inference implemented in the probabilistic programming language Stan. Stan allows us to specify the model in a concise mathematical form and then automatically perform posterior sampling using state-of-the-art Markov Chain Monte Carlo (MCMC) algorithms.
+Below we draw synthetic wait times from a known Gamma distribution and fit the parameters $k$ and $\theta$ using Bayesian inference in the probabilistic programming language **Stan**. Stan lets us write the model succinctly and then sample from the posterior with state-of-the-art MCMC.
 
 We visualise:
-- a **histogram** of the data (as a density),
-- the **fitted Gamma pdf** overlay,
-- a vertical line at the **fitted mean** $\hat{\mu} = \hat{k} \hat{\theta}$.
+- an **opaque histogram** of the observed data (as a density),
+- many **faint grey curves**: Gamma PDFs computed from posterior draws $(k^{(s)}, \theta^{(s)})$, each curve is a **plausible hypothesis** consistent with the data and the prior,
+- a **blue curve**: the **posterior mean PDF**, obtained by averaging across samples (i.e., using $\bar{k}, \bar{\theta}$); it is **not the truth**, just a summary,
+- a vertical dashed line at the **posterior mean wait time** $\hat{\mu}=\bar{k}\,\bar{\theta}$.
 
 {/*
 <JuliaPlot
@@ -132,6 +133,7 @@ We visualise:
 /> 
 */} 
 
+> The spread of the grey curves shows **uncertainty**: when data are scarce or noisy, the curves fan out; with more data, they concentrate around the blue summary curve.
 ---
 
 ## Conclusion
