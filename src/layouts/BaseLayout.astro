@@ -1,37 +1,35 @@
 ---
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
+import "../styles/tailwind.css";
 
-const path = Astro.url.pathname;
 const {
   title = "Site Title",
   description = "Academic portfolio",
   hideHeader = false,
+  navColor = "text-white"
 } = Astro.props;
-
-// overlay on home, solid elsewhere
-const headerVariant = path === "/" ? "overlay" : "solid";
 ---
+
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <title>{title}</title>
-    <link rel="stylesheet" href="/src/styles/tailwind.css" />
   </head>
+
   <body class="font-sans antialiased text-gray-900">
     {!hideHeader && (
-      <>
-        <Header variant={headerVariant} />
-        <div id="header-spacer" aria-hidden="true"></div>
-      </>
+      <header class={`fixed top-0 left-0 w-full z-50 ${navColor}`}>
+        <!-- Your site header/nav -->
+      </header>
     )}
 
-    <main class="min-h-[60vh]">
+    <main>
       <slot />
     </main>
 
-    <Footer />
+    <footer class="mt-12">
+      <!-- Your footer content -->
+    </footer>
   </body>
 </html>
