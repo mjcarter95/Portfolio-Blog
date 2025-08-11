@@ -1,17 +1,172 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const IMAGES_JSON = `[
+  {"src":"/images/spotlight/image1.jpg","title":"Evening light over the Mersey","instagram":"https://www.instagram.com/p/C6A52dWM6Ni/?img_index=1","description":"Soft golden haze captured from the waterfront."},
+  {"src":"/images/spotlight/image2.jpg","title":"City geometry","instagram":"https://www.instagram.com/p/Cy2zpBMMK99/?img_index=2","description":"Lines, reflections, and a passing cloud."},
+  {"src":"/images/spotlight/image3.jpg","title":"Dawn at the docks","instagram":"https://www.instagram.com/p/CvRD-mIL96f/","description":"First light rolling in across quiet water."}
+]`;
+let images = [];
+try { images = JSON.parse(IMAGES_JSON); } catch { images = []; }
 ---
+
 <BaseLayout title="Photography - Matthew Carter">
   <section class="max-w-6xl mx-auto px-6 py-12">
-    <h1 class="text-3xl font-bold border-b-4 border-black pb-4 mb-6 inline-block">
-      Photography
-    </h1>
-    <p class="opacity-80 mb-6">A simple grid; replace with your own images.</p>
+    <h1 class="text-3xl font-bold border-b-4 border-black pb-4 mb-2 inline-block">Photography</h1>
+    <div class="mb-8">
+      <a href="https://www.instagram.com/mjc.dng/" target="_blank" rel="noopener" class="font-semibold decoration-2 hover:text-[#996633]">
+        View on Instagram →
+      </a>
+    </div>
+
+    <!-- Grid (4 x 3 on large) -->
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-      <img src="/images/hero.jpg" alt="Sample" class="aspect-[4/3] object-cover rounded-lg" />
-      <div class="aspect-[4/3] bg-gray-200 rounded-lg"></div>
-      <div class="aspect-[4/3] bg-gray-200 rounded-lg"></div>
-      <div class="aspect-[4/3] bg-gray-200 rounded-lg"></div>
+      {images.slice(0, 12).map((img, idx) => (
+        <button
+          type="button"
+          class="photo-item group relative aspect-[4/3] rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-black"
+          data-index={idx}
+          data-src={img.src}
+          data-title={img.title}
+          data-instagram={img.instagram}
+          data-description={img.description}
+        >
+          <img
+            src={img.src}
+            alt={img.title}
+            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            loading="lazy"
+          />
+        </button>
+      ))}
     </div>
   </section>
+
+<!-- Lightbox Modal -->
+<!-- Lightbox Modal -->
+<div
+  id="photo-modal"
+  class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm items-start justify-center"
+  aria-hidden="true"
+  style="--header-offset: 0px;"
+>
+  <!-- White card -->
+  <div
+    id="photo-card"
+    class="relative bg-white rounded-lg shadow-2xl w-fit mx-4 mt-[calc(var(--header-offset)+16px)] overflow-hidden"
+  >
+    <div class="relative p-[4px]">
+      <img
+        id="modal-image"
+        src=""
+        alt=""
+        class="w-auto h-auto max-w-[92vw] max-h-[70vh] object-contain"
+      />
+
+      <!-- Prev -->
+      <button id="modal-prev"
+        class="absolute left-2 top-1/2 -translate-y-1/2 px-2 py-2 bg-black/55 text-white rounded hover:bg-black/75 focus:outline-none"
+        aria-label="Previous">‹</button>
+
+      <!-- Next -->
+      <button id="modal-next"
+        class="absolute right-2 top-1/2 -translate-y-1/2 px-2 py-2 bg-black/55 text-white rounded hover:bg-black/75 focus:outline-none"
+        aria-label="Next">›</button>
+
+      <!-- Close -->
+      <button id="modal-close"
+        class="absolute top-2 right-2 p-2  text-white"
+        aria-label="Close">✕</button>
+    </div>
+
+    <div class="px-[4px] py-4">
+      <!-- Inner padding for nice text spacing without changing card width -->
+      <div class="px-4">
+        <h3 id="modal-title" class="text-base font-semibold text-gray-900"></h3>
+        <p id="modal-desc" class="mt-1 text-sm text-gray-700 leading-relaxed"></p>
+        <div class="mt-2">
+          <a id="modal-link" href="#" target="_blank" rel="noopener"
+             class="inline-block text-sm font-semibold decoration-2 hover:text-[#996633]">
+            View on Instagram →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  <!-- Client JS -->
+  <script client:load>
+const modal = document.getElementById('photo-modal');
+const modalImg = document.getElementById('modal-image');
+const modalTitle = document.getElementById('modal-title');
+const modalDesc = document.getElementById('modal-desc');
+const modalLink = document.getElementById('modal-link');
+const btnPrev = document.getElementById('modal-prev');
+const btnNext = document.getElementById('modal-next');
+const btnClose = document.getElementById('modal-close');
+const items = Array.from(document.querySelectorAll('button.photo-item'));
+let currentIndex = 0;
+
+function setHeaderOffset() {
+  const header = document.querySelector('header');
+  const h = header ? header.offsetHeight : 0;
+  // 16px extra breathing room
+  modal.style.setProperty('--header-offset', `${h}px`);
+}
+
+function renderFrom(el) {
+  modalImg.src = el.dataset.src || '';
+  modalImg.alt = el.dataset.title || '';
+  modalTitle.textContent = el.dataset.title || '';
+  modalDesc.textContent = el.dataset.description || '';
+  modalLink.href = el.dataset.instagram || '#';
+}
+
+function openModalFrom(el) {
+  setHeaderOffset();                 // <-- ensures gap below header
+  currentIndex = Number(el.dataset.index) || 0;
+  renderFrom(el);
+  modal.classList.remove('hidden');
+  modal.classList.add('flex', 'items-start', 'justify-center');
+  btnClose.focus();
+}
+
+function closeModal() {
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+  modalImg.src = '';
+}
+
+function showAt(i) {
+  currentIndex = (i + items.length) % items.length;
+  renderFrom(items[currentIndex]);
+}
+
+// Grid click
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('button.photo-item');
+  if (el) openModalFrom(el);
+});
+
+// Nav + close + keyboard
+btnPrev.addEventListener('click', () => showAt(currentIndex - 1));
+btnNext.addEventListener('click', () => showAt(currentIndex + 1));
+btnClose.addEventListener('click', closeModal);
+modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+window.addEventListener('keydown', (e) => {
+  if (modal.classList.contains('hidden')) return;
+  if (e.key === 'Escape') return closeModal();
+  if (e.key === 'ArrowLeft') return showAt(currentIndex - 1);
+  if (e.key === 'ArrowRight') return showAt(currentIndex + 1);
+});
+
+// Recompute offset on resize (in case header height changes)
+window.addEventListener('resize', () => {
+  if (!modal.classList.contains('hidden')) setHeaderOffset();
+});
+
+  </script>
 </BaseLayout>
