@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import { slugifyTag } from "@/utils/tags";
+import readingTime from "reading-time";
 
 export async function getStaticPaths() {
   const posts = await getCollection("writing");
@@ -13,6 +14,10 @@ export async function getStaticPaths() {
 
 const { post, allPosts } = Astro.props;
 const { Content } = await post.render();
+
+// Read time (round, min 1)
+const rt = readingTime(post.body ?? "");
+const readMinutes = Math.max(1, Math.round(rt.minutes));
 
 // Prev/next
 const sorted = allPosts
@@ -34,6 +39,7 @@ const canonical =
     ? new URL(`/writing/${post.slug}/`, Astro.site).toString()
     : undefined;
 ---
+
 
 <BaseLayout title={seoTitle} description={seoDescription} image={seoImage} canonical={canonical}>
   <section class="max-w-3xl mx-auto px-6 py-12">
@@ -58,19 +64,28 @@ const canonical =
           })}
         </time>
 
+        <span aria-hidden="true">·</span>
+
+        <span class="inline-flex items-center gap-1 rounded bg-gray-100 px-2 py-0.5 text-gray-700">
+          {readMinutes} min read
+        </span>
+
         {post.data.tags?.length > 0 && (
-          <ul class="flex gap-2 flex-wrap">
-            {post.data.tags.map((tag) => (
-              <li>
-                <a
-                  href={`/tags/${slugifyTag(tag)}/`}
-                  class="px-2 py-0.5 rounded bg-gray-100 text-gray-700 hover:bg-[#996633] hover:text-white transition"
-                >
-                  {tag}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <>
+            <span aria-hidden="true">·</span>
+            <ul class="flex gap-2 flex-wrap">
+              {post.data.tags.slice(0, 3).map((tag) => (
+                <li>
+                  <a
+                    href={`/tags/${slugifyTag(tag)}/`}
+                    class="px-2 py-0.5 rounded bg-gray-100 text-gray-700 hover:bg-[#996633] hover:text-white transition"
+                  >
+                    {tag}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </>
         )}
       </div>
     </header>
