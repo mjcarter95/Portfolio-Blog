@@ -1,14 +1,11 @@
-# scripts/run_stan_wait_times.py
 import os
 from pathlib import Path
 import numpy as np
 import pandas as pd
 
-# If cmdstanpy isn't installed yet:
-#   pip install -U cmdstanpy
-# To install CmdStan binaries (first time only):
-#   python -m cmdstanpy.install_cmdstan --compiler
-from cmdstanpy import CmdStanModel
+
+import cmdstanpy
+cmdstanpy.install_cmdstan()
 
 ROOT = Path(__file__).resolve().parents[1]  # repo root
 DATA_DIR = ROOT / "data"
