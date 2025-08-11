@@ -1,0 +1,35 @@
+---
+const { entry } = Astro.props;
+const { slug, data } = entry;
+---
+<article class="group rounded-xl overflow-hidden border bg-white shadow-sm hover:shadow-md transition">
+  {data.heroImage && (
+    <a href={`/case-studies/${slug}/`} class="block aspect-[16/9] overflow-hidden">
+      <img 
+        src={data.heroImage} 
+        alt={data.title} 
+        class="h-full w-full object-cover group-hover:scale-105 transition" 
+        loading="lazy" 
+      />
+    </a>
+  )}
+  <div class="p-4">
+    <h3 class="text-lg font-semibold">
+      <a href={`/case-studies/${slug}/`} class="hover:text-[#996633]">{data.title}</a>
+    </h3>
+    <p class="mt-1 text-sm text-gray-600">{data.summary}</p>
+    {data.tags?.length > 0 && (
+      <div class="mt-3 flex flex-wrap gap-2">
+        {data.tags.slice(0,4).map(t => (
+          <span class="text-xs bg-gray-100 rounded px-2 py-0.5">{t}</span>
+        ))}
+      </div>
+    )}
+    <div class="mt-3 text-xs text-gray-500 flex gap-3">
+      <time datetime={data.date.toISOString()}>
+        {data.date.toLocaleDateString()}
+      </time>
+      {data.readingTime && <span>• {data.readingTime}</span>}
+    </div>
+  </div>
+</article>

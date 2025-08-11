@@ -1,0 +1,98 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import readingTime from "reading-time";
+import { slugifyTag } from "@/utils/tags";
+
+export async function getStaticPaths() {
+  const studies = await getCollection("case-studies", ({ data }) => !data.draft);
+  return studies.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const rt = readingTime(entry.body ?? "");
+const readMinutes = Math.max(1, Math.round(rt.minutes));
+const { Content } = await entry.render();
+const hero = entry.data.heroImage;
+---
+
+<BaseLayout title={`${entry.data.title} — Case Study`}>
+  <!-- HERO -->
+  <header class="relative w-full">
+    <div class="relative h-[38vh] min-h-[260px] max-h-[460px] bg-gray-200 overflow-hidden">
+<header class="relative w-full">
+  <div class="relative h-[38vh] min-h-[260px] max-h-[460px] overflow-hidden">
+    <!-- image -->
+    {hero && (
+      <img
+        src={hero}
+        alt={entry.data.title}
+        class="absolute inset-0 w-full h-full object-cover"
+      />
+    )}
+
+    <!-- overlay (two ways: gradient + solid fallback) -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+    <div class="absolute inset-0" style="background: rgba(0,0,0,0.25)"></div>
+
+    <!-- text -->
+    <div class="relative z-10 max-w-4xl mx-auto px-6 h-full flex items-end pb-8 text-white">
+      <div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold drop-shadow">{entry.data.title}</h1>
+        {entry.data.summary && <p class="mt-2 text-white/90">{entry.data.summary}</p>}
+        <!-- rest of your meta/buttons -->
+      </div>
+    </div>
+  </div>
+</header>
+
+
+
+      <div class="absolute inset-0 bg-black/50"></div>
+      <div class="relative max-w-4xl mx-auto px-6 h-full flex items-end pb-8">
+        <div class="text-white">
+          <h1 class="text-3xl sm:text-4xl font-extrabold drop-shadow">{entry.data.title}</h1>
+          {entry.data.summary && <p class="mt-2 text-white/90">{entry.data.summary}</p>}
+          <div class="mt-3 flex flex-wrap items-center gap-3 text-sm text-white/80">
+            <time datetime={entry.data.date.toISOString()}>
+              {entry.data.date.toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "2-digit" })}
+            </time>
+            <span> &middot; {readMinutes} min read</span> &middot; 
+            {entry.data.tags?.length ? (
+              <div class="flex gap-2 flex-wrap">
+                {entry.data.tags.map((t) => (
+                  <a href={`/case-studies/tags/${slugifyTag(t)}/`} class="px-2 py-0.5 rounded bg-white/20 hover:bg-white/30 transition">
+                    {t}
+                  </a>
+                ))}
+              </div>
+            ) : null}
+          </div>
+
+          <div class="mt-4 flex gap-3 flex-wrap">
+            {entry.data.projectUrl && (
+              <a href={entry.data.projectUrl} class="px-3 py-1 rounded bg-white text-black hover:bg-gray-100 transition text-sm" rel="noopener">
+                View Project
+              </a>
+            )}
+            {entry.data.repoUrl && (
+              <a href={entry.data.repoUrl} class="px-3 py-1 rounded border border-white/70 text-white hover:bg-white hover:text-black transition text-sm" rel="noopener">
+                View Repo
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- BODY -->
+  <article class="max-w-3xl mx-auto px-6 py-10">
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

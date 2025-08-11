@@ -1,10 +1,9 @@
-import { z, defineCollection } from 'astro:content';
+import { defineCollection, z } from "astro:content";
 
 const writing = defineCollection({
-  type: 'content',
+  type: "content",
   schema: z.object({
     title: z.string(),
-    // Accept "2024-04-08" (string) and turn it into a Date
     date: z.coerce.date(),
     summary: z.string().optional(),
     tags: z.array(z.string()).default([]),
@@ -13,13 +12,12 @@ const writing = defineCollection({
 });
 
 const publications = defineCollection({
-  type: 'content',
+  type: "content",
   schema: z.object({
-    type: z.string(),                    // e.g. "Journal Paper"
+    type: z.string(),
     title: z.string(),
     authors: z.array(z.string()).default([]),
     venue: z.string().optional(),
-    // Same rule: always one `date`, parsed from "YYYY-MM-DD"
     date: z.coerce.date(),
     doi: z.string().optional(),
     url: z.string().optional(),
@@ -28,4 +26,23 @@ const publications = defineCollection({
   }),
 });
 
-export const collections = { writing, publications };
+const caseStudies = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    summary: z.string(),
+    heroImage: z.string().optional(),
+    tags: z.array(z.string()).default([]),
+    repoUrl: z.string().url().optional(),
+    projectUrl: z.string().url().optional(),
+    readingTime: z.string().optional(), // e.g., "6 min"
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = {
+  writing,
+  publications,
+  "case-studies": caseStudies, // <-- folder must be src/content/case-studies/
+};
