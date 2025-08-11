@@ -1,127 +1,179 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import JourneyMap from "@/components/JourneyMap.astro";
 
 const skills = [
-  "Artificial Intelligence",
-  "Bayesian Inference",
-  "High-Performance Computing",
-  "Data Science",
-  "Machine Learning",
-  "Probabilistic Programming",
-  "Distributed Systems",
-  "Python",
-  "JAX",
-  "Stan",
+  "Artificial Intelligence", "Bayesian Inference", "High-Performance Computing",
+  "Data Science", "Machine Learning", "Probabilistic Programming",
+  "Distributed Systems", "Python", "JAX", "Stan"
 ];
 
 const education = [
-  {
-    year: "2025",
-    title: "PhD in Electrical Engineering & Electronics",
-    institution: "University of Liverpool",
-    details:
-      "Thesis on advanced numerical Bayesian inference techniques that rival MCMC. Methods deployed in high-performance and opportunistic compute environments. Funded by the CDT in Distributed Algorithms and IBM Research UK.",
-  },
-  {
-    year: "2019",
-    title: "MSc in Big Data & High-Performance Computing",
-    institution: "University of Liverpool",
-    details:
-      "Thesis investigated using FPGAs to accelerate financial options pricing algorithms, completed with Xilinx as the industrial sponsor. Received a studentship from the STFC Hartree Centre and was awarded the Ann Maybrey Prize in recognition of academic performance.",
-  },
-  {
-    year: "2018",
-    title: "BA in Business Economics & Financial Management",
-    institution: "University of Hull",
-    details:
-      "Thesis investigated the application of the Taylor Rule to current economic policy. Awarded the Avenues Prize in recognition of academic performance.",
-  },
+  { year: "Oct 2019 - May 2025", icon: "🎓", title: "PhD in Electrical Engineering & Electronics", institution: "University of Liverpool", details: "Thesis on advanced numerical Bayesian inference techniques that rival MCMC. Methods deployed in high-performance and opportunistic compute environments. Funded by the CDT in Distributed Algorithms and IBM Research UK." },
+  { year: "Oct 2018 - Dec 2019", icon: "🎓", title: "MSc in Big Data & High-Performance Computing", institution: "University of Liverpool", details: "Thesis investigated using FPGAs to accelerate financial options pricing algorithms, completed with Xilinx as the industrial sponsor. Received a studentship from the STFC Hartree Centre and was awarded the Ann Maybrey Prize." },
+  { year: "Oct 2015 - Dec 2018", icon: "🎓", title: "BA in Business Economics & Financial Management", institution: "University of Hull", details: "Thesis investigated the application of the Taylor Rule to current economic policy. Awarded the Avenues Prize." }
 ];
 
 const experience = [
-  {
-    year: "Sep 2023 to Present",
-    role: "Research Associate",
-    institution: "University of Liverpool",
-    details:
-      "Lead and contributed to projects with academic, industrial, and governmental partners, including logistics modelling, automated analysis of large volumes of academic literature, Bayesian modelling, and uncertainty quantification with neural networks.",
-  },
-  {
-    year: "Feb 2022 to Aug 2022",
-    role: "Research Intern in Machine Learning and Artificial Intelligence",
-    institution: "IBM Research UK (hosted at University of Liverpool)",
-    details:
-      "Implemented numerical Bayesian inference techniques in PyTorch, optimised to capitalise on GPU architectures.",
-  },
-  {
-    year: "Oct 2019 to Aug 2023",
-    role: "Postgraduate Researcher",
-    institution: "University of Liverpool",
-    details:
-      "Undertook PhD research in advanced Bayesian inference methods. Collaborated with industrial partners, delivered lectures, and served as a demonstrator for several taught modules.",
-  },
+  { year: "Sep 2023 - Present", icon: "💼", role: "Research Associate", institution: "University of Liverpool", details: "Lead and contributed to projects with academic, industrial, and governmental partners, including logistics modelling, automated literature analysis, Bayesian modelling, and uncertainty quantification." },
+  { year: "Feb 2022 - Aug 2022", icon: "💼", role: "Research Intern in Machine Learning and AI", institution: "IBM Research UK", details: "Implemented numerical Bayesian inference techniques in PyTorch, optimised for GPU architectures." },
+  { year: "Oct 2019 - Aug 2023", icon: "💼", role: "Postgraduate Researcher", institution: "University of Liverpool", details: "PhD research in advanced Bayesian inference methods. Collaborated with industrial partners, delivered lectures, and served as a demonstrator." }
 ];
 
+const journeyItems = [...education.map(e => ({...e, kind: "Education"})),
+                      ...experience.map(e => ({...e, kind: "Experience"}))];
+
+// Parse month names and flexible ranges like "Sep 2023 – Present"
+const MONTHS = {
+  jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,sept:8,oct:9,nov:10,dec:11
+};
+
+function parseOneDate(str) {
+  if (!str) return null;
+  const s = String(str).trim().toLowerCase();
+  if (s === "present" || s === "current" || s === "now") return new Date(9999, 0, 1);
+
+  // "Sep 2023" or "September 2023"
+  let m = s.match(/([a-z]+)\s+(\d{4})/i);
+  if (m && MONTHS[m[1].slice(0,3)]) {
+    return new Date(Number(m[2]), MONTHS[m[1].slice(0,3)], 1);
+  }
+  // "2023"
+  m = s.match(/(\d{4})/);
+  if (m) return new Date(Number(m[1]), 0, 1);
+
+  return null;
+}
+
+function parseRange(rangeStr) {
+  // split on hyphen/en dash/em dash
+  const parts = String(rangeStr).split(/[-–—]/).map(s => s.trim()).filter(Boolean);
+  if (parts.length === 0) return { start: null, end: null };
+  if (parts.length === 1) {
+    const d = parseOneDate(parts[0]);
+    return { start: d, end: d };
+  }
+  const start = parseOneDate(parts[0]);
+  const end   = parseOneDate(parts[1]);
+  return { start, end: end ?? start };
+}
+
+const journey = journeyItems
+  .map(it => {
+    const { start, end } = parseRange(it.year);
+    return { ...it, _start: start, _end: end };
+  })
+  // Sort by end date desc, then start date desc, then kind (stable)
+.sort((a, b) => {
+  const as = a._start?.getTime() ?? 0;
+  const bs = b._start?.getTime() ?? 0;
+  return bs - as; // descending start date
+});
+
+
 const projects = [
-  {
-    title: "Opportunistic Sequential Monte Carlo",
-    year: "2024-2025",
-    type: "Lead",
-    details:
-      "Designed a novel SMC variant for opportunistic computing environments; integrated into open-source PySMC library.",
-  },
-  {
-    title: "Bayesian Modelling in Structural Health Monitoring",
-    year: "2023",
-    type: "Supervised",
-    details:
-      "Supervised MSc project on probabilistic damage detection in civil structures.",
-  },
+  { title: "Opportunistic Sequential Monte Carlo", year: "2024-2025", type: "Lead", details: "Designed a novel SMC variant for opportunistic computing environments; integrated into open-source PySMC library." },
+  { title: "Bayesian Modelling in Structural Health Monitoring", year: "2023", type: "Supervised", details: "Supervised MSc project on probabilistic damage detection in civil structures." }
 ];
 
 const funding = [
+  { funder: "EPSRC Summer Vacation Internship", title: "Bayesian Inference for Opportunistic Compute", value: "£1,000", year: "2024-2025" },
+];
+
+const teaching = [
   {
-    funder: "EPSRC",
-    title: "Bayesian Inference for Opportunistic Compute",
-    value: "£150,000",
-    year: "2024-2025",
+    course: "Module Leader",
+    institution: "University of Liverpool",
+    years: "May 2023 - May 2024",
+    bullets: [
+      "Designed a 2-hour training session on distributed computing with HTCondor for first-year PhD students in the CDT.",
+      "Delivered in 2023 and 2024."
+    ]
   },
   {
-    funder: "UKRI",
-    title: "High-Performance Monte Carlo Methods",
-    value: "£100,000",
-    year: "2022-2023",
+    course: "Supervisor and Mentor",
+    institution: "University of Liverpool",
+    years: "Oct 2022 - May 2024",
+    bullets:[
+      "Supervised a team of five students (mix of UG and PG) during summer internship program.",
+      "Mentored students in the Distributed Algorithms CDT, providing technical, career, and personal advice."
+    ]
+  },
+
+  // Split the demonstrator role into two focused entries:
+  {
+    course: "Laboratory Demonstrator - High-Performance Computing Lab",
+    institution: "University of Liverpool",
+    years: "Oct 2019 - May 2024",
+    bullets: [
+      "Delivered lab sessions and marked coursework for the BSc module High-Performance Computing.",
+      "Delivered lab sessions and marked coursework for the MSc module Multi-core and Multi-processor Programming.",
+      "Delivered three lectures to 60 MSc students on multi-core and multi-processor programming.",
+    ],
+  },
+  {
+    course: "Laboratory Demonstrator - Machine Learning & Optimisation Lab",
+    institution: "University of Liverpool",
+    years: "Oct 2019 - May 2024",
+    bullets: [
+      "Delivered lab sessions and marked coursework for the MSc module Machine Learning and Bioinspired Optimisation.",
+    ],
   },
 ];
 
 const hobbies = [
-  {
-    icon: "🎼",
-    name: "Music — clarinet, saxophone, guitar",
-    note: "Favourite piece: Si Tu Vois Ma Mère",
-  },
-  { icon: "📸", name: "Photography" },
-  { icon: "✍", name: "Writing" },
-  { icon: "🌍", name: "Learning languages" },
-  { icon: "🎮", name: "Gaming (Vermintide, Counter-Strike)" },
-  { icon: "🎾", name: "Tennis" },
+  { icon: "🎼", name: "Music", note: "My favourite piece to play on the clarinet is Si Tu Vois Ma Mère by Sydney Bechet." },
+  { icon: "📸", name: "Photography", note: "My favourite photographer is Alexey Titarenko." },
+  { icon: "✍", name: "Writing", note: "My favourite novel is Captain Corelli's Mandolin by Louis de Bernières." },
+  { icon: "🌍", name: "Learning languages", note: "I am currently learning Greek and French." },
+  { icon: "🎮", name: "Gaming", note: "I enjoy playing Old School Runescape, Vermintide and Counter-Strike." },
+  { icon: "🎾", name: "Tennis", note: "My favourite tennis players are Carlos Alcaraz and Jons Jauber." }
+];
+
+
+const stats = [
+  { label: "Years in Research", value: "6+" },
+  { label: "Papers Published", value: "2+" },
+  { label: "Students Supervised", value: "5+" },
+  { label: "Funding Secured", value: "£1k+" }
 ];
 ---
 
 <BaseLayout title="About Me - Matthew Carter">
-  <section class="max-w-4xl mx-auto px-6 py-12">
-    <h1 class="text-3xl font-bold border-b-4 border-black pb-4 mb-6 inline-block">
-      About Me
-    </h1>
-    <p class="text-lg text-gray-700 leading-relaxed mb-8">
-      I'm a researcher in the <span class="font-medium">Signal Processing Group</span> at the <span class="font-medium">University of Liverpool</span>, passionate about enabling practitioners and researchers to make fast, data-informed decisions in the face of uncertainty.
-    </p>
+
+  <!-- Hero -->
+  <section class="bg-gray-50 py-16">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 px-6">
+      {/* <img src="/me.jpg" alt="Matthew Carter" class="w-40 h-40 rounded-full shadow-lg object-cover"> */}
+      <div>
+        <h1 class="text-4xl font-bold mb-4">Matthew Carter</h1>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          Researcher at the <span class="font-medium">University of Liverpool</span>, passionate about enabling practitioners and researchers to make fast, data-informed decisions in the face of uncertainty.
+        </p>
+        <div class="flex gap-4">
+          <a href="/cv.pdf" class="px-5 py-3 bg-[#996633] text-white rounded-lg hover:bg-[#7a4f28]">Download CV</a>
+          <a href="/contact" class="px-5 py-3 border border-[#996633] text-[#996633] rounded-lg hover:bg-[#996633] hover:text-white">Contact Me</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="bg-white py-12">
+    <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      {stats.map((s) => (
+        <div class="p-4">
+          <p class="text-3xl font-bold text-[#996633]">{s.value}</p>
+          <p class="text-gray-600 text-sm">{s.label}</p>
+        </div>
+      ))}
+    </div>
   </section>
 
   <!-- Skills -->
   <section class="bg-gray-50 py-12">
     <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-2xl font-semibold mb-4">🛠 Skills & Expertise</h2>
+      <h2 class="text-2xl font-semibold mb-6">🛠 Skills & Expertise</h2>
       <div class="flex flex-wrap gap-2">
         {skills.map((skill) => (
           <span class="bg-white px-3 py-1 rounded-full text-sm shadow hover:bg-[#996633] hover:text-white transition">
@@ -132,68 +184,148 @@ const hobbies = [
     </div>
   </section>
 
-  <!-- Education -->
-  <section class="py-12">
-    <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-2xl font-semibold mb-8">🎓 Education</h2>
-      <ol class="relative border-l border-gray-200">
-        {education.map((item) => (
-          <li class="mb-10 ml-6">
-            <span class="absolute flex items-center justify-center w-6 h-6 bg-[#996633] rounded-full -left-3 ring-8 ring-white"></span>
-            <h3 class="text-lg font-semibold text-gray-900">{item.title}</h3>
-            <span class="block mb-1 text-sm font-normal text-gray-500">{item.institution} · {item.year}</span>
-            <p class="text-base text-gray-600">{item.details}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
+  <!-- Timeline (flip cards) -->
+  <section class="bg-white py-12">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="text-2xl font-semibold mb-8">Journey</h2>
 
-  <!-- Experience -->
-  <section class="bg-gray-50 py-12">
-    <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-2xl font-semibold mb-8">💼 Experience</h2>
-      <ol class="relative border-l border-gray-200">
-        {experience.map((job) => (
-          <li class="mb-10 ml-6">
-            <span class="absolute flex items-center justify-center w-6 h-6 bg-[#996633] rounded-full -left-3 ring-8 ring-white"></span>
-            <h3 class="text-lg font-semibold text-gray-900">{job.role}</h3>
-            <span class="block mb-1 text-sm font-normal text-gray-500">{job.institution} · {job.year}</span>
-            <p class="text-base text-gray-600">{job.details}</p>
-          </li>
-        ))}
-      </ol>
+      <!-- Desktop / large screens: alternating timeline -->
+      <div class="relative hidden md:block">
+        <!-- central line -->
+        <div class="absolute left-1/2 top-0 -translate-x-1/2 h-full w-px bg-gray-200"></div>
+
+        <ul class="space-y-2">
+          {journey.map((it, i) => {
+            const leftSide = i % 2 === 0;
+
+            const Card = (
+              <article
+                class="group relative h-40 [perspective:1200px] outline-none focus-visible:ring-2 focus-visible:ring-[#996633]/40 rounded-2xl"
+                tabindex="0"
+                aria-label={`${it.title ?? it.role}, ${it.institution}, ${it.year}`}
+              >
+                {/* Flipper */}
+                <div
+                  class="absolute inset-0 rounded-2xl border border-gray-200 bg-white shadow-sm transition-transform duration-500
+                        [transform-style:preserve-3d]
+                        group-hover:[transform:rotateY(180deg)]
+                        group-focus-within:[transform:rotateY(180deg)]"
+                >
+                  {/* Front */}
+                  <div class="absolute inset-0 p-5 rounded-2xl [backface-visibility:hidden]">
+                    <div class="flex items-center gap-3 mb-2">
+                      <span class="inline-block rounded-full bg-gray-100 text-gray-700 text-xs px-2 py-1">{it.kind}</span>
+                      <span class="inline-block rounded-full bg-[#996633]/10 text-[#996633] text-xs px-2 py-1">{it.year}</span>
+                    </div>
+                    <h3 class="text-lg font-semibold leading-snug">{it.title ?? it.role}</h3>
+                    <p class="text-sm text-gray-600">{it.institution}</p>
+                    <p class="mt-3 text-xs text-gray-400">Hover or focus to flip</p>
+                  </div>
+
+                  {/* Back */}
+                  <div
+                    class="absolute inset-0 p-5 rounded-2xl bg-[#fffaf3] [transform:rotateY(180deg)] [backface-visibility:hidden]
+                          border border-[#996633]/20"
+                  >
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="inline-block text-[10px] uppercase tracking-wide text-[#996633]/80">Details</span>
+                      <span class="h-1 w-1 rounded-full bg-[#996633]/40"></span>
+                      <span class="inline-block text-xs text-[#996633]/80">{it.year}</span>
+                    </div>
+                    <p class="text-sm text-gray-800">{it.details}</p>
+                  </div>
+                </div>
+              </article>
+            );
+
+            return (
+              <li class="grid md:grid-cols-[1fr_48px_1fr] items-center gap-6">
+                {/* LEFT CARD (or spacer) */}
+                <div class={!leftSide ? "md:col-start-1" : ""}>
+                  {leftSide && Card}
+                </div>
+
+                {/* MARKER */}
+                <div class="md:col-start-2 flex items-center justify-center">
+                  <span class="relative block">
+                    <span class="block h-4 w-4 rounded-full bg-[#996633] ring-4 ring-white border border-[#996633]"></span>
+                  </span>
+                </div>
+
+                {/* RIGHT CARD (or spacer) */}
+                <div class={leftSide ? "md:col-start-3" : ""}>
+                  {!leftSide && Card}
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      <!-- Mobile: stacked flip cards -->
+      <div class="md:hidden">
+        <ul class="space-y4">
+          {journey.map((it) => (
+            <li>
+              <article
+                class="group relative h-40 [perspective:1200px] outline-none focus-visible:ring-2 focus-visible:ring-[#996633]/40 rounded-2xl"
+                tabindex="0"
+                aria-label={`${it.title ?? it.role}, ${it.institution}, ${it.year}`}
+              >
+                <div
+                  class="absolute inset-0 rounded-2xl border border-gray-200 bg-white shadow-sm transition-transform duration-500
+                        [transform-style:preserve-3d]
+                        group-hover:[transform:rotateY(180deg)]
+                        group-focus-within:[transform:rotateY(180deg)]"
+                >
+                  <div class="absolute inset-0 p-5 rounded-2xl [backface-visibility:hidden]">
+                    <div class="flex items-center gap-3 mb-2">
+                      <span class="inline-block rounded-full bg-gray-100 text-gray-700 text-xs px-2 py-1">{it.kind}</span>
+                      <span class="inline-block rounded-full bg-[#996633]/10 text-[#996633] text-xs px-2 py-1">{it.year}</span>
+                    </div>
+                    <h3 class="text-lg font-semibold leading-snug">{it.title ?? it.role}</h3>
+                    <p class="text-sm text-gray-600">{it.institution}</p>
+                    <p class="mt-3 text-xs text-gray-400">Tap/hover to flip</p>
+                  </div>
+
+                  <div
+                    class="absolute inset-0 p-5 rounded-2xl bg-[#fffaf3] [transform:rotateY(180deg)] [backface-visibility:hidden]
+                          border border-[#996633]/20"
+                  >
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="inline-block text-[10px] uppercase tracking-wide text-[#996633]/80">Details</span>
+                      <span class="h-1 w-1 rounded-full bg-[#996633]/40"></span>
+                      <span class="inline-block text-xs text-[#996633]/80">{it.year}</span>
+                    </div>
+                    <p class="text-sm text-gray-800">{it.details}</p>
+                  </div>
+                </div>
+              </article>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   </section>
 
   <!-- Projects -->
-  <section class="py-12">
+  <section class="bg-gray-50 py-12">
     <div class="max-w-4xl mx-auto px-6">
       <h2 class="text-2xl font-semibold mb-8">📂 Selected Projects</h2>
-      <ol class="relative border-l border-gray-200">
+      <div class="grid md:grid-cols-2 gap-6">
         {projects.map((proj) => (
-          <li class="mb-10 ml-6">
-            <span class="absolute flex items-center justify-center w-6 h-6 bg-[#996633] rounded-full -left-3 ring-8 ring-white"></span>
-            <div class="flex items-center gap-2 flex-wrap">
-              <h3 class="text-lg font-semibold text-gray-900">{proj.title}</h3>
-            </div>
-            <span class="block mb-1 text-sm font-normal text-gray-500">
-              {proj.year} &middot;
-              <span class={`text-xs px-2 py-1 rounded-full ${
-                proj.type === "Lead"
-                  ? "bg-blue-100 text-blue-800"
-                  : "bg-yellow-100 text-yellow-800"
-              }`}>{proj.type}</span>
-            </span>
+          <div class="border rounded-lg p-6 bg-white shadow-sm hover:shadow-md transition">
+            <h3 class="text-lg font-semibold text-gray-900">{proj.title}</h3>
+            <p class="text-sm text-gray-500 mb-2">{proj.year} · <span class={`px-2 py-0.5 rounded-full text-xs ${proj.type === "Lead" ? "bg-blue-100 text-blue-800" : "bg-yellow-100 text-yellow-800"}`}>{proj.type}</span></p>
             <p class="text-base text-gray-600">{proj.details}</p>
-          </li>
+          </div>
         ))}
-      </ol>
+      </div>
     </div>
   </section>
 
   <!-- Funding -->
-  <section class="bg-gray-50 py-12">
+  <section class="bg-white py-12">
     <div class="max-w-4xl mx-auto px-6">
       <h2 class="text-2xl font-semibold mb-8">💰 Funding</h2>
       <div class="grid md:grid-cols-2 gap-6">
@@ -208,17 +340,69 @@ const hobbies = [
     </div>
   </section>
 
+  <!-- Teaching -->
+  <section class="bg-gray-50 py-12">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-2xl font-semibold mb-8">📚 Teaching Activity</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        {teaching.map((t) => (
+          <div class="border rounded-lg p-6 bg-white shadow-sm hover:shadow-md transition">
+            <h3 class="font-semibold text-gray-900">{t.course}</h3>
+            <p class="text-sm text-gray-600">{t.institution} · {t.years}</p>
+
+            {/* If bullets exist, show a list; otherwise show the details string */}
+            {t.bullets ? (
+              <ul class="mt-3 space-y-2 list-disc list-inside text-sm text-gray-700">
+                {t.bullets.map((b) => <li>{b}</li>)}
+              </ul>
+            ) : (
+              <p class="text-sm text-gray-500 mt-2">{t.details}</p>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <!-- Hobbies -->
-  <section class="py-12">
+  <section class="bg-white py-12">
     <div class="max-w-4xl mx-auto px-6">
       <h2 class="text-2xl font-semibold mb-8">🎯 Hobbies</h2>
+
       <div class="grid grid-cols-2 sm:grid-cols-3 gap-8 text-center">
-        {hobbies.map((hobby) => (
-          <div>
-            <div class="text-4xl mb-2">{hobby.icon}</div>
-            <p class="text-gray-700 text-sm">
-              {hobby.name}{hobby.note && <> <em>{hobby.note}</em></>}
-            </p>
+        {hobbies.map((h) => (
+          <div
+            class="group relative h-32 rounded-lg border bg-white shadow-sm hover:shadow-md transition
+                  [perspective:1000px]"
+          >
+            {/* Rotating wrapper */}
+            <div
+              class="absolute inset-0 transition-transform duration-500
+                    [transform-style:preserve-3d]
+                    group-hover:[transform:rotateY(180deg)]"
+            >
+              {/* Front */}
+              <div class="absolute inset-0 flex flex-col items-center justify-center px-4
+                          [backface-visibility:hidden]">
+                <div class="text-4xl mb-2">{h.icon}</div>
+                <p class="text-gray-700 text-sm">{h.name}</p>
+              </div>
+
+              {/* Back */}
+              {h.note ? (
+                <div class="absolute inset-0 flex items-center justify-center px-4 text-center text-sm
+                            bg-[#996633] text-white rounded-lg
+                            [transform:rotateY(180deg)] [backface-visibility:hidden]">
+                  {h.note}
+                </div>
+              ) : (
+                <div class="absolute inset-0 flex items-center justify-center px-4 text-center text-sm
+                            bg-[#996633] text-white rounded-lg opacity-80
+                            [transform:rotateY(180deg)] [backface-visibility:hidden]">
+                  More coming soon
+                </div>
+              )}
+            </div>
           </div>
         ))}
       </div>

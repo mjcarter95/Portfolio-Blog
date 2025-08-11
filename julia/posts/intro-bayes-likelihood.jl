@@ -93,7 +93,7 @@ buttons = Any[
 # ----- Layout (with proper xaxis & initial title) -----
 layout = Dict(
     "title" => @sprintf("Gaussian fit (μ = %.2f,  NLL = %.2f)", μs[active_idx], ll[active_idx]),
-    "xaxis" => Dict("title" => "t", "range" => [6, 14]),
+    "xaxis" => Dict("title" => "Time", "range" => [6, 14]),
     "yaxis" => Dict("title" => "Density"),
     "barmode" => "overlay",
     "showlegend" => true,
