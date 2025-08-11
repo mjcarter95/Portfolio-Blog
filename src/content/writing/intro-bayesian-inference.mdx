@@ -64,6 +64,9 @@ In Python, we can compute the likelihood by evaluating the probability density f
 import numpy as np
 from scipy.stats import gamma
 
+import numpy as np
+from scipy.stats import gamma
+
 def gamma_likelihood(k, theta, data):
     """
     Compute the likelihood of observed data under a Gamma(k, theta) model.
@@ -81,8 +84,31 @@ def gamma_likelihood(k, theta, data):
     -------
     float
         The likelihood value (product of PDF values).
+
+    Raises
+    ------
+    ValueError
+        If parameters or data are invalid.
     """
-    return np.prod(gamma.pdf(data, a=k, scale=theta))
+    # Validate parameters
+    if not np.isscalar(k) or k <= 0:
+        raise ValueError(f"Shape parameter k must be positive. Got {k}")
+    if not np.isscalar(theta) or theta <= 0:
+        raise ValueError(f"Scale parameter theta must be positive. Got {theta}")
+
+    # Validate data
+    data = np.asarray(data, dtype=float)
+    if data.size == 0:
+        raise ValueError("Data must contain at least one value.")
+    if np.any(data <= 0):
+        raise ValueError("All observed values must be positive.")
+    if np.any(~np.isfinite(data)):
+        raise ValueError("Data contains NaN or infinite values.")
+
+    # Compute likelihood
+    pdf_values = gamma.pdf(data, a=k, scale=theta)
+    return np.prod(pdf_values)
+
 ```
 
 We can then calculate the likelihood of a given dataset by calling the function with chosen parameter values and the observed data:
