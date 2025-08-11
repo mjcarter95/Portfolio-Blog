@@ -48,16 +48,42 @@ In the interactive plot below, 2,000 samples are drawn from a Gaussian distribut
 
 ## Modelling Wait Times
 Suppose we record wait times $t_1, \dots, t_n > 0$ in a clinic. A natural model is the **Gamma** distribution with shape $k > 0$ and scale $\theta > 0$:
+
 $$
 f(t \mid k, \theta) = \frac{t^{k-1} e^{-t/\theta}}{\Gamma(k) \, \theta^{k}}, \quad t > 0.
 $$
 
-For i.i.d. observations, the **log-likelihood** is
+For independent and identically distributed (**i.i.d.**) observations, the **log-likelihood** (LL) is
+
 $$
 \ell(k, \theta \mid \mathbf{t}) = (k-1) \sum_i \ln t_i - \frac{1}{\theta} \sum_i t_i - n k \ln \theta - n \ln \Gamma(k).
 $$
 
-### A Detour: Writing Likelihoods in Python
+A single likelihood value on its own tells us very little. Its absolute magnitude depends on sample size, measurement units (for continuous data), and can even be scaled by constants without affecting the model. **Likelihoods become informative only in comparison**:
+
+- **Likelihood ratio (LR):** for two hypotheses $(k_1,\theta_1)$ vs. $(k_2,\theta_2)$,
+
+  $$
+  \Lambda=\frac{L(k_1,\theta_1\mid \mathbf t)}{L(k_2,\theta_2\mid \mathbf t)},\qquad
+  \log\Lambda=\ell(k_1,\theta_1\mid \mathbf t)-\ell(k_2,\theta_2\mid \mathbf t).
+  $$
+
+  If $\Lambda>1$ (or $\log\Lambda>0$), the data are more compatible with $(k_1,\theta_1)$ than $(k_2,\theta_2)$.
+
+- **Model comparison:** we often compare multiple candidate models via **log-likelihood differences** (LLDs) or penalized versions like the **Akaike Information Criterion** (**AIC**) / **Bayesian Information Criterion** (**BIC**) that subtract a complexity penalty.
+
+- **Bayesian view:** the likelihood shapes the posterior **relative to alternatives** through
+
+  $$
+  p(k,\theta\mid \mathbf t)\propto L(k,\theta\mid \mathbf t)\,p(k,\theta),
+  $$
+
+  again emphasizing that it’s the contrast between parameter values or hypotheses that carries the information.
+
+In short: the likelihood is a **ranking rule** over hypotheses; by itself, a large or small number doesn’t mean much, **differences and ratios do**.
+
+
+#### A Detour: Writing Likelihoods in Python
 In Python, we can compute the likelihood by evaluating the probability density function (PDF) of a distribution at the observed data points. The `scipy.stats` module makes this straightforward.
 
 ```python
@@ -121,7 +147,7 @@ print("Likelihood:", ll)
 
 This direct computation is useful for building intuition about how the likelihood changes as we vary $k$ and $\theta$. However, in practice, it is often more numerically stable to work with the log-likelihood rather than the raw likelihood, because products of many small numbers can underflow to zero in floating-point arithmetic.
 
-### Example:
+#### Example: Gamma-Distributed Dwell Times
 
 The following interactive plot shows the probability density function of a Gamma distribution with shape $k = 2.0$ and scale $\theta = 3.0$. The mean wait time, $\mu = 6.0$, is calculated as $\mu = k \theta$. You can compare how the observed wait times align with this model by overlaying their histogram.
 

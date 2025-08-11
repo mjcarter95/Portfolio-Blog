@@ -1,12 +1,17 @@
 @import "katex/dist/katex.min.css";
 
-/* Allow KaTeX display math to wrap on small screens */
-.katex-display > .katex {
-  white-space: normal !important; /* override KaTeX default */
-  word-break: break-word;         /* break long tokens if needed */
+/* Only affect math inside your article body (prose class) */
+.prose .katex-display > .katex {
+  white-space: normal !important;   /* allow wrapping (override KaTeX nowrap) */
+  overflow-wrap: anywhere;          /* nicer than word-break for math */
 }
 
-.katex-display {
-  overflow-x: auto;               /* allow scroll if still too wide */
-  max-width: 100%;                 /* prevent overflow */
+.prose .katex-display {
+  max-width: 100%;                  /* don’t overflow container */
+  overflow-x: visible;              /* no horizontal scrollbar */
+}
+
+/* Optional: slightly smaller display math on small screens */
+@media (max-width: 640px) {
+  .prose .katex-display > .katex { font-size: 0.95em; }
 }
