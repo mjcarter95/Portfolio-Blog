@@ -1,1 +1,12 @@
 @import "katex/dist/katex.min.css";
+
+/* Allow KaTeX display math to wrap on small screens */
+.katex-display > .katex {
+  white-space: normal !important; /* override KaTeX default */
+  word-break: break-word;         /* break long tokens if needed */
+}
+
+.katex-display {
+  overflow-x: auto;               /* allow scroll if still too wide */
+  max-width: 100%;                 /* prevent overflow */
+}
