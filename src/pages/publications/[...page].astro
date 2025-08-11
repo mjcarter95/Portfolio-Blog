@@ -1,0 +1,132 @@
+---
+// src/pages/publications/[...page].astro
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths({ paginate }) {
+  const pubs = await getCollection("publications");
+  const sorted = pubs
+    .filter((p) => !!p.data.date)
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  return paginate(sorted, { pageSize: 5 });
+}
+
+const { page } = Astro.props; // page.data, page.currentPage, page.lastPage, page.url.*
+
+const bestLink = (p: any) => p.data.url || p.data.pdf || "#";
+const formatAuthors = (authors: string[]) =>
+  authors.map((a) => (a === "Matthew Carter" ? `<strong>${a}</strong>` : a)).join(", ");
+---
+
+<BaseLayout title="Publications - Matthew Carter">
+  <section class="max-w-4xl mx-auto px-6 pt-12 pb-6">
+    <!-- Flex container for title + search -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+      <h1 class="text-3xl font-bold border-b-4 border-black pb-4 mb-6 inline-block">
+        Publications
+      </h1>
+
+      <input
+        id="pub-search"
+        type="search"
+        placeholder="Search title, authors, venue, type…"
+        class="w-full sm:w-72 rounded-md border border-gray-300 mb-4 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#996633]"
+      />
+    </div>
+
+    <ul id="pub-list" class="space-y-8">
+      {page.data.map((p: any) => {
+        const { title, authors = [], venue = "", type = "", date, doi = "" } = p.data;
+        const link = bestLink(p);
+        const displayDate = date.toLocaleDateString("en-GB", { year: "numeric", month: "long" });
+
+        const haystack = [title, authors.join(" "), venue, type, displayDate, doi]
+          .join(" ")
+          .toLowerCase();
+
+        return (
+          <li class="leading-relaxed pb-6 border-b border-gray-200 last:border-0" data-search={haystack}>
+            <div class="font-semibold text-lg">
+              <a href={link} target={link !== "#" ? "_blank" : undefined} rel="noopener" class="hover:text-[#996633]">
+                {title}
+              </a>
+            </div>
+            <div class="text-sm text-gray-600 mt-1">
+              <span>{type}</span>
+              {venue && <span> · {venue}</span>}
+              <span> · {displayDate}</span>
+            </div>
+            <div class="text-sm text-gray-700 mt-1">
+              <span set:html={formatAuthors(authors)}></span>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+
+    <p id="no-results" class="hidden text-gray-500 mt-6">No publications match your search.</p>
+
+    {/* Pagination: grey scheme + padding above & below */}
+    <nav class="mt-12 mb-6 pt-6 border-t border-gray-200 flex items-center justify-center gap-2 text-sm">
+      {page.url.first ? (
+        <a href={page.url.first} class="px-3 py-1 border rounded bg-white text-gray-700 border-gray-300 hover:bg-gray-100">« First</a>
+      ) : (
+        <span class="px-3 py-1 border rounded bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed">« First</span>
+      )}
+      {page.url.prev ? (
+        <a href={page.url.prev} class="px-3 py-1 border rounded bg-white text-gray-700 border-gray-300 hover:bg-gray-100">‹ Prev</a>
+      ) : (
+        <span class="px-3 py-1 border rounded bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed">‹ Prev</span>
+      )}
+
+      {Array.from({ length: page.lastPage }).map((_, i) => {
+        const n = i + 1;
+        const href = i === 0 ? (page.url.first ?? "/publications/") : `/publications/${n}/`;
+        const isCurrent = n === page.currentPage;
+        return (
+          <a
+            href={href}
+            aria-current={isCurrent ? "page" : undefined}
+            class={`px-3 py-1 border rounded ${
+              isCurrent
+                ? "bg-gray-700 text-white border-gray-700"
+                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+            }`}
+          >
+            {n}
+          </a>
+        );
+      })}
+
+      {page.url.next ? (
+        <a href={page.url.next} class="px-3 py-1 border rounded bg-white text-gray-700 border-gray-300 hover:bg-gray-100">Next ›</a>
+      ) : (
+        <span class="px-3 py-1 border rounded bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed">Next ›</span>
+      )}
+      {page.url.last ? (
+        <a href={page.url.last} class="px-3 py-1 border rounded bg-white text-gray-700 border-gray-300 hover:bg-gray-100">Last »</a>
+      ) : (
+        <span class="px-3 py-1 border rounded bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed">Last »</span>
+      )}
+    </nav>
+  </section>
+
+  <script>
+    const input = document.getElementById('pub-search');
+    const list = document.getElementById('pub-list');
+    const empty = document.getElementById('no-results');
+
+    function filter() {
+      const q = (input.value || '').toLowerCase().trim();
+      let visible = 0;
+      for (const item of list.children) {
+        const hay = item.getAttribute('data-search') || '';
+        const show = hay.includes(q);
+        item.style.display = show ? '' : 'none';
+        if (show) visible++;
+      }
+      empty.classList.toggle('hidden', visible !== 0);
+    }
+    input.addEventListener('input', filter);
+  </script>
+</BaseLayout>
