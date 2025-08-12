@@ -23,54 +23,6 @@ const experience = [
 const journeyItems = [...education.map(e => ({...e, kind: "Education"})),
                       ...experience.map(e => ({...e, kind: "Experience"}))];
 
-// Parse month names and flexible ranges like "Sep 2023 – Present"
-const MONTHS = {
-  jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,sept:8,oct:9,nov:10,dec:11
-};
-
-function parseOneDate(str) {
-  if (!str) return null;
-  const s = String(str).trim().toLowerCase();
-  if (s === "present" || s === "current" || s === "now") return new Date(9999, 0, 1);
-
-  // "Sep 2023" or "September 2023"
-  let m = s.match(/([a-z]+)\s+(\d{4})/i);
-  if (m && MONTHS[m[1].slice(0,3)]) {
-    return new Date(Number(m[2]), MONTHS[m[1].slice(0,3)], 1);
-  }
-  // "2023"
-  m = s.match(/(\d{4})/);
-  if (m) return new Date(Number(m[1]), 0, 1);
-
-  return null;
-}
-
-function parseRange(rangeStr) {
-  // split on hyphen/en dash/em dash
-  const parts = String(rangeStr).split(/[-–—]/).map(s => s.trim()).filter(Boolean);
-  if (parts.length === 0) return { start: null, end: null };
-  if (parts.length === 1) {
-    const d = parseOneDate(parts[0]);
-    return { start: d, end: d };
-  }
-  const start = parseOneDate(parts[0]);
-  const end   = parseOneDate(parts[1]);
-  return { start, end: end ?? start };
-}
-
-const journey = journeyItems
-  .map(it => {
-    const { start, end } = parseRange(it.year);
-    return { ...it, _start: start, _end: end };
-  })
-  // Sort by end date desc, then start date desc, then kind (stable)
-.sort((a, b) => {
-  const as = a._start?.getTime() ?? 0;
-  const bs = b._start?.getTime() ?? 0;
-  return bs - as; // descending start date
-});
-
-
 const projects = [
   { title: "Opportunistic Sequential Monte Carlo", year: "2024-2025", type: "Lead", details: "Designed a novel SMC variant for opportunistic computing environments; integrated into open-source PySMC library." },
   { title: "Bayesian Modelling in Structural Health Monitoring", year: "2023", type: "Supervised", details: "Supervised MSc project on probabilistic damage detection in civil structures." }
@@ -122,14 +74,13 @@ const teaching = [
 ];
 
 const hobbies = [
-  { icon: "🎼", name: "Music", note: "My favourite piece to play on the clarinet is Si Tu Vois Ma Mère by Sydney Bechet." },
+  { icon: "🎼", name: "Music", note: "My favourite piece to play on the clarinet is Si Tu Vois Ma Mère by Sidney Bechet." },
   { icon: "📸", name: "Photography", note: "My favourite photographer is Alexey Titarenko." },
   { icon: "✍", name: "Writing", note: "My favourite novel is Captain Corelli's Mandolin by Louis de Bernières." },
   { icon: "🌍", name: "Learning languages", note: "I am currently learning Greek and French." },
   { icon: "🎮", name: "Gaming", note: "I enjoy playing Old School Runescape, Vermintide and Counter-Strike." },
-  { icon: "🎾", name: "Tennis", note: "My favourite tennis players are Carlos Alcaraz and Jons Jauber." }
+  { icon: "🎾", name: "Tennis", note: "My favourite tennis players are Carlos Alcaraz and Ons Jauber." }
 ];
-
 
 const stats = [
   { label: "Years in Research", value: "6+" },
@@ -137,6 +88,53 @@ const stats = [
   { label: "Students Supervised", value: "5+" },
   { label: "Funding Secured", value: "£1k+" }
 ];
+
+// Parse month names and flexible ranges like "Sep 2023 – Present"
+const MONTHS = {
+  jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,sept:8,oct:9,nov:10,dec:11
+};
+
+function parseOneDate(str) {
+  if (!str) return null;
+  const s = String(str).trim().toLowerCase();
+  if (s === "present" || s === "current" || s === "now") return new Date(9999, 0, 1);
+
+  // "Sep 2023" or "September 2023"
+  let m = s.match(/([a-z]+)\s+(\d{4})/i);
+  if (m && MONTHS[m[1].slice(0,3)]) {
+    return new Date(Number(m[2]), MONTHS[m[1].slice(0,3)], 1);
+  }
+  // "2023"
+  m = s.match(/(\d{4})/);
+  if (m) return new Date(Number(m[1]), 0, 1);
+
+  return null;
+}
+
+function parseRange(rangeStr) {
+  // split on hyphen/en dash/em dash
+  const parts = String(rangeStr).split(/[-–—]/).map(s => s.trim()).filter(Boolean);
+  if (parts.length === 0) return { start: null, end: null };
+  if (parts.length === 1) {
+    const d = parseOneDate(parts[0]);
+    return { start: d, end: d };
+  }
+  const start = parseOneDate(parts[0]);
+  const end   = parseOneDate(parts[1]);
+  return { start, end: end ?? start };
+}
+
+const journey = journeyItems
+  .map(it => {
+    const { start, end } = parseRange(it.year);
+    return { ...it, _start: start, _end: end };
+  })
+  // Sort by end date desc, then start date desc, then kind (stable)
+.sort((a, b) => {
+  const as = a._start?.getTime() ?? 0;
+  const bs = b._start?.getTime() ?? 0;
+  return bs - as; // descending start date
+});
 ---
 
 <BaseLayout title="About Me - Matthew Carter">
