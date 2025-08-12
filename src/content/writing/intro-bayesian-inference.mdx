@@ -147,7 +147,7 @@ print("Likelihood:", ll)
 
 This direct computation is useful for building intuition about how the likelihood changes as we vary $k$ and $\theta$. However, in practice, it is often more numerically stable to work with the log-likelihood rather than the raw likelihood, because products of many small numbers can underflow to zero in floating-point arithmetic.
 
-#### Example: Gamma-Distributed Dwell Times
+#### Example: Gamma-Distributed Wait Times
 
 The following interactive plot shows the probability density function of a Gamma distribution with shape $k = 2.0$ and scale $\theta = 3.0$. The mean wait time, $\mu = 6.0$, is calculated as $\mu = k \theta$. You can compare how the observed wait times align with this model by overlaying their histogram.
 

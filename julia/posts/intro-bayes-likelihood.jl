@@ -36,7 +36,7 @@ hist_trace = Dict(
     "marker" => Dict("color" => "#9A9498"),
     "opacity" => 0.75,
     "nbinsx" => 60,
-    "name" => "Observed dwell times"
+    "name" => "Observed data"
 )
 
 line_trace = Dict(
