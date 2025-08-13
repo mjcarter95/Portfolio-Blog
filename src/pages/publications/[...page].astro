@@ -1,6 +1,6 @@
 ---
-// src/pages/publications/[...page].astro
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import HeroHeader from "@/components/HeroHeader.astro";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths({ paginate }) {
@@ -11,7 +11,8 @@ export async function getStaticPaths({ paginate }) {
   return paginate(sorted, { pageSize: 5 });
 }
 
-const { page } = Astro.props; // page.data, page.currentPage, page.lastPage, page.url.*
+const { page } = Astro.props;
+const bannerImage = "/images/spotlight/docks_reflections.jpg"
 
 const bestLink = (p: any) => p.data.url || p.data.pdf || "#";
 const formatAuthors = (authors: string[]) =>
@@ -19,7 +20,15 @@ const formatAuthors = (authors: string[]) =>
 ---
 
 <BaseLayout title="Publications - Matthew Carter">
+  <HeroHeader
+    title="Publications"
+    subtitle="Academic and technical work published across journals, conferences, and blogs"
+    backgroundImage={bannerImage}
+  />
+
   <section class="max-w-4xl mx-auto px-6 pt-12 pb-0">
+    <!-- existing content continues here... -->
+
     <!-- Flex container for title + search -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
       <h1 class="text-3xl font-bold border-b-4 border-black pb-4 mb-6 inline-block">

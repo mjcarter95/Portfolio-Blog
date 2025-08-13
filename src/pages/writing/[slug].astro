@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import HeroHeader from "@/components/HeroHeader.astro";
 import { getCollection } from "astro:content";
 import { slugifyTag } from "@/utils/tags";
 import readingTime from "reading-time";
@@ -15,7 +16,6 @@ export async function getStaticPaths() {
 const { post, allPosts } = Astro.props;
 const { Content } = await post.render();
 
-// Read time (round, min 1)
 const rt = readingTime(post.body ?? "");
 const readMinutes = Math.max(1, Math.round(rt.minutes));
 
@@ -38,59 +38,30 @@ const canonical =
   typeof Astro.site === "string"
     ? new URL(`/writing/${post.slug}/`, Astro.site).toString()
     : undefined;
+
+// Hero banner (optional fallback)
+const banner = post.data.banner ?? "/images/spotlight/forest_ground.jpg";
 ---
 
-
 <BaseLayout title={seoTitle} description={seoDescription} image={seoImage} canonical={canonical}>
+<HeroHeader
+  title={post.data.title}
+  subtitle={post.data.summary}
+  backgroundImage={banner}
+  date={post.data.date}
+  readTime={readMinutes}
+  tags={post.data.tags}
+/>
+
+
   <section class="max-w-3xl mx-auto px-6 py-12">
-    <!-- Header -->
-    <header class="mb-6">
-      <div class="mb-4">
-        <a href="/writing" class="text-sm font-medium underline underline-offset-4 hover:text-[#996633]">
-          ← Back to Writing
-        </a>
-      </div>
+    <div class="mb-6">
+      <a href="/writing" class="text-sm font-medium underline underline-offset-4 hover:text-[#996633]">
+        ← Back to Writing
+      </a>
+    </div>
 
-      <h1 class="text-4xl font-bold leading-tight text-gray-900 mb-2">
-        {post.data.title}
-      </h1>
-
-      <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500">
-        <time datetime={post.data.date.toISOString()}>
-          {post.data.date.toLocaleDateString("en-GB", {
-            year: "numeric",
-            month: "long",
-            day: "2-digit",
-          })}
-        </time>
-
-        <span aria-hidden="true">·</span>
-
-        <span class="inline-flex items-center gap-1 rounded bg-gray-100 px-2 py-0.5 text-gray-700">
-          {readMinutes} min read
-        </span>
-
-        {post.data.tags?.length > 0 && (
-          <>
-            <span aria-hidden="true">·</span>
-            <ul class="flex gap-2 flex-wrap">
-              {post.data.tags.slice(0, 3).map((tag) => (
-                <li>
-                  <a
-                    href={`/tags/${slugifyTag(tag)}/`}
-                    class="px-2 py-0.5 rounded bg-gray-100 text-gray-700 hover:bg-[#996633] hover:text-white transition"
-                  >
-                    {tag}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
-      </div>
-    </header>
-
-    <!-- Cover image (optional) -->
+    <!-- Optional: In-body cover image -->
     {post.data.cover && (
       <figure class="mb-8">
         <img

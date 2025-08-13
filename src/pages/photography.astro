@@ -1,10 +1,11 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import HeroHeader from "@/components/HeroHeader.astro";
 
-const IMAGES_JSON = `[
+const IMAGES_JSON = `[ 
   {"src": "/images/spotlight/abstract_reflections.jpg", "title": "Abstract Forest Reflection", "instagram": "https://www.instagram.com/p/C6A52dWM6Ni/?img_index=1", "description": "A dreamlike view of autumn trees reflected in a puddle, turning reality upside down." },
   {"src":"/images/spotlight/man_relaxing_docks.jpg","title":"A man relaxes on the docks","instagram":"https://www.instagram.com/p/Cy2zpBMMK99/?img_index=2","description":"A man relaxes on the docks."},
- {"src": "/images/spotlight/forest_ground.jpg", "title": "Verdant Forest Floor", "instagram": "https://www.instagram.com/p/CvRD-mIL96f/", "description": "A vivid tangle of ferns and moss-covered ground captures the quiet energy of the forest."},
+  {"src": "/images/spotlight/forest_ground.jpg", "title": "Verdant Forest Floor", "instagram": "https://www.instagram.com/p/CvRD-mIL96f/", "description": "A vivid tangle of ferns and moss-covered ground captures the quiet energy of the forest."},
   {"src":"/images/spotlight/boats_london.jpg","title":"Colorful kayaks in London","instagram":"https://www.instagram.com/p/DUMMY1/","description":"Vibrant kayaks lined up along a London canal."},
   {"src":"/images/spotlight/car_hawaii.jpg","title":"Red mustang in Hawaii","instagram":"https://www.instagram.com/p/DUMMY2/","description":"A red sports car cruises a palm-lined road in Hawaii."},
   {"src":"/images/spotlight/chairs_beach.jpg","title":"Empty beach chairs","instagram":"https://www.instagram.com/p/DUMMY3/","description":"Two empty chairs facing the ocean on a peaceful beach."},
@@ -23,17 +24,18 @@ const IMAGES_JSON = `[
 
 let images = [];
 try { images = JSON.parse(IMAGES_JSON); } catch { images = []; }
+
+const heroImage = "/images/spotlight/docks_sunset.jpg";
 ---
 
-<BaseLayout title="Photography - Matthew Carter">
-  <section class="max-w-6xl mx-auto px-6 py-12">
-    <h1 class="text-3xl font-bold border-b-4 border-black pb-4 mb-2 inline-block">Photography</h1>
-    <div class="mb-8">
-      <a href="https://www.instagram.com/mjc.dng/" target="_blank" rel="noopener" class="font-semibold decoration-2 hover:text-[#996633]">
-        View on Instagram →
-      </a>
-    </div>
+<BaseLayout title="Photography – Matthew Carter">
+  <HeroHeader
+    title="Photography"
+    subtitle="Selected street, travel, landscape, and candid photography"
+    backgroundImage={heroImage}
+  />
 
+  <section class="max-w-6xl mx-auto px-6 py-12">
     <!-- Grid (4 x 3 on large) -->
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
       {images.slice(0, 12).map((img, idx) => (
@@ -55,9 +57,16 @@ try { images = JSON.parse(IMAGES_JSON); } catch { images = []; }
         </button>
       ))}
     </div>
+    <a
+      href="https://www.instagram.com/mjc.dng/"
+      target="_blank"
+      rel="noopener"
+      class="inline-block font-semibold decoration-2 hover:text-[#996633] mt-6"
+    >
+      View on Instagram →
+    </a>
   </section>
 
-<!-- Lightbox Modal -->
 <!-- Lightbox Modal -->
 <div
   id="photo-modal"

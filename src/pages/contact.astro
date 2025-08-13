@@ -1,53 +1,53 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import HeroHeader from "@/components/HeroHeader.astro";
+
+// Choose one of your spotlight images
+const backgroundImage = "/images/spotlight/abstract_reflections.jpg";
 ---
 
-<BaseLayout title="Contact - Matthew Carter" navTone="light">
+<BaseLayout title="Contact – Matthew Carter" navTone="light">
+  <HeroHeader
+    title="Contact"
+    subtitle="Feel free to get in touch via email"
+    backgroundImage={backgroundImage}
+  />
+
   <section class="max-w-2xl mx-auto px-6 py-12">
-    <h1 class="text-3xl font-semibold tracking-tight border-b-4 border-black pb-4 mb-6 inline-block">
-      Contact
-    </h1>
+    <ul class="space-y-4">
+      <!-- Personal -->
+      <li>
+        <a href="mailto:matt@mjcarter.co" class="group flex items-center gap-3">
+          <!-- Envelope -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+               class="w-5 h-5 shrink-0 text-gray-700" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M21.75 6.75v10.5A2.25 2.25 0 0 1 19.5 19.5h-15A2.25 2.25 0 0 1 2.25 17.25V6.75m19.5 0L12 14.25 2.25 6.75m19.5 0H2.25" />
+          </svg>
+          <span class="font-semibold text-gray-800 decoration-2 group-hover:text-[#996633]">
+            matt@mjcarter.co
+          </span>
+        </a>
+      </li>
 
-    <p class="mb-6 text-gray-700">Feel free to reach out via email:</p>
-
-<ul class="space-y-4">
-  <!-- Personal -->
-  <li>
-    <a href="mailto:matt@mjcarter.co" class="group flex items-center gap-3">
-      <!-- Envelope (outline, known-good) -->
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-           class="w-5 h-5 shrink-0 text-gray-700" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M21.75 6.75v10.5A2.25 2.25 0 0 1 19.5 19.5h-15A2.25 2.25 0 0 1 2.25 17.25V6.75m19.5 0L12 14.25 2.25 6.75m19.5 0H2.25" />
-      </svg>
-      <span class="font-semibold text-gray-800 decoration-2 group-hover:text-[#996633]">
-        matt@mjcarter.co
-      </span>
-    </a>
-  </li>
-
-  <!-- Academic -->
-  <li>
-    <a href="mailto:matthew.carter@liverpool.ac.uk" class="group flex items-center gap-3">
-      <!-- Mortarboard (simple + reliable) -->
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-           class="w-5 h-5 shrink-0 text-gray-700" fill="none" stroke="currentColor" stroke-width="1.5">
-        <!-- cap top -->
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M12 3 1.5 9 12 15 22.5 9 12 3z" />
-        <!-- cap base -->
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M6 12v3.75A2.25 2.25 0 0 0 8.25 18h7.5A2.25 2.25 0 0 0 18 15.75V12" />
-        <!-- tassel -->
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M22.5 9v6" />
-      </svg>
-      <span class="font-semibold text-gray-800 decoration-2 group-hover:text-[#996633]">
-        matthew.carter@liverpool.ac.uk
-      </span>
-    </a>
-  </li>
-</ul>
-
+      <!-- Academic -->
+      <li>
+        <a href="mailto:matthew.carter@liverpool.ac.uk" class="group flex items-center gap-3">
+          <!-- Mortarboard -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+               class="w-5 h-5 shrink-0 text-gray-700" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 3 1.5 9 12 15 22.5 9 12 3z" />
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M6 12v3.75A2.25 2.25 0 0 0 8.25 18h7.5A2.25 2.25 0 0 0 18 15.75V12" />
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M22.5 9v6" />
+          </svg>
+          <span class="font-semibold text-gray-800 decoration-2 group-hover:text-[#996633]">
+            matthew.carter@liverpool.ac.uk
+          </span>
+        </a>
+      </li>
+    </ul>
   </section>
 </BaseLayout>
