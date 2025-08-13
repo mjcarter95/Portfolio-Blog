@@ -37,21 +37,19 @@ const heroImage = "/images/spotlight/forest_ground.jpg"; // change as needed
 
 <BaseLayout title="Writing — Matthew Carter">
   <HeroHeader
-    title="Writing"
-    subtitle="Essays, ideas, and explorations — from research to reflection."
+      title="Writing"
+      subtitle="Essays, ideas, and explorations — from research to reflection."
     backgroundImage={heroImage}
-  />
-
+  >
+    <input
+      slot="rightContent"
+      id="post-search"
+      type="search"
+      placeholder="Search title, summary, tags…"
+      class="w-full sm:w-72 rounded-md border border-gray-300 mb-4 px-4 py-2 text-sm text-black focus:outline-none focus:ring-2 focus:ring-[#996633]"
+    />
+  </HeroHeader>
   <section class="max-w-4xl mx-auto px-6 py-12">
-    <!-- Flex container for search -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-      <input
-        id="post-search"
-        type="search"
-        placeholder="Search title, summary, tags…"
-        class="w-full sm:w-72 rounded-md border border-gray-300 mb-4 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#996633]"
-      />
-    </div>
 
     <div id="post-list" class="space-y-8">
       {posts.map(({ slug, data }) => {

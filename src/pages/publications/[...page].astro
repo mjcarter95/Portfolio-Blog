@@ -20,29 +20,21 @@ const formatAuthors = (authors: string[]) =>
 ---
 
 <BaseLayout title="Publications - Matthew Carter">
-  <HeroHeader
-    title="Publications"
-    subtitle="Academic and technical work published across journals, conferences, and blogs"
-    backgroundImage={bannerImage}
+<HeroHeader
+  title="Publications"
+  subtitle="Published works across journals, conferences, and blogs"
+  backgroundImage={bannerImage}
+>
+  <input
+    slot="rightContent"
+    id="pub-search"
+    type="search"
+    placeholder="Search title, authors, venue, type…"
+    class="w-full sm:w-72 rounded-md border border-gray-300 mb-4 px-4 py-2 text-sm text-black focus:outline-none focus:ring-2 focus:ring-[#996633]"
   />
+</HeroHeader>
 
   <section class="max-w-4xl mx-auto px-6 pt-12 pb-0">
-    <!-- existing content continues here... -->
-
-    <!-- Flex container for title + search -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-      <h1 class="text-3xl font-bold border-b-4 border-black pb-4 mb-6 inline-block">
-        Publications
-      </h1>
-
-      <input
-        id="pub-search"
-        type="search"
-        placeholder="Search title, authors, venue, type…"
-        class="w-full sm:w-72 rounded-md border border-gray-300 mb-4 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#996633]"
-      />
-    </div>
-
     <ul id="pub-list" class="space-y-8">
       {page.data.map((p: any) => {
         const { title, authors = [], venue = "", type = "", date, doi = "" } = p.data;
