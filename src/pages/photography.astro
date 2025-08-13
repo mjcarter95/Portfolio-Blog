@@ -2,10 +2,25 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 const IMAGES_JSON = `[
-  {"src":"/images/spotlight/image1.jpg","title":"Evening light over the Mersey","instagram":"https://www.instagram.com/p/C6A52dWM6Ni/?img_index=1","description":"Soft golden haze captured from the waterfront."},
-  {"src":"/images/spotlight/image2.jpg","title":"City geometry","instagram":"https://www.instagram.com/p/Cy2zpBMMK99/?img_index=2","description":"Lines, reflections, and a passing cloud."},
-  {"src":"/images/spotlight/image3.jpg","title":"Dawn at the docks","instagram":"https://www.instagram.com/p/CvRD-mIL96f/","description":"First light rolling in across quiet water."}
+  {"src": "/images/spotlight/abstract_reflections.jpg", "title": "Abstract Forest Reflection", "instagram": "https://www.instagram.com/p/C6A52dWM6Ni/?img_index=1", "description": "A dreamlike view of autumn trees reflected in a puddle, turning reality upside down." },
+  {"src":"/images/spotlight/man_relaxing_docks.jpg","title":"A man relaxes on the docks","instagram":"https://www.instagram.com/p/Cy2zpBMMK99/?img_index=2","description":"A man relaxes on the docks."},
+ {"src": "/images/spotlight/forest_ground.jpg", "title": "Verdant Forest Floor", "instagram": "https://www.instagram.com/p/CvRD-mIL96f/", "description": "A vivid tangle of ferns and moss-covered ground captures the quiet energy of the forest."},
+  {"src":"/images/spotlight/boats_london.jpg","title":"Colorful kayaks in London","instagram":"https://www.instagram.com/p/DUMMY1/","description":"Vibrant kayaks lined up along a London canal."},
+  {"src":"/images/spotlight/car_hawaii.jpg","title":"Red mustang in Hawaii","instagram":"https://www.instagram.com/p/DUMMY2/","description":"A red sports car cruises a palm-lined road in Hawaii."},
+  {"src":"/images/spotlight/chairs_beach.jpg","title":"Empty beach chairs","instagram":"https://www.instagram.com/p/DUMMY3/","description":"Two empty chairs facing the ocean on a peaceful beach."},
+  {"src":"/images/spotlight/classic_car.jpg","title":"Chrome classic car closeup","instagram":"https://www.instagram.com/p/DUMMY4/","description":"Shiny details of a vintage chrome classic car."},
+  {"src":"/images/spotlight/docks_reflections.jpg","title":"Reflections on the docks","instagram":"https://www.instagram.com/p/DUMMY5/","description":"Golden hour reflections over calm dockside water."},
+  {"src":"/images/spotlight/docks_sunset.jpg","title":"Sunset at the docks","instagram":"https://www.instagram.com/p/DUMMY6/","description":"A glowing orange sky sets over docked boats."},
+  {"src":"/images/spotlight/girl_biking_docks.jpg","title":"Girl biking near the docks","instagram":"https://www.instagram.com/p/DUMMY7/","description":"A girl rides her bicycle past docked boats on a sunny day."},
+  {"src":"/images/spotlight/icecream_hawaii.jpg","title":"Ice cream in Hawaii","instagram":"https://www.instagram.com/p/DUMMY8/","description":"A street vendor in Hawaii sells sweet treats to passersby."},
+  {"src":"/images/spotlight/lone_man_beach.jpg","title":"Lone man on the beach","instagram":"https://www.instagram.com/p/DUMMY9/","description":"A solitary figure stands quietly at the edge of the sea."},
+  {"src":"/images/spotlight/man_car_hawaii.jpg","title":"Man with car in Hawaii","instagram":"https://www.instagram.com/p/DUMMY10/","description":"A man poses proudly with a lamborghini car in Hawaii."},
+  {"src":"/images/spotlight/moon_ferris_wheel.jpg","title":"Moon above a Ferris wheel","instagram":"https://www.instagram.com/p/DUMMY11/","description":"The moon peeks over a glowing nighttime Ferris wheel."},
+  {"src":"/images/spotlight/moss_forest.jpg","title":"Lush forest moss","instagram":"https://www.instagram.com/p/DUMMY12/","description":"Thick green moss blankets the forest floor and branches."},
+  {"src":"/images/spotlight/pigeons_park.jpg","title":"Pigeons in the park","instagram":"https://www.instagram.com/p/DUMMY13/","description":"A group of pigeons gather near a fountain in the park."},
+  {"src":"/images/spotlight/tree_bloom.jpg","title":"Blooming tree in grayscale","instagram":"https://www.instagram.com/p/DUMMY14/","description":"A dramatic black and white view of a blooming tree."}
 ]`;
+
 let images = [];
 try { images = JSON.parse(IMAGES_JSON); } catch { images = []; }
 ---
