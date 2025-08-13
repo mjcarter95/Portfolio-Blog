@@ -1,9 +1,15 @@
-<section
-  class="relative min-h-screen flex flex-col"
-  style={`background-image: url('/images/hero.jpg'); background-size: cover; background-position: center;`}
->
-  <div class="absolute inset-0 pointer-events-none" style="background: var(--bg-overlay);"></div>
+---
+const images = [
+  "/images/spotlight/docks_reflections.jpg",
+  "/images/spotlight/docks_sunset.jpg",
+  "/images/spotlight/forest_ground.jpg",
+  "/images/spotlight/moss_forest.jpg",
+  "/images/spotlight/abstract_reflections.jpg",
+];
+---
 
+<div id="hero-section" class="relative min-h-screen flex flex-col">
+  <div class="absolute inset-0 pointer-events-none" style="background: var(--bg-overlay);"></div>
   <div class="relative z-10 flex-1 flex">
     <div class="max-w-7xl mx-auto w-full px-6 flex items-center">
       <div class="md:w-2/3 lg:w-1/2 text-white/90 leading-relaxed">
@@ -11,12 +17,25 @@
       </div>
     </div>
   </div>
-
   <div class="relative z-10 pb-6 flex justify-center">
-    <a href="#specialisations" aria-label="Scroll to next section" class="animate-bounce inline-block" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">
+    <a href="#specialisations" aria-label="Scroll to next section" class="animate-bounce inline-block">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
       </svg>
     </a>
   </div>
-</section>
+</div>
+
+<script type="module" client:load>
+  const images = [
+    "/images/spotlight/docks_reflections.jpg",
+    "/images/spotlight/docks_sunset.jpg",
+    "/images/spotlight/man_relaxing_docks.jpg",
+    "/images/spotlight/moss_forest.jpg",
+    "/images/spotlight/man_car_hawaii.jpg",
+  ];
+  const selected = images[Math.floor(Math.random() * images.length)];
+  document.getElementById("hero-section").style.backgroundImage = `url('${selected}')`;
+  document.getElementById("hero-section").style.backgroundSize = "cover";
+  document.getElementById("hero-section").style.backgroundPosition = "center";
+</script>
