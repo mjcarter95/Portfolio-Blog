@@ -5,7 +5,7 @@ summary: "A hands-on tutorial that introduces how to model right-censored data u
 tags: ["bayesian inference", "stan", "survival analysis", "censoring"]
 series: "Numerical Bayesian Inference"
 series_order: 2
-banner: "/images/spotlight/tree_bloom.jpg"
+banner: "/images/photography/tree_bloom.jpg"
 ---
 
 ## Introduction: Right-Censoring in Real-World Data

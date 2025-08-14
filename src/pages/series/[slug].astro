@@ -20,7 +20,7 @@ const { seriesName } = Astro.props;
 const allPosts = (await getCollection("writing"))
   .filter((p) => p.data.series === seriesName && !p.data.draft)
   .sort((a, b) => (a.data.series_order ?? 0) - (b.data.series_order ?? 0));
-const banner =  "/images/spotlight/forest_ground.jpg";
+const banner =  "/images/photography/forest_ground.jpg";
 const subtitle = "This is a collection of posts in the " + seriesName + " series.";
 
 ---

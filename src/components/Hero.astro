@@ -1,13 +1,3 @@
----
-const images = [
-  "/images/spotlight/docks_reflections.jpg",
-  "/images/spotlight/docks_sunset.jpg",
-  "/images/spotlight/forest_ground.jpg",
-  "/images/spotlight/moss_forest.jpg",
-  "/images/spotlight/abstract_reflections.jpg",
-];
----
-
 <div id="hero-section" class="relative min-h-screen flex flex-col">
   <div class="absolute inset-0 pointer-events-none" style="background: var(--bg-overlay);"></div>
   <div class="relative z-10 flex-1 flex">
@@ -28,11 +18,13 @@ const images = [
 
 <script type="module" client:load>
   const images = [
-    "/images/spotlight/docks_reflections.jpg",
-    "/images/spotlight/docks_sunset.jpg",
-    "/images/spotlight/man_relaxing_docks.jpg",
-    "/images/spotlight/moss_forest.jpg",
-    "/images/spotlight/man_car_hawaii.jpg",
+    "/images/photography/docks_reflections.jpg",
+    "/images/photography/docks_sunset.jpg",
+    "/images/photography/man_relaxing_docks.jpg",
+    "/images/photography/moss_forest.jpg",
+    "/images/photography/man_car_hawaii.jpg",
+    "/images/photography/chairs_beach.jpg"
+
   ];
   const selected = images[Math.floor(Math.random() * images.length)];
   document.getElementById("hero-section").style.backgroundImage = `url('${selected}')`;

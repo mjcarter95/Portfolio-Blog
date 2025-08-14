@@ -12,7 +12,7 @@ export async function getStaticPaths({ paginate }) {
 }
 
 const { page } = Astro.props;
-const bannerImage = "/images/spotlight/docks_reflections.jpg"
+const bannerImage = "/images/photography/docks_reflections.jpg"
 
 const bestLink = (p: any) => p.data.url || p.data.pdf || "#";
 const formatAuthors = (authors: string[]) =>
