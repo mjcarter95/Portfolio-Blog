@@ -3,6 +3,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import HeroHeader from "@/components/HeroHeader.astro";
 import { getCollection } from "astro:content";
 import { slugifyTag } from "@/utils/tags";
+import readingTime from "reading-time";
 
 export async function getStaticPaths() {
   const posts = await getCollection("writing");
@@ -17,35 +18,111 @@ export async function getStaticPaths() {
 
 const { seriesName } = Astro.props;
 
-const allPosts = (await getCollection("writing"))
+const allPosts = (await getCollection("writing", { body: true }))
   .filter((p) => p.data.series === seriesName && !p.data.draft)
   .sort((a, b) => (a.data.series_order ?? 0) - (b.data.series_order ?? 0));
-const banner =  "/images/photography/forest_ground.jpg";
-const subtitle = "This is a collection of posts in the " + seriesName + " series.";
 
+const banner = "/images/photography/forest_ground.jpg";
+const subtitle = "This is a collection of posts in the " + seriesName + " series.";
 ---
 
 <BaseLayout title={`Series: ${seriesName}`}>
-    <HeroHeader
+  <HeroHeader
     title={seriesName}
     subtitle={subtitle}
     backgroundImage={banner}
+  >
+    <input
+      slot="rightContent"
+      id="post-search"
+      type="search"
+      placeholder="Search title, summary, tags…"
+      class="w-full sm:w-72 rounded-md border border-gray-300 mb-4 px-4 py-2 text-sm text-black focus:outline-none focus:ring-2 focus:ring-[#996633]"
     />
+  </HeroHeader>
 
   <section class="max-w-4xl mx-auto px-6 py-12">
-    <ul class="space-y-6">
-      {allPosts.map(({ slug, data }) => (
-        <li>
-          <a href={`/writing/${slug}/`} class="block group">
-            <h2 class="text-xl font-semibold group-hover:text-[#996633] transition">
-              {data.title}
-            </h2>
-            {data.summary && (
-              <p class="text-sm text-gray-600 mt-1">{data.summary}</p>
-            )}
-          </a>
-        </li>
-      ))}
+    <ul id="post-list" class="space-y-10">
+      {allPosts.map(({ slug, data, body }, i) => {
+        const rt = readingTime(body ?? "");
+        const readMinutes = Math.max(1, Math.round(rt.minutes));
+
+        const searchText = [
+          data.title,
+          data.summary ?? "",
+          ...(data.tags ?? []),
+        ].join(" ").toLowerCase();
+
+        return (
+          <li data-search={searchText}>
+            <a href={`/writing/${slug}/`} class="block group">
+              <h2 class="text-xl font-semibold group-hover:text-[#996633] transition">
+                {data.title}
+              </h2>
+
+              <div class="text-sm text-gray-500 mt-1 flex flex-wrap gap-2 items-center">
+                <span>
+                  {data.date.toLocaleDateString("en-GB", {
+                    year: "numeric",
+                    month: "long",
+                    day: "2-digit",
+                  })}
+                </span>
+                <span>•</span>
+                <span>{readMinutes} min read</span>
+                {typeof data.series_order === "number" && (
+                  <>
+                    <span>•</span>
+                    <span>Part {data.series_order}</span>
+                  </>
+                )}
+                {data.tags && data.tags.length > 0 && (
+                  <div class="flex gap-2 flex-wrap mt-1">
+                    {data.tags.slice(0, 3).map((tag) => (
+                      <a
+                        href={`/tags/${slugifyTag(tag)}/`}
+                        class="px-2 py-0.5 bg-gray-100 rounded hover:bg-[#996633] hover:text-white transition text-sm"
+                      >
+                        {tag}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {data.summary && (
+                <p class="text-sm text-gray-700 mt-2">{data.summary}</p>
+              )}
+            </a>
+
+            {i < allPosts.length - 1 && <hr class="mt-6 border-gray-300" />}
+          </li>
+        );
+      })}
     </ul>
+
+    <p id="no-results" class="hidden text-gray-500 mt-8">
+      No posts match your search.
+    </p>
   </section>
+
+  <script>
+    const input = document.getElementById('post-search');
+    const list = document.getElementById('post-list');
+    const empty = document.getElementById('no-results');
+
+    function filter() {
+      const q = (input.value || '').toLowerCase().trim();
+      let visible = 0;
+      for (const item of list.children) {
+        const hay = item.getAttribute('data-search') || '';
+        const show = hay.includes(q);
+        item.style.display = show ? '' : 'none';
+        if (show) visible++;
+      }
+      empty.classList.toggle('hidden', visible !== 0);
+    }
+
+    input.addEventListener('input', filter);
+  </script>
 </BaseLayout>
