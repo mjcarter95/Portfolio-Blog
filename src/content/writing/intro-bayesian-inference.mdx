@@ -12,7 +12,7 @@ banner: "/images/photography/tree_bloom.jpg"
 
 import JuliaPlot from "@/components/JuliaPlot.astro";
 
-## Overview
+## 1. Introduction
 Bayesian inference is a framework for statistical inference that provides a systematic way to update our beliefs about the parameters of a model in light of observed data. At its heart is Bayes' theorem, which relates four key components:
 
 - **Prior distribution** $p(\mathbf{x})$: Encodes our beliefs about the parameters $\mathbf{x}$ before seeing the data.  
@@ -36,7 +36,7 @@ Here, $\mathbf{x} \in \mathbb{R}^D$ represents the parameters of interest, and $
 
 ---
 
-## Likelihood Intuition
+## 2. Likelihood Intuition
 The likelihood function quantifies how plausible the observed data is under different possible parameter values (hypotheses). For continuous data, the likelihood is the value of the probability density function evaluated at the observed points. Though technically not a probability itself, it is often described informally as *"the probability of the data given the parameters."*
 
 To build intuition, suppose we believe a dataset was generated from a Gaussian distribution with known variance but unknown mean $\mu$. Each possible $\mu$ corresponds to a different hypothesis about the true data-generating process. The likelihood tells us which values of $\mu$ make the observed data most plausible. Hypotheses that align closely with the actual data yield higher likelihood values (or lower negative log-likelihoods).
@@ -51,7 +51,7 @@ In the interactive plot below, 2,000 samples are drawn from a Gaussian distribut
 
 ---
 
-## Modelling Wait Times
+## 3. Modelling Wait Times: The Maths
 Suppose we record wait times $t_1, \dots, t_n > 0$ in a clinic. A natural model is the **Gamma** distribution with shape $k > 0$ and scale $\theta > 0$:
 
 $$
@@ -88,7 +88,7 @@ A single likelihood value on its own tells us very little. Its absolute magnitud
 In short: the likelihood is a **ranking rule** over hypotheses; by itself, a large or small number doesn’t mean much, **differences and ratios do**.
 
 
-#### A Detour: Writing Likelihoods in Python
+### 3.1 A Detour: Writing Likelihoods in Python
 In Python, we can compute the likelihood by evaluating the probability density function (PDF) of a distribution at the observed data points. The `scipy.stats` module makes this straightforward.
 
 ```python
@@ -152,7 +152,7 @@ print("Likelihood:", ll)
 
 This direct computation is useful for building intuition about how the likelihood changes as we vary $k$ and $\theta$. However, in practice, it is often more numerically stable to work with the log-likelihood rather than the raw likelihood, because products of many small numbers can underflow to zero in floating-point arithmetic.
 
-#### Example: Gamma-Distributed Wait Times
+### 3.2 Building Intuition: Gamma-Distributed Wait Times
 
 The following interactive plot shows the probability density function of a Gamma distribution with shape $k = 2.0$ and scale $\theta = 3.0$. The mean wait time, $\mu = 6.0$, is calculated as $\mu = k \theta$. You can compare how the observed wait times align with this model by overlaying their histogram.
 
@@ -164,7 +164,7 @@ The following interactive plot shows the probability density function of a Gamma
 
 ---
 
-## Sampling from the Posterior
+## 4. Sampling from the Posterior
 For most interesting models, including those describing the spread of a disease through a community, the posterior distribution cannot be computed exactly. For example, if we model the number of new daily COVID-19 cases as following a Poisson distribution with an unknown infection rate $\lambda$ and place a prior on $\lambda$, the resulting posterior often has no closed-form expression. In such cases, we use sampling algorithms such as Markov Chain Monte Carlo (MCMC) to draw representative samples from the posterior.
 
 These samples can be used to:
@@ -174,7 +174,7 @@ These samples can be used to:
 
 In the Bayesian framework, inference is therefore about learning a distribution over parameters, not just finding a single optimal set of values. This mindset shift is powerful because it explicitly acknowledges and quantifies uncertainty. Instead of producing a single forecast, we produce a range of possible futures, weighted by their plausibility given the evidence. This richer picture allows decision-makers, whether public health officials or engineers, to balance risks, plan contingencies, and update strategies as new data arrives.
 
-### Example: Inferring the Distribution of Wait Times at a Clinic
+### 4.1 In Practice: Inferring the Distribution of Wait Times at a Clinic
 Below we draw synthetic wait times from a known Gamma distribution and fit the parameters $k$ and $\theta$ using Bayesian inference in the probabilistic programming language **Stan**. Stan lets us write the model succinctly and then sample from the posterior with state-of-the-art MCMC.
 
 We visualise:
@@ -194,7 +194,7 @@ We visualise:
 
 ---
 
-## Conclusion
+## 5. Conclusion
 Bayesian inference offers a powerful, intuitive approach to reasoning under uncertainty, uniting prior beliefs with new evidence to produce richer, more informative results than traditional point estimates. Specifically:
 * Bayesian inference provides a principled framework for updating beliefs in light of new data.
 * The likelihood function measures how well different parameter values explain observed data.

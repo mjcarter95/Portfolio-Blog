@@ -1,14 +1,14 @@
 ---
-title: "Modelling Censored Data in Stan with CmdStanPy"
+title: "Modelling Right-Censored Data in Stan with CmdStanPy"
 date: 2025-08-06
 summary: "A hands-on tutorial that introduces how to model right-censored data using Bayesian inference in Stan. We walk through data simulation, model specification, fitting with CmdStanPy, and visualising uncertainty over time-to-event distributions."
 tags: ["bayesian inference", "stan", "survival analysis", "censoring"]
-series: "Numerical Bayesian Inference"
-series_order: 2
+series: "Modelling Censored Data"
+series_order: 1
 banner: "/images/photography/tree_bloom.jpg"
 ---
 
-## Introduction: Right-Censoring in Real-World Data
+## 1. Introduction
 
 In many real-world scenarios, we cannot always observe the full outcome of a random variable. Instead, we only know that the true value exceeds a certain threshold, this is known as **right-censoring**.
 
@@ -30,13 +30,13 @@ The transparent histogram shows the full (uncensored) Gamma-distributed wait tim
 
 ---
 
-## The Mathematical Model
+## 2. Modelling Wait Times: The Maths
 
-We assume the true (latent) wait times, $x_i$, follow a Gamma distribution:
+We assume that the true wait times, $x_i$, follow a Gamma distribution:
 
-$x_i \sim \text{Gamma}(\alpha, \beta)$
+$x_i \sim \text{Gamma}(\alpha, \beta)$,
 
-Where:
+where:
 
 * $\alpha$ is the shape parameter,
 * $\beta$ is the rate parameter (note: Stan uses the rate, not scale).
@@ -56,7 +56,7 @@ The second term uses the **complementary CDF** (CCDF), which Stan provides as `g
 
 ---
 
-## Simulating Censored Data in Python
+## 3. Simulating Censored Data in Python
 
 We simulate $N = 10,000$ samples from a Gamma distribution with known parameters $\alpha = 2.0$, $\beta = 1.5$. Each sample is censored with a **randomly selected threshold**, drawn from two options:
 
@@ -81,7 +81,7 @@ The data is saved as a JSON file for Stan.
 
 ---
 
-## Writing the Stan Model
+## 4. Writing the Stan Model
 
 Stan supports censored data via the `*_lccdf` functions. Here, we use `gamma_lpdf` for observed values and `gamma_lccdf` for censored values:
 
@@ -104,16 +104,16 @@ model {
 
 ---
 
-## Running the Model with CmdStanPy
+## 5. Running the Model with CmdStanPy
 
-### Step 1: Compile the Model
+### 5.1 Compile the Model
 
 ```python
 from cmdstanpy import CmdStanModel
 model = CmdStanModel(stan_file="models/censored_gamma.stan")
 ```
 
-### Step 2: Simulate and Save the Data
+### 5.2: Simulate and Save the Data
 
 Run the Python script to generate data and save to JSON:
 
@@ -122,7 +122,7 @@ simulate_censored_gamma(...)
 prepare_stan_data(...)
 ```
 
-### Step 3: Fit the Model
+### 5.3: Fit the Model
 
 ```python
 fit = model.sample(
@@ -138,13 +138,13 @@ fit = model.sample(
 
 ---
 
-## Visualising Posterior Estimates
+## 6.Visualising Posterior Estimates
 
 We extract samples of `alpha` and `beta`, compute the posterior mean $\mu = \frac{\alpha}{\beta}$, and overlay posterior predictive densities.
 
-### Posterior PDF Plot
+### 6.1 Posterior PDF Plot
 
-![Posterior plot](/images/blogs/censored_data_stan/inferred_posterior.png))
+![Posterior plot](/images/blogs/censored_data_stan/inferred_posterior.png)
 
 The grey histogram shows the observed (non-censored) wait times. The blue dashed line shows the posterior mean PDF, with the light blue shaded area representing the 95% credible interval over PDFs sampled from the posterior.
 The green line shows the true Gamma distribution used to simulate the data.
@@ -157,7 +157,7 @@ This visual confirms that the model can recover the underlying distribution, eve
 
 ---
 
-## Conclusion
+## 7. Conclusion
 
 This tutorial walked through the full pipeline of:
 
