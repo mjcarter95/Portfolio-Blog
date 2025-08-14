@@ -2,7 +2,10 @@
 title: "Modelling Censored Data in Stan with CmdStanPy"
 date: 2025-08-06
 summary: "A hands-on tutorial that introduces how to model right-censored data using Bayesian inference in Stan. We walk through data simulation, model specification, fitting with CmdStanPy, and visualising uncertainty over time-to-event distributions."
-tags: ['bayesian inference', 'stan', 'survival analysis', 'censoring']
+tags: ["bayesian inference", "stan", "survival analysis", "censoring"]
+series: "Numerical Bayesian Inference"
+series_order: 2
+banner: "/images/spotlight/tree_bloom.jpg"
 ---
 
 ## Introduction: Right-Censoring in Real-World Data

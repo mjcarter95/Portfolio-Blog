@@ -8,8 +8,16 @@ const writing = defineCollection({
     summary: z.string().optional(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
+    // ✅ Add missing fields
+    series: z.string().optional(),
+    series_order: z.number().optional(),
+    banner: z.string().optional(),
+    cover: z.string().optional(),
+    coverAlt: z.string().optional(),
+    coverCaption: z.string().optional(),
   }),
 });
+
 
 const publications = defineCollection({
   type: "content",

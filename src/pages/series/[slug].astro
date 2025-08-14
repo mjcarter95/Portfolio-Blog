@@ -1,0 +1,51 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import HeroHeader from "@/components/HeroHeader.astro";
+import { getCollection } from "astro:content";
+import { slugifyTag } from "@/utils/tags";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("writing");
+  const seriesNames = Array.from(
+    new Set(posts.map((p) => p.data.series).filter(Boolean))
+  );
+  return seriesNames.map((name) => ({
+    params: { slug: slugifyTag(name!) },
+    props: { seriesName: name },
+  }));
+}
+
+const { seriesName } = Astro.props;
+
+const allPosts = (await getCollection("writing"))
+  .filter((p) => p.data.series === seriesName && !p.data.draft)
+  .sort((a, b) => (a.data.series_order ?? 0) - (b.data.series_order ?? 0));
+const banner =  "/images/spotlight/forest_ground.jpg";
+const subtitle = "This is a collection of posts in the " + seriesName + " series.";
+
+---
+
+<BaseLayout title={`Series: ${seriesName}`}>
+    <HeroHeader
+    title={seriesName}
+    subtitle={subtitle}
+    backgroundImage={banner}
+    />
+
+  <section class="max-w-4xl mx-auto px-6 py-12">
+    <ul class="space-y-6">
+      {allPosts.map(({ slug, data }) => (
+        <li>
+          <a href={`/writing/${slug}/`} class="block group">
+            <h2 class="text-xl font-semibold group-hover:text-[#996633] transition">
+              {data.title}
+            </h2>
+            {data.summary && (
+              <p class="text-sm text-gray-600 mt-1">{data.summary}</p>
+            )}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

@@ -6,10 +6,12 @@ export interface Props {
   date?: Date;
   readTime?: number;
   tags?: string[];
+  series?: string;
+  series_order?: number;
 }
 
 import { slugifyTag } from "@/utils/tags";
-const { title, subtitle, backgroundImage, date, readTime, tags } = Astro.props;
+const { title, subtitle, backgroundImage, date, readTime, tags, series, series_order } = Astro.props;
 ---
 
 <section
@@ -21,11 +23,11 @@ const { title, subtitle, backgroundImage, date, readTime, tags } = Astro.props;
       <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
         <!-- Left side: title, subtitle, stats, buttons -->
         <div>
-          <h1 class="text-4xl font-bold mb-2">{title}</h1>
-          {subtitle && <p class="text-white/90 text-base">{subtitle}</p>}
+          <h1 class="text-4xl font-bold mt-4">{title}</h1>
+          {subtitle && <p class="mt-2 text-white/90 text-base">{subtitle}</p>}
 
-          {(date || readTime || (tags && tags.length > 0)) && (
-            <div class="mt-4 flex flex-wrap items-center gap-3 text-sm text-white/90">
+          {(date || readTime || (tags && tags.length > 0) || series) && (
+            <div class="mt-6 flex flex-wrap items-center gap-3 text-sm text-white/90">
               {date && (
                 <time datetime={date.toISOString()}>
                   {date.toLocaleDateString("en-GB", {
@@ -36,6 +38,17 @@ const { title, subtitle, backgroundImage, date, readTime, tags } = Astro.props;
                 </time>
               )}
               {readTime && <span>· {readTime} min read</span>}
+              {series && (
+                <>
+                  <span aria-hidden="true">·</span>
+                  <a
+                    href={`/series/${slugifyTag(series)}/`}
+                    class="underline hover:text-white transition"
+                  >
+                    Part {series_order}: {series}
+                  </a>
+                </>
+              )}
               {tags?.length > 0 && (
                 <>
                   <span aria-hidden="true">·</span>

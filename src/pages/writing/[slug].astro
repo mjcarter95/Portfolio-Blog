@@ -16,18 +16,27 @@ export async function getStaticPaths() {
 const { post, allPosts } = Astro.props;
 const { Content } = await post.render();
 
+// === Reading time ===
 const rt = readingTime(post.body ?? "");
 const readMinutes = Math.max(1, Math.round(rt.minutes));
 
-// Prev/next
-const sorted = allPosts
-  .filter((p) => !p.data.draft)
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-const i = sorted.findIndex((p) => p.slug === post.slug);
-const prev = sorted[i - 1] || null;
-const next = sorted[i + 1] || null;
+// === Series-aware prev/next logic ===
+const seriesSlug = post.data.series?.trim();  // strip any accidental whitespace
+const isInSeries = !!seriesSlug;
 
-// SEO
+const sorted = isInSeries
+  ? allPosts
+      .filter((p) => p.data.series?.trim() === seriesSlug && !p.data.draft)
+      .sort((a, b) => (a.data.series_order ?? 0) - (b.data.series_order ?? 0))
+  : allPosts
+      .filter((p) => !p.data.draft)
+      .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const index = sorted.findIndex((p) => p.slug === post.slug);
+const prev = sorted[index - 1] ?? null;
+const next = sorted[index + 1] ?? null;
+
+// === SEO metadata ===
 const seoTitle = `${post.data.title} — Writing`;
 const seoDescription =
   post.data.summary ??
@@ -39,20 +48,21 @@ const canonical =
     ? new URL(`/writing/${post.slug}/`, Astro.site).toString()
     : undefined;
 
-// Hero banner (optional fallback)
-const banner = post.data.banner ?? "/images/spotlight/forest_ground.jpg";
+// === Hero banner image ===
+const banner = post.data.banner?.trim() || "/images/spotlight/forest_ground.jpg";
 ---
 
 <BaseLayout title={seoTitle} description={seoDescription} image={seoImage} canonical={canonical}>
-<HeroHeader
-  title={post.data.title}
-  subtitle={post.data.summary}
-  backgroundImage={banner}
-  date={post.data.date}
-  readTime={readMinutes}
-  tags={post.data.tags}
-/>
-
+  <HeroHeader
+    title={post.data.title}
+    subtitle={post.data.summary}
+    backgroundImage={banner}
+    date={post.data.date}
+    readTime={readMinutes}
+    tags={post.data.tags}
+    series={post.data.series}
+    series_order={post.data.series_order}
+  />
 
   <section class="max-w-3xl mx-auto px-6 py-12">
     <div class="mb-6">
@@ -79,12 +89,12 @@ const banner = post.data.banner ?? "/images/spotlight/forest_ground.jpg";
       </figure>
     )}
 
-    <!-- Content -->
+    <!-- Main post content -->
     <article class="prose prose-lg prose-neutral max-w-none">
       <Content />
     </article>
 
-    <!-- Prev / Next -->
+    <!-- Prev / Next navigation -->
     <nav class="mt-12 pt-6 border-t border-gray-200 flex justify-between text-sm">
       {prev ? (
         <a
