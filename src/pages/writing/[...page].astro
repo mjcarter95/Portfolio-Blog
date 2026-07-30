@@ -46,7 +46,7 @@ const heroImage = "/images/photography/forest_ground.jpg";
       id="post-search"
       type="search"
       placeholder="Search title, summary, tags…"
-      class="w-full sm:w-72 rounded-md border border-gray-300 mb-4 px-4 py-2 text-sm text-black focus:outline-none focus:ring-2 focus:ring-[#996633]"
+      class="w-full sm:w-72 rounded-md border border-gray-300 mb-4 px-4 py-2 text-sm text-black focus:outline-none focus:ring-2 focus:ring-[#2E6B5E]"
     />
   </HeroHeader>
 
@@ -66,7 +66,7 @@ const heroImage = "/images/photography/forest_ground.jpg";
             data-search={searchText}
           >
             <h2 class="text-2xl font-semibold mb-2">
-              <a href={`/writing/${slug}/`} class="hover:text-[#996633] transition">
+              <a href={`/writing/${slug}/`} class="hover:text-[#2E6B5E] transition">
                 {data.title}
               </a>
             </h2>
@@ -85,7 +85,7 @@ const heroImage = "/images/photography/forest_ground.jpg";
                   {data.tags.slice(0, 3).map((tag) => (
                     <a
                       href={`/tags/${slugifyTag(tag)}/`}
-                      class="px-2 py-0.5 bg-gray-100 rounded hover:bg-[#996633] hover:text-white transition"
+                      class="px-2 py-0.5 bg-gray-100 rounded hover:bg-[#2E6B5E] hover:text-white transition"
                     >
                       {tag}
                     </a>
@@ -152,7 +152,7 @@ const heroImage = "/images/photography/forest_ground.jpg";
       <div class="mt-12">
         <div class="flex items-baseline justify-between">
           <h2 class="text-lg font-semibold">Browse by tag</h2>
-          <a href="/tags" class="text-sm underline hover:text-[#996633]">
+          <a href="/tags" class="text-sm underline hover:text-[#2E6B5E]">
             View all →
           </a>
         </div>
@@ -160,7 +160,7 @@ const heroImage = "/images/photography/forest_ground.jpg";
           {tagList.map((t) => (
             <a
               href={`/tags/${t.slug}/`}
-              class="px-3 py-1 rounded-full bg-gray-100 hover:bg-[#996633] hover:text-white transition text-sm"
+              class="px-3 py-1 rounded-full bg-gray-100 hover:bg-[#2E6B5E] hover:text-white transition text-sm"
             >
               {t.label} <span class="opacity-70">({t.count})</span>
             </a>

@@ -2,7 +2,7 @@
 export interface Props {
   title: string;
   subtitle?: string;
-  backgroundImage: string;
+  backgroundImage?: string;
   date?: Date;
   readTime?: number;
   tags?: string[];
@@ -11,75 +11,116 @@ export interface Props {
 }
 
 import { slugifyTag } from "@/utils/tags";
-const { title, subtitle, backgroundImage, date, readTime, tags, series, series_order } = Astro.props;
+const { title, subtitle, date, readTime, tags, series, series_order } = Astro.props;
 ---
 
-<section
-  class="w-full bg-cover bg-center bg-no-repeat text-white"
-  style={`background-image: url('${backgroundImage}');`}
->
-  <div class="bg-black/50">
-    <div class="max-w-6xl mx-auto px-6 py-20 text-left h-[42vh] min-h-[280px] max-h-[500px] flex flex-col justify-end">
-      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
-        <!-- Left side: title, subtitle, stats, buttons -->
-        <div>
-          <h1 class="text-4xl font-bold mt-4">{title}</h1>
-          {subtitle && <p class="mt-2 text-white/90 text-base">{subtitle}</p>}
+<header class="page-head">
+  <div class="page-head-inner">
+    <div class="page-head-row">
+      <div>
+        <h1 class="page-title">{title}</h1>
+        {subtitle && <p class="page-sub">{subtitle}</p>}
 
-          {(date || readTime || (tags && tags.length > 0) || series) && (
-            <div class="mt-6 flex flex-wrap items-center gap-3 text-sm text-white/90">
-              {date && (
-                <time datetime={date.toISOString()}>
-                  {date.toLocaleDateString("en-GB", {
-                    year: "numeric",
-                    month: "long",
-                    day: "2-digit",
-                  })}
-                </time>
-              )}
-              {readTime && <span>· {readTime} min read</span>}
-              {series && (
-                <>
-                  <span aria-hidden="true">·</span>
-                  <a
-                    href={`/series/${slugifyTag(series)}/`}
-                    class="underline hover:text-white transition"
-                  >
-                    Part {series_order}: {series}
-                  </a>
-                </>
-              )}
-              {tags?.length > 0 && (
-                <>
-                  <span aria-hidden="true">·</span>
-                  <ul class="flex gap-2 flex-wrap">
-                    {tags.slice(0, 3).map((tag) => (
-                      <li>
-                        <a
-                          href={`/tags/${slugifyTag(tag)}/`}
-                          class="px-2 py-0.5 rounded bg-white/20 text-white hover:bg-white/30 transition"
-                        >
-                          {tag}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-            </div>
-          )}
-
-          <!-- ✅ BUTTONS (ACTIONS SLOT) — no bg-white anywhere around this -->
-          <div class="mt-6">
-            <slot name="actions" />
+        {(date || readTime || (tags && tags.length > 0) || series) && (
+          <div class="page-meta">
+            {date && (
+              <time datetime={date.toISOString()}>
+                {date.toLocaleDateString("en-GB", {
+                  year: "numeric",
+                  month: "long",
+                  day: "2-digit",
+                })}
+              </time>
+            )}
+            {readTime && <span>· {readTime} min read</span>}
+            {series && (
+              <>
+                <span aria-hidden="true">·</span>
+                <a href={`/series/${slugifyTag(series)}/`} class="meta-link">
+                  Part {series_order}: {series}
+                </a>
+              </>
+            )}
+            {tags?.length > 0 && (
+              <>
+                <span aria-hidden="true">·</span>
+                <ul class="meta-tags">
+                  {tags.slice(0, 3).map((tag) => (
+                    <li>
+                      <a href={`/tags/${slugifyTag(tag)}/`} class="meta-tag">{tag}</a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </div>
-        </div>
+        )}
 
-        <!-- Right-side slot (e.g., search bar) -->
-        <div>
-          <slot name="rightContent" />
+        <div class="page-actions">
+          <slot name="actions" />
         </div>
+      </div>
+
+      <div class="page-head-right">
+        <slot name="rightContent" />
       </div>
     </div>
   </div>
-</section>
+</header>
+
+<style>
+  .page-head { background: var(--paper); }
+  .page-head-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: clamp(1.2rem, 4vw, 2rem) 1.4rem clamp(0.5rem, 2vw, 1rem);
+  }
+  .page-head-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  @media (min-width: 640px) {
+    .page-head-row { flex-direction: row; align-items: flex-end; justify-content: space-between; }
+  }
+  .page-title {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2rem, 7vw, 2.9rem);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: var(--ink);
+    margin: 0;
+  }
+  .page-sub {
+    margin: 0.6rem 0 0;
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+    line-height: 1.5;
+    max-width: 34em;
+  }
+  .page-meta {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.74rem;
+    color: var(--ink-soft);
+  }
+  .meta-link { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .meta-link:hover { color: var(--clay); border-color: var(--clay); }
+  .meta-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; list-style: none; margin: 0; padding: 0; }
+  .meta-tag {
+    padding: 0.1rem 0.5rem;
+    border-radius: 4px;
+    background: rgba(46,107,94,0.08);
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.72rem;
+  }
+  .meta-tag:hover { background: var(--accent); color: #fff; }
+  .page-actions:empty { display: none; }
+  .page-actions { margin-top: 1rem; }
+</style>

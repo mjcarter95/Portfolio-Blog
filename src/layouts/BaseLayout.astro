@@ -1,18 +1,15 @@
 ---
 import "../styles/tailwind.css";
 import "../styles/katex.css";
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
 import SEO from "@/components/SEO.astro";
 
 const {
-  title = "Matthew Carter — Research Associate",
-  description = "Matthew Carter is a research associate at the University of Liverpool who combines Artificial Intelligence, Bayesian inference, and high-performance computing to help practitioners and researchers make fast, data-informed decisions in the face of uncertainty.",
+  title = "Matthew Carter",
+  description = "Matthew Carter is a researcher at the University of Liverpool combining artificial intelligence, Bayesian inference, and high-performance computing.",
   image = "/images/seo/og_card.png",
-  hideHeader = false
 } = Astro.props;
 
-const headerVariant = Astro.url.pathname === "/" ? "overlay" : "solid";
+const isHome = Astro.url.pathname === "/";
 ---
 <html lang="en">
   <head>
@@ -22,22 +19,34 @@ const headerVariant = Astro.url.pathname === "/" ? "overlay" : "solid";
   </head>
 
   <body>
-    {!hideHeader && (
-      <>
-        <Header variant={headerVariant} />
-        <div id="header-spacer" aria-hidden="true"></div>
-      </>
+    {!isHome && (
+      <div class="home-link-wrap">
+        <a href="/" class="home-link">← Home</a>
+      </div>
     )}
     <main>
       <slot />
     </main>
-    <Footer />
   </body>
 </html>
 
 <style>
-  html {
-  scroll-behavior: smooth;
-}
-
+  .home-link-wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: clamp(2rem, 6vw, 3.5rem) 1.4rem 0;
+  }
+  .home-link {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color .18s, border-color .18s;
+  }
+  .home-link:hover {
+    color: var(--clay);
+    border-color: var(--clay);
+  }
 </style>

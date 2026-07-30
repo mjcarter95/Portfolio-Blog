@@ -4,5 +4,60 @@
 
 :root {
   --bg-overlay: rgba(0,0,0,0.45);
+
+  /* Site theme — warm paper, ink, teal accent */
+  --paper:#FBF9F4;
+  --ink:#232021;
+  --ink-soft:#5a5450;
+  --accent:#2E6B5E;
+  --clay:#C97B5A;
+  --rule:#E7E1D5;
 }
-.prose a { text-decoration: underline; }
+
+/* Global paper aesthetic */
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Source Serif 4", Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Display font for headings site-wide */
+h1, h2, h3, h4 {
+  font-family: "Fraunces", Georgia, serif;
+  letter-spacing: -0.01em;
+}
+
+/* Mono utility font helper */
+.font-mono-util {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/* Prose (blog post body) — keep readable, match theme accents */
+.prose { color: var(--ink); }
+.prose a { text-decoration: underline; color: var(--accent); }
+.prose a:hover { color: var(--clay); }
+.prose h1, .prose h2, .prose h3, .prose h4 { color: var(--ink); }
+.prose strong { color: var(--ink); }
+.prose blockquote {
+  border-left-color: var(--accent);
+  color: var(--ink-soft);
+  font-style: normal;
+}
+.prose code { color: var(--accent); }
+.prose :where(code):not(:where(pre code)) {
+  background: rgba(46,107,94,0.08);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* The "corporate" white section backgrounds become paper */
+.bg-white { background-color: var(--paper) !important; }
+.bg-gray-50 { background-color: #F5F1E8 !important; }
+
+/* Rules and borders warm up */
+.border-gray-200 { border-color: var(--rule) !important; }
+.border-gray-300 { border-color: var(--rule) !important; }

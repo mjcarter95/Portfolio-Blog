@@ -1,226 +1,255 @@
 ---
 import { getCollection } from "astro:content";
-import { slugifyTag } from "@/utils/tags";
-import Hero from "@/components/Hero.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Section from "@/components/Section.astro";
 
-// Helper: "YYYY-MM-DD" -> "Month Year"
+// Helper: Date -> "Month Year"
 const formatDisplayDate = (raw) =>
   raw ? new Date(String(raw).trim()).toLocaleString("en-US", { month: "long", year: "numeric" }) : "";
 
-// Publications (expects frontmatter.date)
-const allPublications = await Astro.glob('../content/publications/*.{md,mdx}');
+// Publications (frontmatter.date)
+const allPublications = await Astro.glob("../content/publications/*.{md,mdx}");
 const sortedPublications = allPublications
   .sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date))
   .slice(0, 3);
 
+// Writing (respects draft flag + collection schema)
+const allWriting = await getCollection("writing", ({ data }) => !data.draft);
+const recentWriting = allWriting
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 2);
 
-  // Writing (includes .md & .mdx, and respects your collection schema)
-  const allWriting = await getCollection("writing", ({ data }) => !data.draft);
-  const recentWriting = allWriting
-    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-    .slice(0, 3);
-
+// Spotlight photos (kept from the existing homepage)
+const spotlight = [
+  { href: "https://www.instagram.com/p/C6A52dWM6Ni/?img_index=1", src: "/images/spotlight/abstract_reflections.jpg", alt: "Abstract reflections in a puddle" },
+  { href: "https://www.instagram.com/p/Cy2zpBMMK99/?img_index=2", src: "/images/spotlight/docks_reflections.jpg", alt: "Reflections at Liverpool's Albert Dock" },
+  { href: "https://www.instagram.com/p/CvRD-mIL96f/", src: "/images/spotlight/icecream_hawaii.jpg", alt: "Ice cream vendor in Hawaii" },
+];
 ---
 
-<BaseLayout title="Home - Matthew Carter" navTone="light">
-  <Hero>
-    <h1 class="text-4xl md:text-6xl font-semibold tracking-tight">
-      Hey, I’m Matthew.
-    </h1>
+<BaseLayout title="Matthew Carter">
+  <div class="page">
+    <div class="wrap">
 
-    <div class="mt-6 w-16"></div>
-
-    <p class="mt-5 text-lg md:text-xl text-white/90 leading-relaxed">
-      I help practitioners and researchers make fast, data-informed decisions in the face of uncertainty.
-    </p>
-  </Hero>
-
-  <!-- Specialisations -->
-  <Section tone="light" id="specialisations">
-    <div class="text-center max-w-2xl mx-auto">
-      <h2 class="text-3xl font-semibold tracking-tight">Specialisations</h2>
-      <p class="mt-4 text-gray-600 text-lg">
-        I combine artificial intelligence, Bayesian inference, and advanced computing to deliver robust, high-performance solutions.
+      <p class="greeting">Alright, I'm Matthew.</p>
+      <h1 class="name">Matthew&nbsp;Carter</h1>
+      <p class="lede">
+        I help practitioners and researchers make fast, data-informed
+        decisions in the face of uncertainty.
       </p>
-    </div>
 
-    <div class="mt-16 grid md:grid-cols-3 gap-10">
-      <div class="bg-gray-50 p-8 rounded-2xl shadow-sm hover:shadow-lg transition text-center">
-        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-md mx-auto">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M4 12h8m-8 5h16" />
-          </svg>
-        </div>
-        <h3 class="mt-6 text-xl font-semibold">Data-Driven Decision Systems</h3>
-        <p class="mt-3 text-gray-600">Build intelligent, scalable pipelines that transform raw data into actionable insights.</p>
-      </div>
+      <nav class="rail" aria-label="Contact and links">
+        <a href="mailto:matthew.carter@liverpool.ac.uk">Email</a><span class="dot">/</span>
+        <a href="https://github.com/mjcarter95">GitHub</a><span class="dot">/</span>
+        <a href="https://scholar.google.com/citations?user=O41s2L8AAAAJ&hl=en">Scholar</a><span class="dot">/</span>
+        <a href="https://orcid.org/0000-0002-0368-7042">ORCID</a><span class="dot">/</span>
+        <a href="https://www.linkedin.com/in/mjcarter95">LinkedIn</a><span class="dot">/</span>
+        <a href="https://www.instagram.com/mjc.dng">Instagram</a>
+      </nav>
 
-      <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition text-center">
-        <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center shadow-md mx-auto">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 20c3-8 6-12 9-12s6 4 9 12" />
-          </svg>
-        </div>
-        <h3 class="mt-6 text-xl font-semibold">Capturing Uncertainty</h3>
-        <p class="mt-3 text-gray-600">Quantify and communicate confidence using Bayesian models and probabilistic inference.</p>
-      </div>
+      <!-- Now -->
+      <section class="block">
+        <p class="eyebrow">Now</p>
+        <p>
+          My main focus is research in the
+          <a href="https://www.liverpool.ac.uk/electrical-engineering-and-electronics/research/signal-processing/">Signal Processing Group</a>
+          at the <a href="https://www.liverpool.ac.uk/">University of Liverpool</a>,
+          where I combine artificial intelligence, Bayesian inference, and
+          high-performance computing to build fast, robust decision-making
+          systems. The thread running through all of it is uncertainty: how to
+          quantify it, communicate it honestly, and still act quickly.
+        </p>
+        <p>
+          In practice that means numerical Bayesian methods, sequential Monte
+          Carlo, particle filters, and probabilistic models, engineered to run
+          at speed on GPUs and distributed clusters.
+        </p>
+      </section>
 
-      <div class="bg-gray-50 p-8 rounded-2xl shadow-sm hover:shadow-lg transition text-center">
-        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-md mx-auto">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
-        </div>
-        <h3 class="mt-6 text-xl font-semibold">Fast Decisions</h3>
-        <p class="mt-3 text-gray-600">Leverage race-tuned algorithms on GPUs, TPUs, and distributed clusters for near real-time results.</p>
-      </div>
-    </div>
-  </Section>
-
-  <!-- About -->
-  <Section tone="alt" id="about">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-      <div class="md:col-span-8">
-        <h2 class="text-2xl md:text-3xl font-semibold tracking-tight">About</h2>
-          <p class="mt-6 text-gray-700 leading-relaxed">
-            I am a researcher in the 
-            <a href="https://www.liverpool.ac.uk/electrical-engineering-and-electronics/research/signal-processing/" target="_blank" rel="noopener" class="font-semibold decoration-2 hover:text-[#996633]">Signal Processing Group</a> 
-            at the 
-            <a href="https://www.liverpool.ac.uk/" target="_blank" rel="noopener" class="font-semibold decoration-2 hover:text-[#996633]">University of Liverpool</a>, 
-            passionate about enabling practitioners and researchers to make fast, data-informed decisions in the face of uncertainty.
-            My research interests span <span class="font-medium">artificial intelligence</span>, <span class="font-medium">Bayesian inference</span>, and
-            <span class="font-medium">high-performance and distributed computing</span>, with a focus on combining these fields to create powerful, efficient decision-making systems.
-          </p>
-
-          <p class="mt-4 text-gray-700 leading-relaxed">
-            I completed my undergraduate degree in Business Economics and Financial Management at the University of Hull in 2018. I then earned my MSc in Big Data and High-Performance Computing from the University of Liverpool in 2019. In 2025, I achieved my PhD in Electrical Engineering and Electronics at the University of Liverpool, where my thesis focused on developing advanced numerical Bayesian inference techniques that capitalised on high-performance and distributed computing environments.
-          </p>
-
-          <p class="mt-4 text-gray-700 leading-relaxed">
-            In my spare time, I enjoy playing instruments including the clarinet, saxophone, and guitar. 
-            One of my favourite pieces to play is <em>Si Tu Vois Ma Mère</em> by Sidney Bechet; I love it for the emotive, almost voice-like quality of the clarinet that speaks without words. 
-            When I'm not playing, I enjoy taking photographs and writing poetry. You can see some of my creative work on
-            <a href="https://www.instagram.com/mjc.dng/" target="_blank" rel="noopener" class="font-semibold decoration-2 hover:text-[#996633]">Instagram</a>. 
-            I am also an avid gamer, regularly playing Vermintide and Counter-Strike.
-          </p>
-        <div class="mt-8">
-          <a href="/about" class="inline-block font-semibold decoration-2 hover:text-[#996633]">Read full bio →</a>
-        </div>
-      </div>
-
-      <div class="md:col-span-4">
-        <img src="/images/me.jpg" alt="Portrait of Matthew Carter" class="w-full max-w-md h-auto md:ml-auto shadow-lg object-contain bg-gray-200" />
-      </div>
-    </div>
-  </Section>
-
-  <!-- Recent Publications -->
-  <Section tone="light" id="recent-publications">
-    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-10">Recent Publications</h2>
-
-    <div class="space-y-10">
-      {sortedPublications.map((pub) => {
-        const { title, authors = [], venue = "", type = "", url = "", pdf = "", date } = pub.frontmatter;
-        const linkTarget = url || pdf || "#";
-        const displayDate = formatDisplayDate(date);
-        const formattedAuthors = authors.map(a => a === "Matthew Carter" ? `<strong>${a}</strong>` : a).join(", ");
-
-        return (
-          <div class="border-b border-gray-200 pb-6">
-            <h3 class="text-lg md:text-xl font-semibold text-gray-900 leading-snug">
-              <a href={linkTarget} target="_blank" rel="noopener" class="hover:text-[#996633]">{title}</a>
-            </h3>
-            <p class="mt-1 text-sm text-gray-600">
-              <span set:html={formattedAuthors}></span> &middot; <span class="italic">{venue}</span> &middot; <span>{type}</span> &middot; {displayDate}
-            </p>
-            {pub.frontmatter.description && (
-              <p class="mt-3 text-gray-700 text-sm leading-relaxed">{pub.frontmatter.description}</p>
-            )}
-          </div>
-        );
-      })}
-    </div>
-
-    <div class="mt-10">
-      <a href="/publications" class="inline-block font-semibold decoration-2 hover:text-[#996633]">View all publications →</a>
-    </div>
-  </Section>
-
-  <!-- Photography Spotlight -->
-  <Section tone="alt" id="highlighted-photos">
-    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-10">Photography Spotlight</h2>
-
-    <div class="grid md:grid-cols-3 gap-8">
-      <a href="https://www.instagram.com/p/C6A52dWM6Ni/?img_index=1" target="_blank" rel="noopener" class="group">
-        <img src="/images/spotlight/abstract_reflections.jpg" alt="Abstract reflections in a puddle" class="w-full h-auto shadow-lg object-cover aspect-square transition-transform duration-300 group-hover:scale-105" />
-      </a>
-      <a href="https://www.instagram.com/p/Cy2zpBMMK99/?img_index=2" target="_blank" rel="noopener" class="group">
-        <img src="/images/spotlight/docks_reflections.jpg" alt="Reflections at Liverpool's Albert Dock" class="w-full h-auto shadow-lg object-cover aspect-square transition-transform duration-300 group-hover:scale-105" />
-      </a>
-      <a href="https://www.instagram.com/p/CvRD-mIL96f/" target="_blank" rel="noopener" class="group">
-        <img src="/images/spotlight/icecream_hawaii.jpg" alt="Ice cream vendor in Hawaii" class="w-full h-auto shadow-lg object-cover aspect-square transition-transform duration-300 group-hover:scale-105" />
-      </a>
-    </div>
-
-    <div class="mt-8">
-      <a href="https://www.instagram.com/mjc.dng/" target="_blank" rel="noopener" class="inline-block font-semibold decoration-2 hover:text-[#996633]">View more on Instagram →</a>
-    </div>
-  </Section>
-
-  <!-- Recent Writing -->
-  <Section tone="light" id="recent-writing">
-    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-10">
-      Recent Writing
-    </h2>
-      {recentWriting.map((post, index) => {
-        const { title, date, tags = [], description = "", summary = "" } = post.data;
-        const displayDate = new Date(date).toLocaleString("en-US", { month: "long", year: "numeric" });
-        const excerpt = summary || description;
-        const postLink = `/writing/${post.slug}/`;
-
-        return (
-          <div
-            class={`border-b border-gray-200 pb-6 ${index > 0 ? "pt-6" : ""}`}
-          >
-            <h3 class="text-lg md:text-xl font-semibold text-gray-900 leading-snug">
-              <a href={postLink} class="hover:text-[#996633]">
-                {title}
-              </a>
-            </h3>
-
-            <div class="mt-1 text-sm text-gray-600 flex flex-wrap items-center gap-2">
-              <span>{displayDate}</span>
-              {tags.length > 0 && (
-                <>
-                  <span>·</span>
-                  <div class="flex flex-wrap gap-2">
-                    {tags.map((tag) => (
-                      <a
-                        href={`/tags/${slugifyTag(tag)}`}
-                        class="text-xs bg-gray-200 hover:bg-[#996633] hover:text-white px-2 py-0.5 rounded-full transition"
-                      >
-                        {tag}
-                      </a>
-                    ))}
-                  </div>
-                </>
-              )}
+      <!-- Selected work (from publications collection) -->
+      <section class="block">
+        <p class="eyebrow">Selected work</p>
+        {sortedPublications.map((pub) => {
+          const { title, authors = [], venue = "", type = "", url = "", pdf = "", date } = pub.frontmatter;
+          const linkTarget = url || pdf || "#";
+          const formattedAuthors = authors
+            .map((a) => (a === "Matthew Carter" ? `<strong>${a}</strong>` : a))
+            .join(", ");
+          const meta = [venue, type, formatDisplayDate(date)].filter(Boolean).join(" · ");
+          return (
+            <div class="pub">
+              <a class="t" href={linkTarget} target="_blank" rel="noopener">{title}</a>
+              <span class="m"><span set:html={formattedAuthors}></span> · {meta}</span>
             </div>
+          );
+        })}
+        <p class="more"><a href="/publications">All publications →</a></p>
+      </section>
 
-            {excerpt && (
-              <p class="mt-3 text-gray-700 text-sm leading-relaxed">
-                {excerpt}
-              </p>
-            )}
-          </div>
-        );
-      })}
-    <div class="mt-10">
-      <a href="/writing" class="inline-block font-semibold decoration-2 hover:text-[#996633]">
-        View all writing →
-      </a>
+      <!-- Before -->
+      <section class="block">
+        <p class="eyebrow">Before</p>
+        <p>
+          I read Business Economics and Financial Management at the University
+          of Hull (2018), then took an MSc in Big Data and High-Performance
+          Computing at Liverpool (2019). In 2025 I finished my PhD in Electrical
+          Engineering and Electronics there, on numerical Bayesian inference
+          techniques built to exploit high-performance and distributed computing.
+        </p>
+      </section>
+
+      <!-- Writing (from writing collection) -->
+      <section class="block">
+        <p class="eyebrow">Writing</p>
+        {recentWriting.map((post) => {
+          const { title, date } = post.data;
+          return (
+            <div class="pub">
+              <a class="t" href={`/writing/${post.slug}/`}>{title}</a>
+              <span class="m">{formatDisplayDate(date)}</span>
+            </div>
+          );
+        })}
+        <p class="more"><a href="/writing">All writing →</a></p>
+      </section>
+
+      <!-- Off the clock -->
+      <section class="block">
+        <p class="eyebrow">Off the clock</p>
+        <p>
+          I play the clarinet, saxophone, and guitar. A favourite is
+          <em>Si Tu Vois Ma Mère</em> by Sidney Bechet. I love the emotive,
+          almost voice-like quality of the clarinet, speaking without words.
+          When I'm not playing I take photographs and write poetry (some of it
+          lives on <a href="https://www.instagram.com/mjc.dng/">Instagram</a>),
+          and I'm an avid gamer, usually Vermintide or Counter-Strike.
+        </p>
+      </section>
+
+      <!-- Through the lens -->
+      <section class="block">
+        <p class="eyebrow">Through the lens</p>
+        <div class="photos">
+          {spotlight.map((p) => (
+            <a href={p.href} target="_blank" rel="noopener">
+              <img src={p.src} alt={p.alt} loading="lazy" />
+            </a>
+          ))}
+        </div>
+        <p class="photos-cap"><a href="https://www.instagram.com/mjc.dng/">More on Instagram →</a></p>
+      </section>
+
+      <!-- Get in touch -->
+      <section class="block contact-block">
+        <p class="eyebrow">Get in touch</p>
+        <p class="contact-lead">Always happy to talk research, collaborations, or interesting problems.</p>
+        <p class="contact-emails">
+          <a href="mailto:matt@mjcarter.co">matt@mjcarter.co</a>
+          <span class="contact-label">personal</span>
+        </p>
+        <p class="contact-emails">
+          <a href="mailto:matthew.carter@liverpool.ac.uk">matthew.carter@liverpool.ac.uk</a>
+          <span class="contact-label">academic</span>
+        </p>
+      </section>
+
     </div>
-  </Section>
+  </div>
 </BaseLayout>
+
+<style>
+  .page{
+    --paper:#FBF9F4;
+    --ink:#232021;
+    --ink-soft:#5a5450;
+    --accent:#2E6B5E;
+    --clay:#C97B5A;
+    --rule:#E7E1D5;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Source Serif 4", Georgia, serif;
+  }
+  .wrap{
+    max-width:640px;
+    margin:0 auto;
+    /* extra top padding clears the fixed site header */
+    padding:clamp(3.5rem,8vw,6rem) 1.4rem 4rem;
+    font-size:19px;
+    line-height:1.66;
+  }
+  .page a{ color:inherit; text-decoration:none; border-bottom:1px solid var(--rule); transition:border-color .18s,color .18s; }
+  .page a:hover{ color:var(--clay); border-color:var(--clay); }
+
+  .greeting{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:500;
+    font-size:clamp(1.5rem,5vw,2rem);
+    letter-spacing:-.01em;
+    color:var(--accent);
+    margin:0 0 .15rem;
+    line-height:1.15;
+  }
+  .name{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:600;
+    font-size:clamp(2.4rem,9vw,3.5rem);
+    letter-spacing:-.02em;
+    line-height:1.02;
+    margin:0 0 1.1rem;
+  }
+  .lede{ font-size:1.12rem; color:var(--ink-soft); margin:0 0 1.9rem; max-width:34em; }
+
+  .rail{
+    display:flex; flex-wrap:wrap; gap:.35rem .95rem;
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:.82rem; letter-spacing:.01em; margin:0 0 2.8rem;
+  }
+  .rail a{ border:0; padding-bottom:2px; border-bottom:1px solid transparent; color:var(--ink-soft); }
+  .rail a:hover{ color:var(--clay); border-color:var(--clay); }
+  .rail .dot{ color:var(--rule); }
+
+  .block{ margin:0 0 2.4rem; }
+  .eyebrow{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:.72rem; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 .7rem;
+  }
+  .block p{ margin:0 0 1.05rem; }
+  .block p:last-child{ margin-bottom:0; }
+
+  .pub{ margin:0 0 1.3rem; padding-left:1rem; border-left:2px solid var(--rule); }
+  .pub .t{ font-weight:600; display:block; line-height:1.35; border:0; }
+  .pub .t:hover{ color:var(--clay); }
+  .pub .m{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:.74rem; color:var(--ink-soft); letter-spacing:.01em; display:block; margin-top:.25rem; }
+  .more{ margin-top:1.1rem; }
+
+  .photos{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:.6rem;
+  }
+  /* On wide enough screens, let the strip breathe past the text column */
+  @media (min-width:720px){
+    .photos{ margin-left:-70px; margin-right:-70px; }
+  }
+  .photos a{ border:0; display:block; overflow:hidden; border-radius:6px; line-height:0; }
+  .photos img{ width:100%; aspect-ratio:1/1; object-fit:cover; filter:grayscale(.1); transition:transform .35s ease, filter .35s ease; }
+  .photos a:hover img{ transform:scale(1.04); filter:grayscale(0); }
+  .photos-cap{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:.74rem; color:var(--ink-soft); margin:.85rem 0 0; }
+
+  .contact-block{ margin-top:2.8rem; }
+  .contact-lead{ margin:0 0 .8rem; color:var(--ink-soft); }
+  .contact-emails{
+    margin:0 0 .35rem;
+    display:flex; align-items:baseline; gap:.6rem; flex-wrap:wrap;
+  }
+  .contact-emails a{ font-weight:600; border:0; border-bottom:1px solid var(--rule); }
+  .contact-emails a:hover{ color:var(--clay); border-color:var(--clay); }
+  .contact-label{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:.68rem; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .page *{ transition:none !important; }
+    .photos a:hover img{ transform:none; }
+  }
+</style>

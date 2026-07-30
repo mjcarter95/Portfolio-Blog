@@ -64,9 +64,9 @@ const banner = post.data.banner?.trim() || "/images/photography/forest_ground.jp
     series_order={post.data.series_order}
   />
 
-  <section class="max-w-3xl mx-auto px-6 py-12">
+  <section class="post-body mx-auto py-12">
     <div class="mb-6">
-      <a href="/writing" class="text-sm font-medium underline underline-offset-4 hover:text-[#996633]">
+      <a href="/writing" class="text-sm font-medium underline underline-offset-4 hover:text-[#2E6B5E]">
         ← Back to Writing
       </a>
     </div>
@@ -119,3 +119,12 @@ const banner = post.data.banner?.trim() || "/images/photography/forest_ground.jp
     </nav>
   </section>
 </BaseLayout>
+
+<style>
+  /* Match the article column to the HeroHeader title column exactly */
+  .post-body {
+    max-width: 640px;
+    padding-left: 1.4rem;
+    padding-right: 1.4rem;
+  }
+</style>

@@ -22,7 +22,7 @@ export default {
               textDecoration: 'underline',
               textUnderlineOffset: '3px',
               fontWeight: '600',
-              '&:hover': { color: theme('colors.amber.700') },
+              '&:hover': { color: '#C97B5A' },
             },
             h1: { color: theme('colors.gray.900'), fontWeight: '800' },
             h2: { color: theme('colors.gray.900'), scrollMarginTop: '6rem' },
@@ -66,7 +66,7 @@ export default {
         invert: {
           css: {
             color: theme('colors.gray.300'),
-            a: { color: theme('colors.white'), '&:hover': { color: theme('colors.amber.300') } },
+            a: { color: theme('colors.white'), '&:hover': { color: '#C97B5A' } },
             h1: { color: theme('colors.white') },
             h2: { color: theme('colors.white') },
             h3: { color: theme('colors.white') },
