@@ -61,3 +61,15 @@ h1, h2, h3, h4 {
 /* Rules and borders warm up */
 .border-gray-200 { border-color: var(--rule) !important; }
 .border-gray-300 { border-color: var(--rule) !important; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
